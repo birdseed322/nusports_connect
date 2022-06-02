@@ -7,19 +7,20 @@ const {
     GraphQLNonNull,
     GraphQLBoolean
 } = require('graphql')
-const { sign } = require('jsonwebtoken')
 const express = require('express')
 const expressGraphQL = require('express-graphql').graphqlHTTP
 const mongoose = require('mongoose')
 let User = require('./models/User')
 const { hash, compare } = require('bcryptjs')
 const cors = require('cors')
+const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth')
+
 require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000;
-app.use(cors())
+app.use(cors({credentials: true, exposedHeaders:['Authorization']}))
+app.use(isAuth)
 app.use(express.json())
-
 
 
 const dbURI = process.env.LOCAL_DB_URI;
@@ -71,6 +72,19 @@ const RootQueryType = new GraphQLObjectType({
             type : GraphQLList(UserType),
             description : "Retrieve all users",
             resolve : () => User.find()
+        },
+        testAuth : {
+            type : GraphQLString,
+            description: "Test auth",
+            resolve : (_,args,{req, res, user}) => {
+                if (!user){
+                    console.log("Not Logged in")
+                } else {
+                    console.log("Logged in")
+                }
+                console.log(user)
+                return "Test"
+            }
         } 
     })
 })
@@ -100,14 +114,13 @@ const RootMutationType = new GraphQLObjectType({
                     throw new Error("wrong password")
                 }
 
-                res.cookie('jid',
-                 sign({userId : user.id}, process.env.JWTREFRESHSECRET, 
-                    {expiresIn : '15m'}),
+                res.cookie('jid',createRefreshToken(user),
                     {httpOnly : true})
 
+                const accessToken = createAccessToken(user)
+                
                 return ({
-                    accessToken : sign({userId : user.id}, process.env.JWTSECRET, 
-                        {expiresIn : '15m'})
+                    accessToken : accessToken
                 })
             }
         },
@@ -143,11 +156,12 @@ const graphqlSchema = new GraphQLSchema({
 })
 
 app.use('/graphql', 
-    expressGraphQL((req, res) => ({
+    expressGraphQL((req, res) => {
+        return {
         schema: graphqlSchema,
-        graphiql: true, 
-        context : {req, res}
-    }))
+        graphiql: {headerEditorEnabled : true},
+        context : {req, res, user:req.user}
+    }})
 )
 
 
