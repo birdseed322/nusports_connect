@@ -1,0 +1,81 @@
+* {
+  box-sizing: border-box;
+  
+}
+body {
+  font-size: 14px;
+  background-size:auto;
+  background-image:url("../../../public/pics/bg-ellipsis.jpg");
+}
+
+.center {
+  width: fit-content;
+  height: fit-content;
+  margin: auto
+}
+
+.sign-form-box {
+  justify-content: center;
+  margin: 10% auto;
+  width: 504px;
+  height: 502px;
+  padding: 50px 100px;
+  border-radius:45px;
+  background: rgb(253,228,156);
+  background: linear-gradient(180deg, rgba(253,228,156,1) 0%, rgba(255,243,210,1) 35%);
+}
+
+
+.sign-header-top {
+  margin: 0 auto 0px auto;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 100;
+}
+
+.sign-header-bottom {
+  margin: 0 5px 18px auto;
+  font-family: 'Montserrat', sans-serif;
+  color: #890596;
+}
+
+.sign-e {
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  text-align: center;
+}
+
+.sign-input {
+  margin: 10px auto 10px 0;
+  padding: 7px;
+  height: 30px;
+  width: 210px;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 1px 1px  #888888;
+  font-family: 'Average Sans', sans-serif;
+
+}
+
+.sign-forgot-password {
+  display: block;
+  margin: auto 0 auto 55%;
+  font-size: 8pt;
+}
+
+.sign-login-btn {
+  margin: 20px auto;
+  background: #DDDDDD;
+  border-style: none;
+  border-radius: 45px;
+  width: 80px;
+  height: 30px;
+  font-size: 11pt;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+
+.sign-sign-off {
+  display: inline;
+}
