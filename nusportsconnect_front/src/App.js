@@ -1,9 +1,10 @@
 import Login from './Components/Login/Login'
-
+import AccountCreationForm from './Components/Login/AccountCreationForm';
 function App() {
   return (
     <div className="App">
-      <Login />
+      <AccountCreationForm/>
+      {/* <Login /> */}
     </div>
   );
 }

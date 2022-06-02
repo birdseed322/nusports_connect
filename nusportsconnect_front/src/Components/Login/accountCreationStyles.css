@@ -16,10 +16,10 @@ body {
 .center {
   width: fit-content;
   height: fit-content;
-  margin: auto
+  margin: auto;
 }
 
-.sign-form-box {
+.create-form-box {
   justify-content: center;
   margin: auto;
   width: 500px;
@@ -30,16 +30,10 @@ body {
   background: linear-gradient(180deg, rgba(253,228,156,1) 0%, rgba(255,243,210,1) 35%);
 }
 
-.sign-header-top {
+.sign-header {
   margin: 0 auto 0 auto;
   font-family: 'Montserrat', sans-serif;
   font-weight: 100;
-}
-
-.sign-header-bottom {
-  margin: 0 auto;
-  font-family: 'Montserrat', sans-serif;
-  color: #890596;
 }
 
 .sign-input {
@@ -52,12 +46,6 @@ body {
   box-shadow: 1px 1px  #888888;
   font-family: 'Average Sans', sans-serif;
 
-}
-
-.sign-forgot-password {
-  display: block;
-  font-size: 9pt;
-  text-align: right;
 }
 
 .sign-e {
@@ -76,9 +64,9 @@ body {
   height: 30px;
   font-size: 11pt;
   font-family: 'Roboto', sans-serif;
-  cursor: pointer;
+  cursor: "pointer";
 }
 
-.sign-sign-off {
+.sign-sign-in {
   display: inline;
 }
