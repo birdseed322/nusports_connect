@@ -1,7 +1,7 @@
 import './accountCreationStyles.css'
 import React from 'react'
 
-function AccountCreationForm() {
+function AccountCreationForm(props) {
     return (
         <div className='create-form-box'>
             <div className='center'>
@@ -18,7 +18,7 @@ function AccountCreationForm() {
             </div>
 
             <div className='center'>
-                <p className='sign-sign-in'>Already have an account? <a href='./SignInForm.jsx'>Sign In</a> </p>
+                <p className='sign-sign-in'>Already have an account? <a href='/#' onClick={() => props.handleClick("signIn")}>Sign In</a> </p>
             </div>
 
         </div>

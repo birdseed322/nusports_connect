@@ -1,7 +1,8 @@
 import './signInStyles.css';
 import React from 'react'
 
-function SignInForm() {
+function SignInForm(props) {
+
     return (
         <div className='sign-form-box'>
             <div className='center'>
@@ -13,11 +14,10 @@ function SignInForm() {
                 <a href='/' className='sign-forgot-password'>Forgot password?</a>
             </div>
             <div className='sign-e'>
-                <button className='sign-login-btn' type="submit" cursor="pointer">Login</button>
+                <button className='sign-login-btn' type="submit">Login</button>
             </div>
             <div className='center'>
-                <p className='sign-sign-off'>Don't have an account? <a href='./AccountCreationForm.jsx'>Sign Up</a> </p>
-                
+                <p className='sign-sign-off'>Don't have an account? <a href='/#' onClick={() => props.handleClick("signUp")}>Sign Up</a> </p>
             </div>
         </div>
     )
