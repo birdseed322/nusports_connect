@@ -5,7 +5,8 @@ const {
     GraphQLList,
     GraphQLInt,
     GraphQLNonNull,
-    GraphQLBoolean
+    GraphQLBoolean,
+    defaultFieldResolver
 } = require('graphql');
 const express = require('express');
 const expressGraphQL = require('express-graphql').graphqlHTTP;
@@ -14,6 +15,8 @@ let User = require('./models/User');
 const { hash, compare } = require('bcryptjs');
 const cors = require('cors');
 const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth');
+const cookieParser = require('cookie-parser');
+const { verify } = require('jsonwebtoken');
 
 require('dotenv').config();
 
@@ -24,6 +27,7 @@ const port = process.env.PORT || 5000;
 
 //Add dependencies for app to use
 app.use(cors({credentials: true, exposedHeaders:['Authorization']}));
+app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json());
 
@@ -83,16 +87,16 @@ const RootQueryType = new GraphQLObjectType({
             description: "Test auth",
             resolve : (_,args,{req, res, user}) => {
                 if (!user){
-                    console.log("Not Logged in")
+                    console.log("Not Logged in");
+                    return "Not authenticated";
                 } else {
-                    console.log("Logged in")
+                    console.log("Logged in");
+                    return "Your user ID is : " + user.userId;
                 }
-                console.log(user)
-                return "Test"
             }
         } 
     })
-})
+});
 
 
 const RootMutationType = new GraphQLObjectType({
@@ -113,7 +117,7 @@ const RootMutationType = new GraphQLObjectType({
                     throw new Error("could not find user")
                 }
 
-                const valid = await compare(args.password, user.password)
+                const valid = await compare(args.password, user.password);
 
                 if (!valid) {
                     throw new Error("wrong password");
@@ -142,15 +146,28 @@ const RootMutationType = new GraphQLObjectType({
                         const newUser = new User({
                             username : args.username,
                             password : pw
-                        })
-                        newUser.save()
-                    })
+                        });
+                        newUser.save();
+                    });
                 } catch (err) {
-                    console.log(err)
-                    return false
+                    console.log(err);
+                    return false;
                 }
-                return true
+                return true;
             }
+        },
+        revokeRefreshTokenForUser : {
+            type : GraphQLBoolean,
+            description : "Invalidate user's refresh token",
+            args : {userId : {type : GraphQLString}},
+            resolve : (_, args) => {
+                User.findById(args.userId, (err, user) => {
+                    user.tokenVersion = user.tokenVersion + 1;
+                    user.save();
+                });
+                return true;
+            }
+
         }
     })
 })
@@ -158,7 +175,7 @@ const RootMutationType = new GraphQLObjectType({
 const graphqlSchema = new GraphQLSchema({
     query : RootQueryType,
     mutation : RootMutationType
-})
+});
 
 app.use('/graphql', 
     expressGraphQL((req, res) => {
@@ -168,5 +185,39 @@ app.use('/graphql',
         context : {req, res, user:req.user}
     };})
 );
+
+//Route to refresh token
+
+app.post("/refresh_token", async (req, res) => {
+    const token = req.cookies.jid;
+
+    if (!token){
+        return res.send({ok: false, accessToken:''});
+    }
+
+    let payload = null;
+
+    try{
+        payload = verify(token, process.env.JWTREFRESHSECRET);
+    } catch (err){
+        console.log(err); 
+        res.send({ok: false, accessToken:''});
+    }
+
+    const user = await User.findOne({id: payload.userId});
+
+    if(!user){
+        return res.send({ok: false, accessToken:''});
+    }
+
+    if(user.tokenVersion !==payload.tokenVersion){
+        return res.send({ok: false, accessToken:''})
+    }
+
+    res.cookie('jid',createRefreshToken(user),
+    {httpOnly : true});
+    res.send({ok: true, accessToken:createAccessToken(user)});
+
+});
 
 
