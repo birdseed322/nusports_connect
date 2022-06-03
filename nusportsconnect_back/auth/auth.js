@@ -1,19 +1,20 @@
-const { sign, verify } = require('jsonwebtoken')
-const { User } = require('../models/User')
+const { sign, verify } = require('jsonwebtoken');
+const { User } = require('../models/User');
 
-
+//Function to create access token
 function createAccessToken(user) {
     return(sign({userId : user.id}, process.env.JWTSECRET, 
-        {expiresIn : '15m'}))
+        {expiresIn : '15m'}));
 }
 
+//Function to create refresh token
 function createRefreshToken(user) {
     return (sign({userId : user.id}, process.env.JWTREFRESHSECRET, 
         {expiresIn : '7d'}))
 }
 
 async function isAuth(req) {
-    const authorization = req.headers['authorization']
+    const authorization = req.headers.authorization;
 
 
     try {
