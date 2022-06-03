@@ -6,23 +6,28 @@ const {
     GraphQLInt,
     GraphQLNonNull,
     GraphQLBoolean
-} = require('graphql')
-const express = require('express')
-const expressGraphQL = require('express-graphql').graphqlHTTP
-const mongoose = require('mongoose')
-let User = require('./models/User')
-const { hash, compare } = require('bcryptjs')
-const cors = require('cors')
-const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth')
+} = require('graphql');
+const express = require('express');
+const expressGraphQL = require('express-graphql').graphqlHTTP;
+const mongoose = require('mongoose');
+let User = require('./models/User');
+const { hash, compare } = require('bcryptjs');
+const cors = require('cors');
+const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth');
 
-require('dotenv').config()
-const app = express()
+require('dotenv').config();
+
+//Create instance of app and define port
+
+const app = express();
 const port = process.env.PORT || 5000;
-app.use(cors({credentials: true, exposedHeaders:['Authorization']}))
-app.use(isAuth)
-app.use(express.json())
 
+//Add dependencies for app to use
+app.use(cors({credentials: true, exposedHeaders:['Authorization']}));
+app.use(isAuth);
+app.use(express.json());
 
+//Create connection to database. Change to appropriate database URI
 const dbURI = process.env.LOCAL_DB_URI;
 
 mongoose.connect(dbURI, {useNewURLParser: true});
@@ -34,10 +39,10 @@ connection.once('open', () => {
 })
 
 app.listen(port, () => {
-    console.log('Server is running on port: ' + port)
+    console.log('Server is running on port: ' + port);
 })
 
-
+//Definining GraphQL object types
 const UserType = new GraphQLObjectType({
     name : "User",
     description : "This represents a user",
@@ -45,7 +50,7 @@ const UserType = new GraphQLObjectType({
         username : {type : GraphQLNonNull(GraphQLString)},
         password : {type : GraphQLNonNull(GraphQLString)}
     })
-})
+});
 
 const LoginResponse = new GraphQLObjectType({
     name : "LoginResponse",
@@ -53,9 +58,9 @@ const LoginResponse = new GraphQLObjectType({
     fields : () => ({
         accessToken : {type : GraphQLString}
     })
-})
+});
 
-
+//Root query and Root mutation
 const RootQueryType = new GraphQLObjectType({
     name : "query",
     description : "Root query",
@@ -111,17 +116,17 @@ const RootMutationType = new GraphQLObjectType({
                 const valid = await compare(args.password, user.password)
 
                 if (!valid) {
-                    throw new Error("wrong password")
+                    throw new Error("wrong password");
                 }
 
                 res.cookie('jid',createRefreshToken(user),
-                    {httpOnly : true})
+                    {httpOnly : true});
 
                 const accessToken = createAccessToken(user)
                 
                 return ({
                     accessToken : accessToken
-                })
+                });
             }
         },
         addUser : {
@@ -161,7 +166,7 @@ app.use('/graphql',
         schema: graphqlSchema,
         graphiql: {headerEditorEnabled : true},
         context : {req, res, user:req.user}
-    }})
-)
+    };})
+);
 
 

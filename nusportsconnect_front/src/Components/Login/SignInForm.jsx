@@ -1,5 +1,5 @@
 import './signInStyles.css';
-import React from 'react'
+import React from 'react';
 
 function SignInForm(props) {
 
