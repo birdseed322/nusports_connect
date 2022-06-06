@@ -11,7 +11,8 @@ function Login() {
   };
 
   return (
-    <React.Fragment>
+    // <React.Fragment>
+    <div>
       {(() => {
         switch (view) {
           case "signIn":
@@ -24,7 +25,7 @@ function Login() {
             return null;
         }
       })()}
-    </React.Fragment>
+    </div>
   );
 }
 
