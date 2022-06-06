@@ -138,14 +138,16 @@ const RootMutationType = new GraphQLObjectType({
             description : "add a user",
             args : {
                 username : {type : GraphQLNonNull(GraphQLString)},
-                password : {type : GraphQLNonNull(GraphQLString)}
+                password : {type : GraphQLNonNull(GraphQLString)},
+                email: {type : GraphQLNonNull(GraphQLString)}
             },
             resolve : (_, args) => {
                 try {
                     const hashedPasswordWord = hash(args.password, 12).then((pw) => {
                         const newUser = new User({
                             username : args.username,
-                            password : pw
+                            password : pw,
+                            email : args.email
                         });
                         newUser.save();
                     });
@@ -210,6 +212,7 @@ app.post("/refresh_token", async (req, res) => {
         return res.send({ok: false, accessToken:''});
     }
 
+    //Validate to ensure that refresh token is not used by blacklisted member
     if(user.tokenVersion !==payload.tokenVersion){
         return res.send({ok: false, accessToken:''})
     }

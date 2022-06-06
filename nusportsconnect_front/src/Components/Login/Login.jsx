@@ -4,6 +4,7 @@ import AccountCreationForm from "./AccountCreationForm";
 import PasswordResetForm from "./PasswordResetForm";
 
 function Login() {
+
   const [view, setView] = useState("signIn");
 
   const handleClick = (viewState) => {
