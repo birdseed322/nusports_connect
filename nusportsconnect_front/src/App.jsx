@@ -1,9 +1,9 @@
 import React from "react";
-import Login from "./Components/Login/Login";
+import EndPoints from "./Routes/EndPoints"
 function App() {
   return (
     <div className="App">
-      <Login />
+      <EndPoints />
     </div>
   );
 }
