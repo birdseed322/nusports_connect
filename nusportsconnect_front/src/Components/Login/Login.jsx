@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import SignInForm from "./SignInForm";
-import AccountCreationForm from "./AccountCreationForm";
-import PasswordResetForm from "./PasswordResetForm";
+import SignIn from "./SignIn";
+import AccountCreation from "./AccountCreation";
+import PasswordReset from "./PasswordReset";
+import NavDirectory from "../NavBar/NavDirectory";
 
 function Login() {
-
   const [view, setView] = useState("signIn");
 
   const handleClick = (viewState) => {
@@ -12,16 +12,17 @@ function Login() {
   };
 
   return (
-    // <React.Fragment>
     <div>
       {(() => {
         switch (view) {
           case "signIn":
-            return <SignInForm handleClick={handleClick} />;
+            return <SignIn handleClick={handleClick} />;
           case "signUp":
-            return <AccountCreationForm handleClick={handleClick} />;
+            return <AccountCreation handleClick={handleClick} />;
           case "pwReset":
-            return <PasswordResetForm handleClick={handleClick} />;
+            return <PasswordReset handleClick={handleClick} />;
+          case "session":
+            return <NavDirectory />;
           default:
             return null;
         }
