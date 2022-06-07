@@ -1,5 +1,5 @@
 import React from "react";
-import "./navstyles.css";
+import "./navStyles.css";
 import Logo from "../../pics/Logo.png";
 import Notif from "../../pics/Notification.png";
 

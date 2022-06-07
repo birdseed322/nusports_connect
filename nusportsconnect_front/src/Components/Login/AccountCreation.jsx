@@ -1,4 +1,4 @@
-import "./accountcreationstyles.css";
+import "./accountCreationStyles.css";
 import { addUser } from "../../GraphQLQueries/queries";
 import { loginRoute } from "../../Routes/routes";
 import React from "react";

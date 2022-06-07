@@ -1,5 +1,5 @@
 import React from "react";
-import "./passwordresetstyles.css";
+import "./passwordResetStyles.css";
 
 function PasswordResetForm(props) {
   return (
