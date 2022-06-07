@@ -1,11 +1,9 @@
 import React from "react";
-import Login from "./Components/Login/Login";
-import NavDirectory from "./Components/NavBar/NavDirectory";
+import EndPoints from "./Routes/EndPoints"
 function App() {
   return (
     <div className="App">
-      {/* <Login /> */}
-      <NavDirectory />
+      <EndPoints />
     </div>
   );
 }
