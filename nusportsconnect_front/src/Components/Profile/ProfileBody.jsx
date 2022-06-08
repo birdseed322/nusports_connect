@@ -1,5 +1,6 @@
 import React from "react"
 import "./profileBodyStyles.css";
+import ProfileSessionsTab from "./Tabs/ProfileSessionsTab";
 
 function ProfileBody(props){
 
@@ -35,9 +36,7 @@ function ProfileBody(props){
                 <h2 className={reviewsTab}>reviews</h2>
             </div>
             <hr/>
-            <div className="profile-tab-info">
-                sessions
-            </div>
+            <ProfileSessionsTab />
         </div>
     )
 }

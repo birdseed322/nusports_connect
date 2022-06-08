@@ -1,0 +1,94 @@
+.event-pill {
+    background-color: #FDE49C;
+    width: 750px;
+    height: 150px;
+    border-radius: 45px;
+    position: relative;
+    margin: 10px auto;
+}
+
+.event-pill-header {
+    position: absolute;
+    margin: 0;
+    top: 5px;
+    left: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.event-detail-header {
+    position: absolute;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.event-time {
+    top: 60px
+}
+
+.event-location {
+    top: 30px
+}
+
+.event-pax {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 8px;
+    right: 20px;
+    margin: 0;
+}
+
+.event-attendance {
+    font-size: 14pt;
+    font-weight: bold;
+    margin: 0;
+}
+
+.host-btns {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    bottom: 10px;
+    right: 30px;
+}
+
+.event-action-btn {
+    margin: 0 10px;
+    width: 120px;
+    height: 30px;
+    font-size: 12pt;
+    border-width: 0;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.view-event-btn {
+    background-color: #AFAFAF;
+}
+
+.edit-event-btn {
+    background-color: #48B9DC;
+}
+
+.leave-event-btn {
+    background-color: #DC4848;
+}
+
+.pax-icon {
+    height: 30px;
+}
+
+.location-icon {
+    height: 20px;
+    margin: 0 5px;
+}
+
+.time-icon {
+    height: 20px;
+    margin: 0 5px;
+}

@@ -26,7 +26,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //Add dependencies for app to use
-app.use(cors({credentials: true, exposedHeaders:['Authorization']}));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'] }));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json());
@@ -34,7 +34,7 @@ app.use(express.json());
 //Create connection to database. Change to appropriate database URI
 const dbURI = process.env.LOCAL_DB_URI;
 
-mongoose.connect(dbURI, {useNewURLParser: true});
+mongoose.connect(dbURI, { useNewURLParser: true });
 
 const connection = mongoose.connection;
 
@@ -48,45 +48,45 @@ app.listen(port, () => {
 
 //Definining GraphQL object types
 const UserType = new GraphQLObjectType({
-    name : "User",
-    description : "This represents a user",
-    fields : () => ({
-        username : {type : GraphQLNonNull(GraphQLString)},
-        password : {type : GraphQLNonNull(GraphQLString)}
+    name: "User",
+    description: "This represents a user",
+    fields: () => ({
+        username: { type: GraphQLNonNull(GraphQLString) },
+        password: { type: GraphQLNonNull(GraphQLString) }
     })
 });
 
 const LoginResponse = new GraphQLObjectType({
-    name : "LoginResponse",
-    description : "This represents a login response",
-    fields : () => ({
-        accessToken : {type : GraphQLString}
+    name: "LoginResponse",
+    description: "This represents a login response",
+    fields: () => ({
+        accessToken: { type: GraphQLString }
     })
 });
 
 //Root query and Root mutation
 const RootQueryType = new GraphQLObjectType({
-    name : "query",
-    description : "Root query",
-    fields : () => ({
-        user : {
-            type : UserType,
-            description : "An instance of a user",
-            args : {
-                id : {type : GraphQLInt}
+    name: "query",
+    description: "Root query",
+    fields: () => ({
+        user: {
+            type: UserType,
+            description: "An instance of a user",
+            args: {
+                id: { type: GraphQLInt }
             },
-            resolve : (parent, args) => console.log(args.id)
+            resolve: (parent, args) => console.log(args.id)
         },
-        users : {
-            type : GraphQLList(UserType),
-            description : "Retrieve all users",
-            resolve : () => User.find()
+        users: {
+            type: GraphQLList(UserType),
+            description: "Retrieve all users",
+            resolve: () => User.find()
         },
-        testAuth : {
-            type : GraphQLString,
+        testAuth: {
+            type: GraphQLString,
             description: "Test auth",
-            resolve : (_,args,{req, res, user}) => {
-                if (!user){
+            resolve: (_, args, { req, res, user }) => {
+                if (!user) {
                     console.log("Not Logged in");
                     return "Not authenticated";
                 } else {
@@ -94,26 +94,26 @@ const RootQueryType = new GraphQLObjectType({
                     return "Your user ID is : " + user.userId;
                 }
             }
-        } 
+        }
     })
 });
 
 
 const RootMutationType = new GraphQLObjectType({
-    name : "mutation",
-    description : "root mutation",
-    fields : () => ({
-        login : {
-            type : LoginResponse,
-            description : "log a user",
-            args : {
-                username : {type : GraphQLNonNull(GraphQLString)},
-                password : {type : GraphQLNonNull(GraphQLString)}
+    name: "mutation",
+    description: "root mutation",
+    fields: () => ({
+        login: {
+            type: LoginResponse,
+            description: "log a user",
+            args: {
+                username: { type: GraphQLNonNull(GraphQLString) },
+                password: { type: GraphQLNonNull(GraphQLString) }
             },
-            resolve : async (_, args, {req, res}) => {
-                const user = await User.findOne({username : args.username})
+            resolve: async(_, args, { req, res }) => {
+                const user = await User.findOne({ username: args.username })
 
-                if (!user){
+                if (!user) {
                     throw new Error("could not find user")
                 }
 
@@ -123,31 +123,30 @@ const RootMutationType = new GraphQLObjectType({
                     throw new Error("wrong password");
                 }
 
-                res.cookie('jid',createRefreshToken(user),
-                    {httpOnly : true});
+                res.cookie('jid', createRefreshToken(user), { httpOnly: true });
 
                 const accessToken = createAccessToken(user)
-                
+
                 return ({
-                    accessToken : accessToken
+                    accessToken: accessToken
                 });
             }
         },
-        addUser : {
-            type : GraphQLBoolean,
-            description : "add a user",
-            args : {
-                username : {type : GraphQLNonNull(GraphQLString)},
-                password : {type : GraphQLNonNull(GraphQLString)},
-                email: {type : GraphQLNonNull(GraphQLString)}
+        addUser: {
+            type: GraphQLBoolean,
+            description: "add a user",
+            args: {
+                username: { type: GraphQLNonNull(GraphQLString) },
+                password: { type: GraphQLNonNull(GraphQLString) },
+                email: { type: GraphQLNonNull(GraphQLString) }
             },
-            resolve : (_, args) => {
+            resolve: (_, args) => {
                 try {
                     const hashedPasswordWord = hash(args.password, 12).then((pw) => {
                         const newUser = new User({
-                            username : args.username,
-                            password : pw,
-                            email : args.email
+                            username: args.username,
+                            password: pw,
+                            email: args.email
                         });
                         newUser.save();
                     });
@@ -158,11 +157,11 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
-        revokeRefreshTokenForUser : {
-            type : GraphQLBoolean,
-            description : "Invalidate user's refresh token",
-            args : {userId : {type : GraphQLString}},
-            resolve : (_, args) => {
+        revokeRefreshTokenForUser: {
+            type: GraphQLBoolean,
+            description: "Invalidate user's refresh token",
+            args: { userId: { type: GraphQLString } },
+            resolve: (_, args) => {
                 User.findById(args.userId, (err, user) => {
                     user.tokenVersion = user.tokenVersion + 1;
                     user.save();
@@ -175,52 +174,50 @@ const RootMutationType = new GraphQLObjectType({
 })
 
 const graphqlSchema = new GraphQLSchema({
-    query : RootQueryType,
-    mutation : RootMutationType
+    query: RootQueryType,
+    mutation: RootMutationType
 });
 
-app.use('/graphql', 
+app.use('/graphql',
     expressGraphQL((req, res) => {
         return {
-        schema: graphqlSchema,
-        graphiql: {headerEditorEnabled : true},
-        context : {req, res, user:req.user}
-    };})
+            schema: graphqlSchema,
+            graphiql: { headerEditorEnabled: true },
+            context: { req, res, user: req.user }
+        };
+    })
 );
 
 //Route to refresh token
 
-app.post("/refresh_token", async (req, res) => {
+app.post("/refresh_token", async(req, res) => {
     const token = req.cookies.jid;
 
-    if (!token){
-        return res.send({ok: false, accessToken:''});
+    if (!token) {
+        return res.send({ ok: false, accessToken: '' });
     }
 
     let payload = null;
 
-    try{
+    try {
         payload = verify(token, process.env.JWTREFRESHSECRET);
-    } catch (err){
-        console.log(err); 
-        res.send({ok: false, accessToken:''});
+    } catch (err) {
+        console.log(err);
+        res.send({ ok: false, accessToken: '' });
     }
 
-    const user = await User.findOne({id: payload.userId});
+    const user = await User.findOne({ id: payload.userId });
 
-    if(!user){
-        return res.send({ok: false, accessToken:''});
+    if (!user) {
+        return res.send({ ok: false, accessToken: '' });
     }
 
     //Validate to ensure that refresh token is not used by blacklisted member
-    if(user.tokenVersion !==payload.tokenVersion){
-        return res.send({ok: false, accessToken:''})
+    if (user.tokenVersion !== payload.tokenVersion) {
+        return res.send({ ok: false, accessToken: '' });
     }
 
-    res.cookie('jid',createRefreshToken(user),
-    {httpOnly : true});
-    res.send({ok: true, accessToken:createAccessToken(user)});
+    res.cookie('jid', createRefreshToken(user), { httpOnly: true });
+    res.send({ ok: true, accessToken: createAccessToken(user) });
 
 });
-
-

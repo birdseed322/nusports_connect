@@ -1,4 +1,4 @@
-.profile-body{
+.profile-body {
     background-color: #8BE0E5;
     margin: 1% auto;
     width: 75%;
@@ -12,23 +12,34 @@
     border-color: white;
 }
 
-.profile-tabs{
+.profile-tabs {
     display: flex;
-    height: 50px;
+    position: sticky;
+    top: 0;
+    height: 60px;
+    background-color: #8BE0E5;
+    z-index: 100;
 }
 
-.profile-tab-text{
-    flex:1;
+.profile-tab-text {
+    flex: 1;
     margin: auto 100px;
     width: min-content;
     text-align: center;
     position: relative;
-    padding-bottom:2px;
+    padding-bottom: 2px;
 }
 
+.profile-tab-info {
+    height: 550px;
+    overflow: scroll;
+}
+
+
 /* Animation for underlining tab */
+
 .profile-tab::before {
-    border-bottom:2px solid black;
+    border-bottom: 2px solid black;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -40,7 +51,7 @@
 }
 
 .profile-tab:hover::before,
-.profile-tab:focus::before{
+.profile-tab:focus::before {
     visibility: visible;
     width: 100%
 }
@@ -50,9 +61,33 @@ hr {
     border-bottom: 0;
     border-left: 0;
     border-right: 0;
+    position: sticky;
+    top: 60px;
+    z-index: 100;
+    background-color: #8BE0E5;
+    margin: 0;
 }
 
 .highlight {
-    border-bottom:2px solid black;
-    padding-bottom:2px;
+    border-bottom: 2px solid black;
+    padding-bottom: 2px;
+}
+
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+ ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+ ::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

@@ -24,6 +24,9 @@ const NavDirectory = () => {
       component = <Sessions />;
       // component = will be <Profile />;
       break;
+    default:
+      component= <Sessions />;
+      break;
   }
   return (
     <div>
