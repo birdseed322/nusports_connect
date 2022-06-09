@@ -36,7 +36,7 @@ function ProfileBody(props){
                 <h2 className={reviewsTab}>reviews</h2>
             </div>
             <hr/>
-            <ProfileSessionsTab />
+            <ProfileSessionsTab user={props.user} />
         </div>
     )
 }
