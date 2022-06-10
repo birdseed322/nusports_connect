@@ -5,6 +5,7 @@ import personIcon from '../../pics/person.png';
 import HostButtons from './Buttons/HostButtons';
 import ParticipantButtons from './Buttons/ParticipantButtons';
 import './EventPillStyles.css';
+import HistoryButtons from './Buttons/HistoryButtons';
 
 
 function EventPillHost(props){
@@ -26,7 +27,7 @@ function EventPillHost(props){
                 <p className='event-attendance'>{event.eventCurrentPax}/{event.eventMaxPax}</p>
                 <img alt='pax-icon' className='pax-icon' src={personIcon}/>
             </div>
-            {props.host ? <HostButtons /> : <ParticipantButtons/>}
+            {props.history ? <HistoryButtons/> : (props.host ?  <HostButtons /> : <ParticipantButtons/>)}
         </div>
     )
 }

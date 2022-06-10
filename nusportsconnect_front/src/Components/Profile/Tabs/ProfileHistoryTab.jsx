@@ -1,16 +1,16 @@
 import React from 'react';
 import EventPillHost from '../../EventPill/EventPillHost';
 
-function ProfileSessionsTab(props){
+function ProfileHistoryTab(props){
 
     //Dummy code. Ideally will pull a list of events associated w member. Then use map function to create pill for each event.
     const event = {
-        eventName : "Badminton",
-        eventLocation : "UTSH2",
+        eventName : "Basketball",
+        eventLocation : "PGPR Court 2",
         eventStart : "9am",
         eventEnd : "11am",
-        eventCurrentPax : 3,
-        eventMaxPax : 4,
+        eventCurrentPax : 7,
+        eventMaxPax : 8,
         eventHost : "Peter Tan"
     }
 
@@ -19,9 +19,9 @@ function ProfileSessionsTab(props){
 
     return(
         <div className="profile-tab-info">
-            <EventPillHost host={host} event={event}/>
+            <EventPillHost host={host} history={true} event={event}/>
         </div>
     )
 }
 
-export default ProfileSessionsTab;
+export default ProfileHistoryTab;

@@ -3,7 +3,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Login from "../Components/Login/Login";
 import Navbar from "../Components/NavBar/Navbar";
 import Sessions from "../Components/Event/Sessions";
-import PersonalProfile from "../Components/Profile/PersonalProfile";
+import PersonalProfileSession from "../Components/Profile/Sessions/PersonalProfileSession";
 import EventPillHost from "../Components/EventPill/EventPillHost";
 
 function EndPoints(){
@@ -16,7 +16,7 @@ function EndPoints(){
                 <Route exact path="/" element={<Login/>}/>
                 <Route exact path="/navBarTest" element={<Navbar/>}/>
                 <Route exact path="/sessions" element={<Sessions/>}/>
-                <Route exact path="/profile" element={<PersonalProfile/>}/>
+                <Route exact path="/profile" element={<PersonalProfileSession/>}/>
                 <Route exact path="/eventPillHost" element={<EventPillHost/>}/>
             </Routes>
         </BrowserRouter>
