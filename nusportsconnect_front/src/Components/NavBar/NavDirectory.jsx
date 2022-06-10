@@ -1,6 +1,6 @@
 import React from "react";
-import NavBar from "./Navbar";
 import Sessions from "../Event/Sessions";
+import PersonalProfileSession from "../Profile/Sessions/PersonalProfileSession";
 
 const NavDirectory = () => {
   console.log(window.location.pathname);
@@ -21,19 +21,14 @@ const NavDirectory = () => {
       // component = will be <Notifs />; (But most likely will just be a dropdown menu)
       break;
     case "/profile":
-      component = <Sessions />;
+      component = <PersonalProfileSession />;
       // component = will be <Profile />;
       break;
     default:
-      component= <Sessions />;
+      component = <Sessions />;
       break;
   }
-  return (
-    <div>
-      <NavBar />
-      {component}
-    </div>
-  );
+  return <div>{component}</div>;
 };
 
 export default NavDirectory;
