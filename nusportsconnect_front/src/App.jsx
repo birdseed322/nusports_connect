@@ -1,5 +1,5 @@
 import React from "react";
-import EndPoints from "./Routes/EndPoints"
+import EndPoints from "./Routes/EndPoints";
 function App() {
   return (
     <div className="App">
