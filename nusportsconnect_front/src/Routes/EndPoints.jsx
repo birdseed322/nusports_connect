@@ -5,6 +5,9 @@ import Navbar from "../Components/NavBar/Navbar";
 import Sessions from "../Components/Event/Sessions";
 import PersonalProfileSession from "../Components/Profile/Sessions/PersonalProfileSession";
 import EventPillHost from "../Components/EventPill/EventPillHost";
+import PersonalProfileHistory from "../Components/Profile/History/PersonalProfileHistory";
+import PersonalProfileFriends from "../Components/Profile/Friends/PersonalProfileFriends";
+import PersonalProfileReview from "../Components/Profile/Reviews/PersonalProfileReviews";
 
 function EndPoints(){
 
@@ -17,6 +20,9 @@ function EndPoints(){
                 <Route exact path="/navBarTest" element={<Navbar/>}/>
                 <Route exact path="/sessions" element={<Sessions/>}/>
                 <Route exact path="/profile" element={<PersonalProfileSession/>}/>
+                <Route exact path="/profile/history" element={<PersonalProfileHistory/>}/>
+                <Route exact path="/profile/friends" element={<PersonalProfileFriends/>}/>
+                <Route exact path="/profile/reviews" element={<PersonalProfileReview/>}/>
                 <Route exact path="/eventPillHost" element={<EventPillHost/>}/>
             </Routes>
         </BrowserRouter>
