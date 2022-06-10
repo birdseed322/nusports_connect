@@ -32,7 +32,12 @@
 
 .profile-tab-info {
     height: 550px;
-    overflow: scroll;
+    overflow-y: scroll;
+}
+
+.friends-tab {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 

@@ -1,0 +1,52 @@
+.profile-friend-tab-header {
+    height: 70px;
+    position: relative;
+}
+
+.friend-bubble {
+    align-items: center;
+    margin: 25px 60px;
+    text-align: center;
+}
+
+
+.friend-count {
+    text-decoration: underline;
+    width: fit-content;
+    position: absolute;
+    left: 50px;
+}
+
+.search-icon {
+    position: absolute;
+    right: 250px;
+    top: 25px;
+    height: 20px;
+    width: 20px;
+}
+
+.search-input {
+    position: absolute;
+    top: 20px;
+    right: 60px;
+    height: 30px;
+    border-radius: 30px;
+    border-style: hidden;
+    padding: 5px;
+}
+
+.friend-profile-pic {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    margin: 1px auto;
+}
+
+.friend-name {
+    margin: 1px auto;
+    color: black;
+    font-size: 14pt;
+}
