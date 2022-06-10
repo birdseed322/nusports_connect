@@ -1,9 +1,9 @@
 import React from "react"
-import defaultProfilePic from "../../pics/defaultProfilePic.png"
-import star from "../../pics/star.png"
-import edit from "../../pics/editbtn.png"
+import defaultProfilePic from "../../../pics/defaultProfilePic.png"
+import star from "../../../pics/star.png"
+import edit from "../../../pics/editbtn.png"
 
-function ProfileHeader(props){
+function ProfileSessionHeader(props){
     const user = props.user;
 
     return (
@@ -25,4 +25,4 @@ function ProfileHeader(props){
     )
 }
 
-export default ProfileHeader;
+export default ProfileSessionHeader;

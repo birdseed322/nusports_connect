@@ -1,8 +1,8 @@
 import React from "react"
 import "./profileBodyStyles.css";
-import ProfileSessionsTab from "./Tabs/ProfileSessionsTab";
+import ProfileSessionsTab from "./ProfileSessionsTab";
 
-function ProfileBody(props){
+function ProfileSessionBody(props){
 
     var sessionsTab = "profile-tab profile-tab-text"
     var historyTab = "profile-tab profile-tab-text"
@@ -41,4 +41,4 @@ function ProfileBody(props){
     )
 }
 
-export default ProfileBody;
+export default ProfileSessionBody;
