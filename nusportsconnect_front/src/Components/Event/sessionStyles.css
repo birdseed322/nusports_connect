@@ -1,13 +1,21 @@
 * {
     box-sizing: border-box;
-
   }
 
   .sessions-container{
-    width: 100vw;
-    height: 100vh;
     background-image: url("../../pics/Sessions_background.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    background-attachment: fixed;
+  }
+
+  .session {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .date-header {
+        width: 750px;
+        margin: 0 auto;
   }
