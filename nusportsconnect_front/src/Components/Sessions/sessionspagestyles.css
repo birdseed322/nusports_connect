@@ -1,0 +1,209 @@
+.session-page-body {
+    background-image: url('../../pics/sessionpage_bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center; 
+    height: 910px;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.session-left {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+    padding:50px;
+}
+
+.event-header {
+    flex: 1;
+    width: 900px;
+    margin: 0 0 20px 0;
+    padding: 0 40px;
+}
+
+.event-title {
+    display: inline;
+}
+
+.event-host-details {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;    
+}
+
+.event-subtitle {
+    margin: 0 10px 0 0;
+}
+
+.event-host-img {
+    margin: 0 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.event-host-star-icon {
+    display: inline;
+    width: 25px;
+    height: 25px;
+    margin: 0 5px 0 10px;
+}
+
+.event-host-rating {
+    display: inline;
+    font-size: 15pt;
+    margin: 0;
+}
+
+.event-description-box {
+    flex: 2;
+    width: 900px;
+    background-color: #8BE0E5;
+    border-radius: 45px;
+    padding: 5px 40px;
+}
+
+.event-description-header {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.event-minimum-stars {
+    height: 20px;
+    width: 20px;
+}
+
+.chat-box {
+    flex: 5;
+    width: 900px;
+    border-style: solid;
+    border-width: 2px;
+    margin: 20px 0;
+    background-color: #8BE0E5;
+    position: relative;
+}
+
+.chat-input {
+    width: 850px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    border-style: hidden;
+    height: 40px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    resize: none;
+    font-size: 12pt;
+    outline: 0;
+}
+
+.send-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50px;
+    height: 40px;
+}
+
+
+
+.session-right {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+}
+
+.who-going-box {
+    flex: 1;
+    background-color: #8BE0E5;
+    width: 290px;
+    margin: 30px 0;
+    padding: 10px 30px;
+    border-radius: 45px;
+}
+
+.who-going-box-title {
+    font-weight: bold;
+    font-size: 15pt;
+}
+
+
+.participant-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline;
+    margin: 0;
+}
+
+.expand-who-going {
+    display: inline;
+    font-size: 15pt;
+}
+
+.participant-pax-grp {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 30px 0 10px 0;
+}
+
+.participant-pax {
+    display: inline;
+    margin: 0 5px;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.participant-icon {
+    display: inline;
+    height: 30px;
+    width: 30px;
+}
+
+.announcement-box-grp{
+    position: relative;
+    flex: 4;
+    background-color:#8BE0E5;
+    margin: 0 0 30px 0;
+    border-radius: 45px;
+    padding: 10px 40px;
+    width: 550px;
+}
+
+.announcement-box {
+    position: relative;
+    overflow-x:hidden;
+    overflow-y: auto;
+}
+
+.announcement-header {
+    text-decoration: underline;
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+.announcement-input {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 500px;
+    height: 40px;
+    resize: none;
+    overflow-y: auto;
+}
+
+.send-announcement-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50px;
+    height: 40px;
+}
