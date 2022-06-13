@@ -13,6 +13,7 @@
 }
 
 .profile-tabs {
+    padding: 0 px;
     display: flex;
     position: sticky;
     top: 0;

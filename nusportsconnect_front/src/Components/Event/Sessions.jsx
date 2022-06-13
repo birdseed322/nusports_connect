@@ -8,7 +8,7 @@ function Sessions() {
     <div className="sessions-container">
       <Navbar />
       <FilterBar />
-      <div>I am the Events Page</div>
+      <div></div>
     </div>
   );
 }
