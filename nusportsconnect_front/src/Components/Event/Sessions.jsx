@@ -1,13 +1,14 @@
 import React from "react";
 import Navbar from "../NavBar/Navbar";
 import FilterBar from "./FilterBar";
+import "./sessionStyles.css";
 
 function Sessions() {
   return (
-    <div>
+    <div className="sessions-container">
       <Navbar />
       <FilterBar />
-      <h1>I am the Events Page</h1>
+      <div>I am the Events Page</div>
     </div>
   );
 }

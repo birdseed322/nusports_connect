@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+
+  }
+
+  .sessions-container{
+    width: 100vw;
+    height: 100vh;
+    /* border: 2px solid red; */
+    background-image: url("../../pics/Sessions_background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center;      */
+  }
