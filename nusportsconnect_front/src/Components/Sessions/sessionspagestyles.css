@@ -101,6 +101,7 @@
     resize: none;
     font-size: 12pt;
     outline: 0;
+    background-color: #FDE49C;
 }
 
 .send-icon {
@@ -109,6 +110,19 @@
     right: 0;
     width: 50px;
     height: 40px;
+}
+
+.join-btn {
+    flex : 5;
+    margin: 150px 200px 250px 200px;
+    width: 450px;
+    height: 140px;
+    border-radius: 45px;
+    font-size: 20pt;
+    color: white;
+    border-style: hidden;
+    background-color: #3DAD48;
+    font-weight: bold;
 }
 
 
@@ -198,6 +212,7 @@
     height: 40px;
     resize: none;
     overflow-y: auto;
+    background-color: #FDE49C;
 }
 
 .send-announcement-icon {
@@ -206,4 +221,92 @@
     right: 0;
     width: 50px;
     height: 40px;
+}
+
+.friend-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .7);
+    z-index: 1000;
+}
+
+.friend-modal {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px;
+    height: 530px;
+    background-color: white;
+    padding: 50px;
+    z-index: 1000;
+    border-radius: 45px;
+    background-color: #8BE0E5;
+    border-style: solid;
+    border-color: white;
+}
+
+.friend-overlay-title {
+    flex: 1;
+}
+
+.close-friend-overlay-btn{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    border-style: hidden;
+    color: black;
+    text-align: center;
+}
+
+.friend-overlay-participant-list{
+    flex: 7;
+    display: flex;
+    width: 900px;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+}
+
+.participant-bubble {
+    margin: 20px 50px;
+}
+
+.participant-prof-pic {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.participant-details {
+    display: flex;
+    align-items: center;
+}
+
+.participant-name {
+    margin: 0 5px;
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+.participant-rating-star {
+    width: 20px;
+    height: 20px;
+    margin: 0 2px 0 5px;
+}
+
+.participant-rating {
+    font-size: 14pt;
+    font-weight: bold;
+    margin: 0;
 }
