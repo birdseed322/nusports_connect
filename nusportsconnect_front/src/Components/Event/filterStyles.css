@@ -14,12 +14,12 @@
 .filter-item {
   display: flex;
   flex-direction: column;
-  /* border: 2px solid red; */
 }
 
 .filter-input {
   height: 2em;
   width: 200px;
+  cursor: pointer;
 }
 .filter-button {
   background-color: #0C4050;
@@ -27,4 +27,5 @@
   width: 100px;
   height: 40px;
   border-radius: 30px;
+  cursor: pointer;
 }

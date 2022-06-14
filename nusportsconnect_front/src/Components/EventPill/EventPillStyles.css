@@ -69,14 +69,17 @@
 
 .view-event-btn {
     background-color: #AFAFAF;
+    cursor: pointer;
 }
 
 .edit-event-btn {
     background-color: #48B9DC;
+    cursor: pointer;
 }
 
 .leave-event-btn {
     background-color: #DC4848;
+    cursor: pointer;
 }
 
 .pax-icon {

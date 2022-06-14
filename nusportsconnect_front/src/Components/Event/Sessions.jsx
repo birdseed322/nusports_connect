@@ -22,20 +22,26 @@ function Sessions() {
       eventDate: DateTime.local(2022, 2, 21).toLocaleString(),
       eventStart: "9am",
       eventEnd: "11am",
-      eventMembers: ["Wesley Teo", "Ezekiel Ang", "Jeremiah Lim"],
+      eventMembers: ["Wesley Teo", "Ezekiel Ang", "Peter Tan"],
       eventCurrentPax: 3,
-      eventMaxPax: 4,
+      eventMaxPax: 8,
       eventHost: "Peter Tan",
     },
     {
-      eventName: "Badminton",
-      eventLocation: "UTSH2",
+      eventName: "Basketball",
+      eventLocation: "PGPR Basketball court 2",
       eventDate: DateTime.local(2022, 2, 21).toLocaleString(),
-      eventStart: "9am",
-      eventEnd: "11am",
-      eventMembers: ["Wesley Teo", "Ezekiel Ang", "Samuel Tay"],
-      eventCurrentPax: 3,
-      eventMaxPax: 4,
+      eventStart: "3.30pm",
+      eventEnd: "5.30pm",
+      eventMembers: [
+        "Wesley Teo",
+        "Ezekiel Ang",
+        "Peter Tan",
+        "Klay Thompson",
+        "Steph Curry",
+      ],
+      eventCurrentPax: 5,
+      eventMaxPax: 8,
       eventHost: "Peter Tan",
     },
     {
@@ -52,6 +58,7 @@ function Sessions() {
   ];
   // const host = user.name === events.eventHost;
   // const participant = events.eventMembers.includes(user.name);
+  // must use the map function to check
   return (
     <div className="sessions-container">
       <Navbar />

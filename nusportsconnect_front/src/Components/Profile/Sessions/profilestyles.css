@@ -1,0 +1,7 @@
+  .profile-container {
+    background-image: url("../../../pics/Sessions_background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+  }
