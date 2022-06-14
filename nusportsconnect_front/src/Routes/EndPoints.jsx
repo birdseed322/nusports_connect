@@ -20,7 +20,7 @@ function EndPoints(){
                 <Route exact path="/" element={<Login/>}/>
                 <Route exact path="/navBarTest" element={<Navbar/>}/>
                 <Route exact path="/sessions" element={<Sessions/>}/>
-                <Route exact path="/sessions/eventID" element={<SessionsPage />}/>
+                <Route exact path="/sessions/:id" element={<SessionsPage />}/>
                 <Route exact path="/profile" element={<PersonalProfileSession/>}/>
                 <Route exact path="/profile/history" element={<PersonalProfileHistory/>}/>
                 <Route exact path="/profile/friends" element={<PersonalProfileFriends/>}/>
