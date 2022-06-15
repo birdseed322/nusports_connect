@@ -19,7 +19,7 @@ function OtherProfileHistoryTab(props) {
   return (
     <div className="profile-tab-info">
       <EventPillHost
-        host={host}
+        host={event.eventHost}
         history={true}
         event={event}
         participant={participant}

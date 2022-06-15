@@ -22,7 +22,6 @@
   height: 450px;
   border-radius: 20px;
   /* padding: 0; */
-  border: 2px solid red;
   
 }
 
@@ -43,4 +42,9 @@
   margin-top: 0;
   font-size: small;
   color: red;
+}
+
+img {
+  width: 2em;
+  height: 2.5em;
 }
