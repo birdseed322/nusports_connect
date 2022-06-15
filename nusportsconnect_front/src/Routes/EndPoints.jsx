@@ -10,56 +10,41 @@ import PersonalProfileFriends from "../Components/Profile/Friends/PersonalProfil
 import PersonalProfileReview from "../Components/Profile/Reviews/PersonalProfileReviews";
 import SessionsPage from "../Components/Sessions/SessionsPage";
 import CreateSession from "../Components/Sessions/CreateSession";
+import OtherPersonalProfileSession from "../Components/OtherProfile/Sessions/OtherPersonalProfileSession";
 
-<<<<<<< HEAD
 function EndPoints() {
   return (
     <BrowserRouter>
       <Routes>
         {/*Add routes and corresponding components here. To connect route to component, use the element=COMPONENT_NAME. See below*/}
-=======
-function EndPoints(){
-
-    return (
-        <BrowserRouter>
-            <Routes>
-                {/*Add routes and corresponding components here. To connect route to component, use the element=COMPONENT_NAME. See below*/}
-
-                <Route exact path="/" element={<Login/>}/>
-                <Route exact path="/navBarTest" element={<Navbar/>}/>
-                <Route exact path="/sessions" element={<Sessions/>}/>
-                <Route exact path="/sessions/:id" element={<SessionsPage />}/>
-                <Route exact path="/profile" element={<PersonalProfileSession/>}/>
-                <Route exact path="/profile/history" element={<PersonalProfileHistory/>}/>
-                <Route exact path="/profile/friends" element={<PersonalProfileFriends/>}/>
-                <Route exact path="/profile/reviews" element={<PersonalProfileReview/>}/>
-                <Route exact path="/eventPillHost" element={<EventPillHost/>}/>
-            </Routes>
-        </BrowserRouter>
-    )
->>>>>>> 8e410d76c6891a8efd48d00613ec5ceb9115b212
 
         <Route exact path="/" element={<Login />} />
         <Route exact path="/navBarTest" element={<Navbar />} />
         <Route exact path="/sessions" element={<Sessions />} />
         <Route exact path="/sessions/eventID" element={<SessionsPage />} />
         <Route exact path="/createsession" element={<CreateSession />} />
-        <Route exact path="/profile" element={<PersonalProfileSession />} />
+        <Route exact path="/:id" element={<PersonalProfileSession />} />
         <Route
           exact
-          path="/profile/history"
+          path="/:id/history"
           element={<PersonalProfileHistory />}
         />
         <Route
           exact
-          path="/profile/friends"
+          path="/:id/friends"
           element={<PersonalProfileFriends />}
         />
         <Route
           exact
-          path="/profile/reviews"
+          path="/:id/reviews"
           element={<PersonalProfileReview />}
         />
+        <Route
+          exact
+          path="/otherprofile"
+          element={<OtherPersonalProfileSession />}
+        />
+        
         <Route exact path="/eventPillHost" element={<EventPillHost />} />
       </Routes>
     </BrowserRouter>

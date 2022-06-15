@@ -20,7 +20,7 @@ function PersonalProfileHistory(){
     return(
         <div>
         <Navbar/>
-        <ProfileSessionHeader user = {user}/>
+        <ProfileSessionHeader user = {user} owner={true}/>
         <ProfileHistoryBody user = {user}/>
         </div>
     )

@@ -21,7 +21,7 @@ function PersonalProfileFriends(){
     return(
         <div>
         <Navbar/>
-        <ProfileSessionHeader user = {user}/>
+        <ProfileSessionHeader user = {user} owner={true}/>
         <ProfileFriendsBody user = {user}/>
         </div>
     )
