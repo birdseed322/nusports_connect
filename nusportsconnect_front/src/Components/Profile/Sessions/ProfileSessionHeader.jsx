@@ -5,6 +5,12 @@ import edit from "../../../pics/editbtn.png"
 
 function ProfileSessionHeader(props){
     const user = props.user;
+    //Owner of account
+    const owner = props.owner;
+    //Request sent
+    const pending = props.pending;
+    //Friend
+    const friend = props.friend
 
     return (
         <div className="profile-header">
@@ -20,7 +26,8 @@ function ProfileSessionHeader(props){
                 <img alt="star" src={star} className="star"/>
                 <h1 className="profile-rating-score">{user.rating}/5</h1>
             </div>
-            <img src={edit} alt="edit button" className="edit-btn"/>
+            {owner ? <img src={edit} alt="edit button" className="edit-btn"/> : null}
+            {owner ? null : friend ? <img alt='friend icon' src='' className="friended-icon" /> : pending ? <button className="friend-btn pending">pending</button> : <button className="friend-btn">+ add friend</button>}
         </div>
     )
 }

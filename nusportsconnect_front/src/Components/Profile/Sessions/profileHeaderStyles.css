@@ -60,3 +60,21 @@ body{
     height: 30px;
     width: 30px;
 }
+
+.friend-btn {
+    border-style: hidden;
+    border-radius: 45px;
+    background-color: #3DAD49;
+    color: white;
+    font-weight: bold;
+    font-size: 13pt;
+    width: 130px;
+    height: 40px;
+    position: absolute;
+    bottom: 30px;
+    right: 70px;
+    text-align: center;
+}
+.pending {
+    background-color: #808080;
+}

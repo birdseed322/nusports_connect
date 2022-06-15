@@ -20,7 +20,7 @@ function PersonalProfileReview(){
     return(
         <div>
         <Navbar/>
-        <ProfileSessionHeader user = {user}/>
+        <ProfileSessionHeader user = {user} owner={true}/>
         <ProfileReviewsBody user = {user}/>
         </div>
     )

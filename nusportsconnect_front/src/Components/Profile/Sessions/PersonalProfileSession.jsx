@@ -1,5 +1,4 @@
 import React from "react";
-// import "./profileHeaderStyles.css";
 import "./profileStyles.css";
 import Navbar from "../../NavBar/Navbar";
 import ProfileSessionBody from "./ProfileSessionBody";
@@ -20,7 +19,7 @@ function PersonalProfileSession() {
   return (
     <div className="profile-container">
       <Navbar />
-      <ProfileSessionHeader user={user} />
+      <ProfileSessionHeader user={user} owner={true} />
       <ProfileSessionBody user={user} />
     </div>
   );
