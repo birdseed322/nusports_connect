@@ -2,9 +2,9 @@ import React from "react";
 import "../../Profile/Sessions/profileStyles.css";
 import Navbar from "../../NavBar/Navbar";
 import ProfileSessionHeader from "../../Profile/Sessions/ProfileSessionHeader";
-import OtherProfileSessionBody from "./OtherProfileSessionBody";
+import OtherProfileHistoryBody from "./OtherProfileHistoryBody";
 
-function OtherPersonalProfileSession() {
+function OtherPersonalProfileHistory() {
   //Dummy code to simulate drawing information of user from database. Should ideally be done in useEffect statement, so info loaded before rendering.
   const user = {
     name : "Sum Wong Als",
@@ -22,9 +22,9 @@ function OtherPersonalProfileSession() {
     <div className="profile-container">
       <Navbar />
       <ProfileSessionHeader user={user} owner={false} friend={friend}/>
-      <OtherProfileSessionBody user={user} friend={friend}/>
+      <OtherProfileHistoryBody user={user} friend={friend}/>
     </div>
   );
 }
 
-export default OtherPersonalProfileSession;
+export default OtherPersonalProfileHistory;

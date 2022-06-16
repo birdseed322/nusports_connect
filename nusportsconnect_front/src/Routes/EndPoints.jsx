@@ -3,14 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../Components/Login/Login";
 import Navbar from "../Components/NavBar/Navbar";
 import Sessions from "../Components/Event/Sessions";
-import PersonalProfileSession from "../Components/Profile/Sessions/PersonalProfileSession";
 import EventPillHost from "../Components/EventPill/EventPillHost";
-import PersonalProfileHistory from "../Components/Profile/History/PersonalProfileHistory";
-import PersonalProfileFriends from "../Components/Profile/Friends/PersonalProfileFriends";
-import PersonalProfileReview from "../Components/Profile/Reviews/PersonalProfileReviews";
 import SessionsPage from "../Components/Sessions/SessionsPage";
 import CreateSession from "../Components/Sessions/CreateSession";
-import OtherPersonalProfileSession from "../Components/OtherProfile/Sessions/OtherPersonalProfileSession";
+import ProfileSessionLanding from "../Components/Profile/ProfileSessionLanding";
+import ProfileHistoryLanding from "../Components/Profile/ProfileHistoryLanding";
+import ProfileFriendsLanding from "../Components/Profile/ProfileFriendsLanding";
+import ProfileReviewsLanding from "../Components/Profile/ProfileReviewsLanding";
 
 function EndPoints() {
   return (
@@ -23,26 +22,21 @@ function EndPoints() {
         <Route exact path="/sessions" element={<Sessions />} />
         <Route exact path="/sessions/eventID" element={<SessionsPage />} />
         <Route exact path="/createsession" element={<CreateSession />} />
-        <Route exact path="/:id" element={<PersonalProfileSession />} />
+        <Route exact path="/:id" element={<ProfileSessionLanding />} />
         <Route
           exact
           path="/:id/history"
-          element={<PersonalProfileHistory />}
+          element={<ProfileHistoryLanding />}
         />
         <Route
           exact
           path="/:id/friends"
-          element={<PersonalProfileFriends />}
+          element={<ProfileFriendsLanding />}
         />
         <Route
           exact
           path="/:id/reviews"
-          element={<PersonalProfileReview />}
-        />
-        <Route
-          exact
-          path="/otherprofile"
-          element={<OtherPersonalProfileSession />}
+          element={<ProfileReviewsLanding />}
         />
         
         <Route exact path="/eventPillHost" element={<EventPillHost />} />
