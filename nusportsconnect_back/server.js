@@ -26,7 +26,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //Add dependencies for app to use
-app.use(cors({ credentials: true, exposedHeaders: ['Authorization'] }));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin : "http://localhost:3000"}));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json());
@@ -138,7 +138,9 @@ const RootMutationType = new GraphQLObjectType({
             args: {
                 username: { type: GraphQLNonNull(GraphQLString) },
                 password: { type: GraphQLNonNull(GraphQLString) },
-                email: { type: GraphQLNonNull(GraphQLString) }
+                email: { type: GraphQLNonNull(GraphQLString) },
+                fName : { type : GraphQLNonNull(GraphQLString)},
+                lName : { type : GraphQLNonNull(GraphQLString)}
             },
             resolve: (_, args) => {
                 try {
@@ -146,7 +148,9 @@ const RootMutationType = new GraphQLObjectType({
                         const newUser = new User({
                             username: args.username,
                             password: pw,
-                            email: args.email
+                            email: args.email,
+                            fName : args.fName,
+                            lName : args.lName
                         });
                         newUser.save();
                     });

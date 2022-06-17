@@ -5,12 +5,14 @@ import React from "react";
 
 function AccountCreationForm(props) {
   const [email, setEmail] = React.useState("");
+  const [fName, setFName] = React.useState("");
+  const [lName, setLName] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
-    const status = addUser(username, password, email);
+    const status = addUser(username, password, email, fName, lName);
     if (status === 200) {
       window.location.href = loginRoute;
     } else {
@@ -21,6 +23,16 @@ function AccountCreationForm(props) {
   function handleEmailChange(e) {
     const updatedEmail = e.target.value;
     setEmail(updatedEmail);
+  }
+
+  function handleFNameChange(e){
+    const updatedFName = e.target.value;
+    setFName(updatedFName);
+  }
+
+  function handleLNameChange(e){
+    const updatedLName = e.target.value;
+    setLName(updatedLName);
   }
 
   function handleUsernameChange(e) {
@@ -49,6 +61,26 @@ function AccountCreationForm(props) {
               required
             />
             <br />
+            <div className="name-inputs">
+              <input
+                className="name-input"
+                type="text"
+                placeholder="First Name"
+                name="fName"
+                value={fName}
+                onChange={handleFNameChange}
+                required
+              />
+              <input
+                className="name-input"
+                type="text"
+                placeholder="Last Name"
+                name="lName"
+                value={lName}
+                onChange={handleLNameChange}
+                required
+              />
+            </div>
             <input
               className="sign-input"
               type="text"

@@ -8,6 +8,7 @@ import ProfileSessionHeader from "./ProfileSessionHeader";
 
 function PersonalProfileSession() {
   //Dummy code to simulate drawing information of user from database. Should ideally be done in useEffect statement, so info loaded before rendering.
+
   const user = {
     name: "Samuel Tay",
     email: "someemail@gmail.com",

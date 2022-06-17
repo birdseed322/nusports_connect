@@ -5,7 +5,9 @@ const userSchema = new Schema({
     username : { type : String, required : true},
     password : {type : String, required : true},
     email : {type : String, required : true},
-    tokenVersion : {type : Number, default : 0}
+    tokenVersion : {type : Number, default : 0},
+    fName : {type: String, required : true},
+    lName : {type : String, required : true}
 }, {
     timestamps : true
 })

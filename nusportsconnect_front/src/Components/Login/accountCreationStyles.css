@@ -18,7 +18,7 @@
 .center {
   width: fit-content;
   height: fit-content;
-  margin: auto;
+  text-align: center;
 }
 
 .create-form-box {
@@ -56,6 +56,23 @@
   margin: auto;
   text-align: center;
 }
+
+.name-inputs {
+  display:flex;
+  margin: 10px auto 10px auto;
+  width: 300px;
+}
+
+.name-input {
+  margin: 0 5px;
+  padding: 7px;
+  height: 30px;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 1px 1px  #888888;
+  font-family: 'Average Sans', sans-serif;
+}
+
 
 .sign-login-btn {
   margin: 20px auto;
