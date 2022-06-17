@@ -4,8 +4,12 @@ import Navbar from "../../NavBar/Navbar";
 import ProfileSessionHeader from "../../Profile/Sessions/ProfileSessionHeader";
 import OtherProfileSessionBody from "./OtherProfileSessionBody";
 
-function OtherPersonalProfileSession() {
+function OtherPersonalProfileSession(props) {
   //Dummy code to simulate drawing information of user from database. Should ideally be done in useEffect statement, so info loaded before rendering.
+  
+  const testUser = props.user
+  console.log(testUser)
+  
   const user = {
     name : "Sum Wong Als",
     email : "someemail@gmail.com",

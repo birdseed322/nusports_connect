@@ -7,17 +7,17 @@ import PersonalProfileFriends from './Friends/PersonalProfileFriends';
 
 function ProfileFriendsLanding(){
 
-    const {id} = useParams();
-    const user = {
-      name: "Samuel Tay",
-      username : "samuel.tay",
-      email: "someemail@gmail.com",
-      rating: 4.6,
-      creationDate: "20/02/22",
-      sportingInterests: ["Tennis", "Ultimate Frisbee"],
-    };
+  const {id} = useParams();
+  const user = {
+    name: "Samuel Tay",
+    username : "samuel.tay",
+    email: "someemail@gmail.com",
+    rating: 4.6,
+    creationDate: "20/02/22",
+    sportingInterests: ["Tennis", "Ultimate Frisbee"],
+  };
 
-    return id === user.username ? <PersonalProfileFriends/> : <OtherPersonalProfileFriends />
+  return id === user.username ? <PersonalProfileFriends/> : <OtherPersonalProfileFriends />
 
 }
 
