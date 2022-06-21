@@ -11,18 +11,17 @@
   background-attachment: fixed;
   display: flex;
   justify-content: center;
-  align-items: center;
-  /* padding: 20px auto; */
-  /* border: 10px solid green; */
 }
 
 .create-panel {
   background-color: #8BE0E5;
   width: 75%;
-  height: 450px;
+  height: 82%;
   border-radius: 20px;
-  /* padding: 0; */
-  
+  margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .create-header {
@@ -33,18 +32,68 @@
 
 .create-title {
   display: block;
-  margin-top: 10px;
-  margin-bottom: 0;
+  margin: 0 auto;
+  font-size: 24px;
 }
 
 .create-warning {
   display: block;
-  margin-top: 0;
   font-size: small;
   color: red;
 }
 
-img {
+
+.create-form {
+  display: flex;
+  height: inherit;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0;
+}
+
+.input-icon {
   width: 2em;
-  height: 2.5em;
+  height: 2em;
+}
+
+.create-item {
+  margin: 1vh;
+}
+.create-input {
+  height: 4vh;
+  width: 20vw;
+  border-radius: 2em;
+  cursor: text;
+  margin: .5vh;
+  font-size: 16px;
+  border: none;
+}
+
+.create-input.create-sport {
+  cursor: pointer;
+}
+
+.create-input.create-description {
+  height: 23vw;
+  width: 40vw;
+}
+
+.create-button {
+  
+  width: 100px;
+  background-color: #3DAD49;
+  color: white;
+  padding: .8em;
+  font-size: 20px;
+  border: none;
+  border-radius: 12px;
+  transition: 5ms ease-in;
+  cursor: pointer;
+}
+
+.create-button:hover {
+  background-color: #328f3b;
 }

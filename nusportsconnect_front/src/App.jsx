@@ -13,10 +13,11 @@ function App() {
           setLoading(false)
       })
   }, [])
-
+  
   if(loading){
     return <Loading />
   }
+    
   return (
     <div className="App">
       <EndPoints />
