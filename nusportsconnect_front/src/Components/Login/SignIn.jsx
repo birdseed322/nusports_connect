@@ -1,22 +1,30 @@
 import "./signInStyles.css";
 import React from "react";
 import { loginUser } from "../../GraphQLQueries/queries";
-import { getAccessToken, setAccessToken } from "../../accessToken";
+import { setAccessToken } from "../../accessToken";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 function SignInForm(props) {
 
   const [username, setUsername] = React.useState("");
   const [password, setPassoword] = React.useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    let response = await loginUser(username, password);
-    if (response.status === 200 && (response.data.data.login)){
-      setAccessToken(response.data.data.login.accessToken)
-      console.log(getAccessToken())
-      window.location.href = "/profile"
-    } else {
-      console.log("Not okay. Render prompt here")
+    try {
+      let response = await loginUser(username, password);
+      if (response.status === 200 && (response.data.data.login)){
+        const jwt = response.data.data.login.accessToken;
+        setAccessToken(jwt)
+        const username = jwt_decode(jwt).username
+        navigate("/" + username)
+      } else {
+        console.log("Not okay. Render prompt here")
+      }
+    } catch (err) {
+      console.log(err)
     }
   } 
 

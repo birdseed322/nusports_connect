@@ -17,6 +17,7 @@ const cors = require('cors');
 const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth');
 const cookieParser = require('cookie-parser');
 const { verify } = require('jsonwebtoken');
+var getAccountCreationDate = require('./helperFunctions');
 
 require('dotenv').config();
 
@@ -52,7 +53,10 @@ const UserType = new GraphQLObjectType({
     description: "This represents a user",
     fields: () => ({
         username: { type: GraphQLNonNull(GraphQLString) },
-        password: { type: GraphQLNonNull(GraphQLString) }
+        email : {type : GraphQLNonNull(GraphQLString)},
+        fName : {type : GraphQLNonNull(GraphQLString)},
+        lName : {type : GraphQLNonNull(GraphQLString)},
+        accountCreationDate : {type : GraphQLString}
     })
 });
 
@@ -80,7 +84,37 @@ const RootQueryType = new GraphQLObjectType({
         users: {
             type: GraphQLList(UserType),
             description: "Retrieve all users",
-            resolve: () => User.find()
+            resolve: async () => {
+                let users = await User.find().exec()
+                users.map((user) => {
+                    const cDate = getAccountCreationDate(user.createdAt);
+                    user.accountCreationDate = cDate;
+                })
+                return users
+            }
+        },
+        userProfileInfo: {
+            type: UserType,
+            description : "Retrieve a user profile information",
+            args : {
+                username : {type: GraphQLString}
+            },
+            resolve: async (parent, args, {req, res, user}) => {
+                if (!user){
+                    throw Error("Not authenticated");
+                }
+
+                let result = await User.findOne({username : args.username}).exec()
+                const cDate = result.createdAt;
+                const accountCreationDate= getAccountCreationDate(cDate)
+                return {
+                    username : result.username,
+                    email : result.email,
+                    fName : result.fName,
+                    lName : result.lName,
+                    accountCreationDate
+                };
+            }
         },
         testAuth: {
             type: GraphQLString,
@@ -93,6 +127,16 @@ const RootQueryType = new GraphQLObjectType({
                     console.log("Logged in");
                     return "Your user ID is : " + user.userId;
                 }
+            }
+        },
+        checkProfileOwner : {
+            type : GraphQLBoolean,
+            description : "Check if request is made by profile owner",
+            args : {
+                username : {type : GraphQLString}
+            },
+            resolve: (parent, args, {req, res, user}) => {
+                return (user.username === args.username)
             }
         }
     })
@@ -130,6 +174,13 @@ const RootMutationType = new GraphQLObjectType({
                 return ({
                     accessToken: accessToken
                 });
+            }
+        },
+        logout : {
+            type : GraphQLBoolean,
+            resolve : (_, args, {req, res}) => {
+                res.cookie('jid', "", { httpOnly: true });
+                return true;
             }
         },
         addUser: {
@@ -194,7 +245,7 @@ app.use('/graphql',
 
 //Route to refresh token
 
-app.post("/refresh_token", async(req, res) => {
+app.post("/refresh_token", async (req, res) => {
     const token = req.cookies.jid;
 
     if (!token) {
@@ -210,7 +261,7 @@ app.post("/refresh_token", async(req, res) => {
         res.send({ ok: false, accessToken: '' });
     }
 
-    const user = await User.findOne({ id: payload.userId });
+    const user = await User.findById(payload.userId);
 
     if (!user) {
         return res.send({ ok: false, accessToken: '' });
@@ -220,7 +271,6 @@ app.post("/refresh_token", async(req, res) => {
     if (user.tokenVersion !== payload.tokenVersion) {
         return res.send({ ok: false, accessToken: '' });
     }
-
     res.cookie('jid', createRefreshToken(user), { httpOnly: true });
     res.send({ ok: true, accessToken: createAccessToken(user) });
 

@@ -1,0 +1,26 @@
+.body {
+    margin: 0;
+}
+
+.not-authenticated {
+    background-image: url('../../pics/Not_Authenticated_bg.png');
+    background-size:auto;
+    background-repeat: no-repeat;
+    margin: 0;
+    width: 1920px;
+    height: 969px;
+    position: relative;
+}
+
+
+.error-header {
+    position: absolute;
+    bottom: 520px;
+    left: 1000px;
+}
+
+.error-body {
+    position: absolute;
+    bottom: 500px;
+    left: 1000px;
+}

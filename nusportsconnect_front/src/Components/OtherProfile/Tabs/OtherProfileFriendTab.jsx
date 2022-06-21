@@ -11,7 +11,7 @@ function OtherProfileFriendsTab(props){
     return(
         <div className="profile-tab-info">
             <div className='profile-friend-tab-header'>
-                <h2 className='friend-count'>{props.user.friendCount} Friends</h2>
+                <h2 className='friend-count'>18 Friends</h2>
             </div>
             <div className='friends-tab'>
                 <FriendBubble friend={friend} />

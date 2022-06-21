@@ -6,17 +6,10 @@ import ProfileFriendsBody from "./ProfileFriendsBody";
 
 //Assume loads to profile sessions by default
 
-function PersonalProfileFriends(){
+function PersonalProfileFriends(props){
 
     //Dummy code to simulate drawing information of user from database. Should ideally be done in useEffect statement, so info loaded before rendering.
-    const user = {
-        name : "Samuel Tay",
-        email : "someemail@gmail.com",
-        rating : 4.6,
-        creationDate : "20/02/22",
-        sportingInterests : ["Tennis", "Ultimate Frisbee"],
-        friendCount : 18
-    } 
+    const user = props.user
 
     return(
         <div>

@@ -6,20 +6,14 @@ import ProfileSessionHeader from "./ProfileSessionHeader";
 
 //Assume loads to profile sessions by default
 
-function PersonalProfileSession() {
+function PersonalProfileSession(props) {
   //Dummy code to simulate drawing information of user from database. Should ideally be done in useEffect statement, so info loaded before rendering.
 
-  const user = {
-    name: "Samuel Tay",
-    email: "someemail@gmail.com",
-    rating: 4.6,
-    creationDate: "20/02/22",
-    sportingInterests: ["Tennis", "Ultimate Frisbee"],
-  };
+  const user = props.user;
 
   return (
     <div className="profile-container">
-      <Navbar />
+      <Navbar />  
       <ProfileSessionHeader user={user} owner={true} />
       <ProfileSessionBody user={user} />
     </div>

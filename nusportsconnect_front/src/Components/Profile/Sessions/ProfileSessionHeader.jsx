@@ -2,8 +2,12 @@ import React from "react"
 import defaultProfilePic from "../../../pics/defaultProfilePic.png"
 import star from "../../../pics/star.png"
 import edit from "../../../pics/editbtn.png"
+import { logout } from "../../../GraphQLQueries/queries";
+import { useNavigate } from "react-router-dom";
+import { setAccessToken } from "../../../accessToken";
 
 function ProfileSessionHeader(props){
+    const navigate = useNavigate()
     const user = props.user;
     //Owner of account
     const owner = props.owner;
@@ -17,17 +21,22 @@ function ProfileSessionHeader(props){
             <img className="profile-picture" alt="profile" src={defaultProfilePic}/>
 
             <div className="profile-details">
-                <h1 className="profile-name">{user.name}</h1>
+                <h1 className="profile-name">{user.fName + " " + user.lName}</h1>
                 <p className="profile-info">{user.email}</p>
-                <p className="profile-info">Playing since: {user.creationDate}</p>
-                <p className="profile-info">Interested in: {user.sportingInterests.join(', ')}</p>
+                <p className="profile-info">Playing since: {user.accountCreationDate}</p>
+                <p className="profile-info">Interested in: {["Tennis", "Basketball"].join(', ')}</p>
             </div>
             <div className="profile-rating">
                 <img alt="star" src={star} className="star"/>
-                <h1 className="profile-rating-score">{user.rating}/5</h1>
+                <h1 className="profile-rating-score">5/5</h1>
             </div>
             {owner ? <img src={edit} alt="edit button" className="edit-btn"/> : null}
             {owner ? null : friend ? <img alt='friend icon' src='' className="friended-icon" /> : pending ? <button className="friend-btn pending">pending</button> : <button className="friend-btn">+ add friend</button>}
+            <button onClick={async () => {
+                await logout()
+                setAccessToken("")
+                navigate("/")
+                }}>logout</button>
         </div>
     )
 }
