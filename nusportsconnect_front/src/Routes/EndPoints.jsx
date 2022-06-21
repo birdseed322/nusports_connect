@@ -10,6 +10,7 @@ import ProfileSessionLanding from "../Components/Profile/ProfileSessionLanding";
 import ProfileHistoryLanding from "../Components/Profile/ProfileHistoryLanding";
 import ProfileFriendsLanding from "../Components/Profile/ProfileFriendsLanding";
 import ProfileReviewsLanding from "../Components/Profile/ProfileReviewsLanding";
+import { Loading } from "../Components/Loading/Loading";
 
 function EndPoints() {
   return (
@@ -19,10 +20,11 @@ function EndPoints() {
 
         <Route exact path="/" element={<Login />} />
         <Route exact path="/navBarTest" element={<Navbar />} />
+        <Route exact path="/loading" element={<Loading />} />
         <Route exact path="/sessions" element={<Sessions />} />
         <Route exact path="/sessions/eventID" element={<SessionsPage />} />
         <Route exact path="/createsession" element={<CreateSession />} />
-        <Route exact path="/:id" element={<ProfileSessionLanding />} />
+        <Route exact path="/:id" element={<ProfileSessionLanding />}/>
         <Route
           exact
           path="/:id/history"
