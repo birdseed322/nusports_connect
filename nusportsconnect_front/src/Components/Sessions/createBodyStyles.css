@@ -44,7 +44,6 @@
 
 
 .create-form {
-  display: flex;
   height: inherit;
   width: 90%;
   display: flex;
@@ -57,19 +56,29 @@
 .input-icon {
   width: 2em;
   height: 2em;
+  display: inline;
 }
 
 .create-item {
-  margin: 1vh;
+  margin: .5vh;
 }
+
+.create-item.create-date {
+  display: flex;
+}
+
+
 .create-input {
-  height: 4vh;
+  display: inline;
+  height: 5vh;
   width: 20vw;
   border-radius: 2em;
   cursor: text;
   margin: .5vh;
   font-size: 16px;
   border: none;
+  padding-left: 1.5vw;
+  padding-top: 0;
 }
 
 .create-input.create-sport {
@@ -77,12 +86,15 @@
 }
 
 .create-input.create-description {
-  height: 23vw;
+  height: 50vh;
   width: 40vw;
+  font-family: arial;
+  font-size: 18px;
+  padding: 2%;
 }
 
+
 .create-button {
-  
   width: 100px;
   background-color: #3DAD49;
   color: white;

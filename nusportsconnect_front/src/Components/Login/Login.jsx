@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import SignIn from "./SignIn";
 import AccountCreation from "./AccountCreation";
 import PasswordReset from "./PasswordReset";
-// import NavDirectory from "../NavBar/NavDirectory";
 import Sessions from "../Event/Sessions";
 
 function Login() {

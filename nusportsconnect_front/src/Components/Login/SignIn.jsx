@@ -6,27 +6,26 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 function SignInForm(props) {
-
   const [username, setUsername] = React.useState("");
-  const [password, setPassoword] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       let response = await loginUser(username, password);
-      if (response.status === 200 && (response.data.data.login)){
+      if (response.status === 200 && response.data.data.login) {
         const jwt = response.data.data.login.accessToken;
-        setAccessToken(jwt)
-        const username = jwt_decode(jwt).username
-        navigate("/" + username)
+        setAccessToken(jwt);
+        const username = jwt_decode(jwt).username;
+        navigate("/" + username);
       } else {
-        console.log("Not okay. Render prompt here")
+        console.log("Not okay. Render prompt here");
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  } 
+  }
 
   return (
     <div className="container">
@@ -51,7 +50,7 @@ function SignInForm(props) {
               placeholder="Password"
               name="password"
               value={password}
-              onChange={(e) => setPassoword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <a
@@ -64,10 +63,7 @@ function SignInForm(props) {
           </div>
 
           <div className="sign-e">
-            <button
-              className="sign-login-btn"
-              type="submit"
-            >
+            <button className="sign-login-btn" type="submit">
               Login
             </button>
           </div>

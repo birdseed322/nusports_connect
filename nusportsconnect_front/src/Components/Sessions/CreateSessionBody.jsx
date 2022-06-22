@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "./createBodyStyles.css";
 import sport from "../../pics/sport-icon.png";
 import location from "../../pics/location-dot-solid.png";
 import participant from "../../pics/person.png";
 import star from "../../pics/star.png";
-import frame from "../../pics/frame.png";
-import clock from "../../pics/clock-solid.png";
-import time from "../../pics/time.png";
+import date from "../../pics/frame.png";
+import start from "../../pics/start.png";
+import end from "../../pics/end.png";
 
 function CreateSessionBody() {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   return (
     <div className="create-container">
       <div className="create-panel">
@@ -52,25 +57,55 @@ function CreateSessionBody() {
             />
           </div>
 
-          <div className="create-item">
+          <div className="create-item create-date">
             <label htmlFor="date">
-              <img className="input-icon" src={frame} alt="" />
+              <img className="input-icon" src={date} alt="" />
             </label>
-            <input className="create-input" type="date" id="date" required />
+            <DatePicker
+              className="create-input"
+              placeholderText="Date"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              minDate={new Date()}
+              dateFormat="dd/MM/yyyy"
+              required
+            ></DatePicker>
           </div>
 
-          <div className="create-item">
-            <label htmlFor="start">
-              <img className="input-icon" src={clock} alt="" />
+          <div className="create-item create-date">
+            <label htmlFor="date">
+              <img className="input-icon" src={start} alt="" />
             </label>
-            <input className="create-input" type="time" id="start" required />
+            <DatePicker
+              className="create-input"
+              placeholderText="Start Time"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              minDate={startDate}
+              maxDate={startDate}
+              dateFormat="HH:mm"
+              showTimeSelect
+              timeIntervals={15}
+              required
+            ></DatePicker>
           </div>
 
-          <div className="create-item">
-            <label htmlFor="time">
-              <img className="input-icon" src={time} alt="" />
+          <div className="create-item create-date">
+            <label htmlFor="date">
+              <img className="input-icon" src={end} alt="" />
             </label>
-            <input className="create-input" type="time" id="time" required />
+            <DatePicker
+              className="create-input"
+              placeholderText="End Time"
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              minDate={startDate}
+              maxDate={startDate}
+              dateFormat="HH:mm"
+              showTimeSelect
+              timeIntervals={15}
+              required
+            ></DatePicker>
           </div>
 
           <div className="create-item">
@@ -106,13 +141,14 @@ function CreateSessionBody() {
 
           <div className="create-item">
             <label htmlFor="description"></label>
-            <input
+            <textarea
               className="create-input create-description"
-              type="text"
-              placeholder="Write a Description"
               id="description"
+              placeholder="Write a Description"
+              cols="20"
+              rows="10"
               required
-            />
+            ></textarea>
           </div>
 
           <button className="create-button">create</button>
