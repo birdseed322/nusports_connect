@@ -59,6 +59,15 @@ export async function loginUser(username, password) {
     return result;
 }
 
+export function getUserIdentity(){
+    const query = `
+    query{
+        userIdentity
+      }
+    `
+    return postQuery(query);
+}
+
 export function logout(){
     const query = `
     mutation{
@@ -97,6 +106,24 @@ export function checkProfileOwner(username){
     const query = `
     query{
         checkProfileOwner(username:"${username}")
+      }
+    `
+    return postQuery(query);
+}
+
+export function createSession(sport, location, description, startDate, endDate, maxParticipant, minStar, host){
+    const query = `
+    mutation {
+        createSession(sport:"${sport}" location:"${location}" description:"${description}" startTime:"${startDate}" endTime:"${endDate}" maxParticipant:${maxParticipant} minStar:${minStar} host:"${host}" participants:[])
+      }
+    `
+    return postQuery(query);
+}
+
+export function joinSession(userId, sessionId){
+    const query = `
+    mutation {
+        joinSession(userId:"${userId}" sessionId:"${sessionId}")
       }
     `
     return postQuery(query);

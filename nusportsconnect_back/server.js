@@ -6,7 +6,10 @@ const {
     GraphQLInt,
     GraphQLNonNull,
     GraphQLBoolean,
-    defaultFieldResolver
+    defaultFieldResolver,
+    GraphQLScalarType,
+    Kind,
+    graphql
 } = require('graphql');
 const express = require('express');
 const expressGraphQL = require('express-graphql').graphqlHTTP;
@@ -18,6 +21,8 @@ const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth')
 const cookieParser = require('cookie-parser');
 const { verify } = require('jsonwebtoken');
 var getAccountCreationDate = require('./helperFunctions');
+const Session = require('./models/Session');
+const { ObjectId } = require('mongodb');
 
 require('dotenv').config();
 
@@ -68,6 +73,27 @@ const LoginResponse = new GraphQLObjectType({
     })
 });
 
+//Defining GraphQL scalar types
+
+const dateTime = new GraphQLScalarType({
+    name : 'DateTime',
+    description : 'Date time scalar type',
+    parseValue(value){
+        return new Date(value)
+    },
+    parseLiteral(ast){
+        if(ast.kind === Kind.INT){
+            return parseInt(ast.value, 10)
+        }
+        return null
+    },
+    serialize(value){
+        const date = new Date(value)
+        return date.toISOString()
+    }
+})
+
+
 //Root query and Root mutation
 const RootQueryType = new GraphQLObjectType({
     name: "query",
@@ -116,6 +142,18 @@ const RootQueryType = new GraphQLObjectType({
                 };
             }
         },
+        userIdentity: {
+            type: GraphQLString,
+            description: "Get user identity",
+            resolve:(_, args, {req, res, user}) => {
+                if (!user) {
+                    console.log("Not Logged in");
+                    return "Not authenticated";
+                } else {
+                    return user.userId;
+                }
+            }
+        },
         testAuth: {
             type: GraphQLString,
             description: "Test auth",
@@ -154,7 +192,7 @@ const RootMutationType = new GraphQLObjectType({
                 username: { type: GraphQLNonNull(GraphQLString) },
                 password: { type: GraphQLNonNull(GraphQLString) }
             },
-            resolve: async(_, args, { req, res }) => {
+            resolve: async(_, args, { req, res}) => {
                 const user = await User.findOne({ username: args.username })
 
                 if (!user) {
@@ -210,6 +248,67 @@ const RootMutationType = new GraphQLObjectType({
                     return false;
                 }
                 return true;
+            }
+        },
+        createSession: {
+            type: GraphQLString,
+            description: "create a session",
+            args: {
+                sport: {type: GraphQLNonNull(GraphQLString)},
+                location: {type: GraphQLNonNull(GraphQLString)},
+                description: {type: GraphQLNonNull(GraphQLString)},
+                startTime: {type: GraphQLNonNull(GraphQLString)},
+                endTime: {type: GraphQLNonNull(GraphQLString)},
+                maxParticipant: {type: GraphQLNonNull(GraphQLInt)},
+                minStar: {type: GraphQLNonNull(GraphQLInt)},
+                host: {type: GraphQLNonNull(GraphQLString)},
+                participants: {type: GraphQLList(GraphQLString)}
+            },
+            resolve: (_, args) => {
+                const newSession = new Session({
+                    sport: args.sport,
+                    location: args.location,
+                    description: args.description,
+                    startTime: dateTime.parseValue(args.startTime),
+                    endTime: dateTime.parseValue(args.endTime),
+                    maxParticipant: args.maxParticipant,
+                    minStar: args.minStar,
+                    host: args.host,
+                    participants: args.participants
+                })
+                try {
+                    newSession.save()
+                    return newSession.id
+                } catch (err) {
+                    console.log(err)
+                    return "error"
+                }
+
+            }
+        },
+        joinSession: {
+            type: GraphQLBoolean,
+            description: "join a session",
+            args: {
+                userId: {type:GraphQLNonNull(GraphQLString)},
+                sessionId: {type: GraphQLNonNull(GraphQLString)}
+            },
+            resolve: (_, args) => {
+                try {
+                    const session = Session.findById(args.sessionId).exec().then(sess => {
+                        const user = User.findById(args.userId).exec().then(currentUser => {
+                            currentUser.currentSessions.push(sess._id)
+                            sess.save()
+                            sess.participants.push(currentUser._id)
+                            currentUser.save()
+                        })
+                    })
+                    return true
+                } catch (err){
+                    console.log(err)
+                    return false
+                }
+
             }
         },
         revokeRefreshTokenForUser: {
