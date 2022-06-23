@@ -1,15 +1,17 @@
-const mongoose = require('mongoose')
+const { ObjectId } = require('mongodb');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const sessionSchema = new Schema({
-
     sport : { type : String, required : true},
     location : { type : String, required : true},
-    date : {type: Date, required: true},
-    start : {type: Date, required: true},
-    end : {type: Date, required: true}, 
-    participant : { type : Number, required : true},
-    star : { type : Number, required : true}
+    description : { type : String, required : true},
+    startTime : {type: Date, required: true},
+    endTime : {type: Date, required: true}, 
+    maxParticipant : { type : Number, required : true},
+    minStar : { type : Number, required : true},
+    host : {type : ObjectId, required : true},
+    participants : { type: [ObjectId], default : []}
 }, {
     timestamps : true
 })
