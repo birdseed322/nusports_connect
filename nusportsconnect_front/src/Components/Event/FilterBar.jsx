@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
 import "./filterStyles.css";
 
 function FilterBar() {
+  const [startDate, setStartDate] = useState(null);
   return (
     <div className="filter-box">
       <form className="filter-form" action="#">
@@ -22,17 +24,31 @@ function FilterBar() {
 
         <div className="filter-item">
           <label htmlFor="date">Date:</label>
-          <input
-            type="date"
-            className="filter-input"
-            id="date"
-            placeholder="Select Date"
-          />
+          <DatePicker
+            className="create-input"
+            placeholderText="Date"
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            minDate={new Date()}
+            dateFormat="dd/MM/yyyy"
+            required
+          ></DatePicker>
         </div>
 
         <div className="filter-item">
           <label htmlFor="time">Start Time:</label>
-          <input type="time" className="filter-input" id="time" step="300" />
+          <DatePicker
+            className="create-input"
+            placeholderText="Start Time"
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            minDate={startDate}
+            maxDate={startDate}
+            dateFormat="HH:mm"
+            showTimeSelect
+            timeIntervals={15}
+            required
+          ></DatePicker>
         </div>
 
         <div className="filter-item">

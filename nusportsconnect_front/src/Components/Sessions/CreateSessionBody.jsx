@@ -9,33 +9,48 @@ import star from "../../pics/star.png";
 import date from "../../pics/frame.png";
 import start from "../../pics/start.png";
 import end from "../../pics/end.png";
-import { createSession, getUserIdentity, joinSession } from "../../GraphQLQueries/queries";
+import {
+  createSession,
+  getUserIdentity,
+  joinSession,
+} from "../../GraphQLQueries/queries";
 
 function CreateSessionBody() {
-  const [sport, setSport] = useState("")
-  const [location, setLocation] = useState("")
-  const [description, setDescription] = useState("")
+  const [sport, setSport] = useState("");
+  const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [maxParticipant, setMaxParticipant] = useState(2)
-  const [minStar, setMinStar] = useState(0)
+  const [maxParticipant, setMaxParticipant] = useState(2);
+  const [minStar, setMinStar] = useState(0);
 
-  async function handleSubmit(e){
-    e.preventDefault()
-    console.log(sport)
-    console.log(location)
-    console.log(description)
-    console.log(startDate)
-    console.log(endDate)
-    console.log(maxParticipant)
-    console.log(minStar)
+  async function handleSubmit(e) {
+    e.preventDefault();
+    console.log(sport);
+    console.log(location);
+    console.log(description);
+    console.log(startDate);
+    console.log(endDate);
+    console.log(maxParticipant);
+    console.log(minStar);
     try {
-      const hostId = await getUserIdentity()
-      const sessionId = await createSession(sport, location, description, startDate, endDate, maxParticipant, minStar, hostId.data.data.userIdentity)
-      await joinSession(hostId.data.data.userIdentity, sessionId.data.data.createSession)
-
+      const hostId = await getUserIdentity();
+      const sessionId = await createSession(
+        sport,
+        location,
+        description,
+        startDate,
+        endDate,
+        maxParticipant,
+        minStar,
+        hostId.data.data.userIdentity
+      );
+      await joinSession(
+        hostId.data.data.userIdentity,
+        sessionId.data.data.createSession
+      );
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
@@ -60,11 +75,11 @@ function CreateSessionBody() {
               name="#"
               id="sport"
               value={sport}
-              onChange={e => setSport(e.target.value)}
+              onChange={(e) => setSport(e.target.value)}
               placeholder="Sport"
               required
             >
-              <option value="sport">Select Sport</option>
+              {/* <option value="sport">Select Sport</option> */}
               <option value="badminton"> Badminton </option>
               <option value="basketball"> Basketball </option>
               <option value="ultimate"> Ultimate Frisbee </option>
@@ -81,7 +96,7 @@ function CreateSessionBody() {
               placeholder="Location"
               id="location"
               value={location}
-              onChange={e => setLocation(e.target.value)}
+              onChange={(e) => setLocation(e.target.value)}
               required
             />
           </div>
@@ -149,7 +164,7 @@ function CreateSessionBody() {
               min="2"
               max="30"
               value={maxParticipant}
-              onChange={e => setMaxParticipant(e.target.value)}
+              onChange={(e) => setMaxParticipant(e.target.value)}
               required
             />
           </div>
@@ -167,7 +182,7 @@ function CreateSessionBody() {
               min="0"
               max="5"
               value={minStar}
-              onChange={e => setMinStar(e.target.value)}
+              onChange={(e) => setMinStar(e.target.value)}
               required
             />
           </div>
@@ -179,14 +194,16 @@ function CreateSessionBody() {
               id="description"
               placeholder="Write a Description"
               value={description}
-              onChange={e => setDescription(e.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
               cols="20"
               rows="10"
               required
             ></textarea>
           </div>
 
-          <button className="create-button" type="submit">create</button>
+          <button className="create-button" type="submit">
+            create
+          </button>
         </form>
       </div>
     </div>
