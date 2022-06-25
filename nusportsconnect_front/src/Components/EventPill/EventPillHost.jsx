@@ -31,13 +31,13 @@ function EventPillHost(props) {
         <img alt="pax-icon" className="pax-icon" src={personIcon} />
       </div>
       {props.history ? (
-        <HistoryButtons />
+        <HistoryButtons id={event.id} />
       ) : props.host ? (
-        <HostButtons />
+        <HostButtons id={event.id}/>
       ) : props.participant ? (
-        <ParticipantButtons />
+        <ParticipantButtons id={event.id}/>
       ) : (
-        <NonParticipantButtons />
+        <NonParticipantButtons id={event.id}/>
       )}
     </div>
   );
