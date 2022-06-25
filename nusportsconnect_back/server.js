@@ -212,6 +212,7 @@ const RootQueryType = new GraphQLObjectType({
                             maxParticipants : sesh.maxParticipant,
                         }
                     });
+                    console.log(res)
                     return res
                 }
                 
