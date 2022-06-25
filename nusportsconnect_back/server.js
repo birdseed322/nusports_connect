@@ -73,20 +73,6 @@ const LoginResponse = new GraphQLObjectType({
     })
 });
 
-const SessionType = new GraphQLObjectType({
-    name: "Session",
-    description: "This represents a session",
-    fields: () => ({
-        id: {type: GraphQLNonNull(GraphQLString)},
-        sport: { type: GraphQLNonNull(GraphQLString) },
-        location : {type : GraphQLNonNull(GraphQLString)},
-        startTime : {type : GraphQLNonNull(GraphQLString)},
-        endTime : {type : GraphQLNonNull(GraphQLString)},
-        currentParticipants : {type : GraphQLNonNull(GraphQLInt)},
-        maxParticipants : {type : GraphQLNonNull(GraphQLInt)}
-    })
-});
-
 //Defining GraphQL scalar types
 
 const dateTime = new GraphQLScalarType({
@@ -189,33 +175,6 @@ const RootQueryType = new GraphQLObjectType({
             },
             resolve: (parent, args, {req, res, user}) => {
                 return (user.username === args.username)
-            }
-        },
-        getSessions : {
-            type : GraphQLList(SessionType),
-            description : "Convert a list of session id to session objects",
-            args : {
-                sessions : {type : GraphQLList(GraphQLString)}
-            },
-            resolve : (_, args, {req, res, user}) =>{
-                
-                let sessions = async () => {
-                    let res = await Session.find({_id : {$in : args.sessions}}).exec()
-                    res = res.map(sesh => {
-                        return {
-                            id: sesh.id,
-                            sport: sesh.sport,
-                            location : sesh.location,
-                            startTime : sesh.startTime,
-                            endTime : sesh.endTime,
-                            currentParticipants : sesh.participants.length,
-                            maxParticipants : sesh.maxParticipant,
-                        }
-                    });
-                    return res
-                }
-                
-                return sessions()
             }
         }
     })
