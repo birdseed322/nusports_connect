@@ -22,7 +22,7 @@ function EndPoints() {
         <Route exact path="/navBarTest" element={<Navbar />} />
         <Route exact path="/loading" element={<Loading />} />
         <Route exact path="/sessions" element={<Sessions />} />
-        <Route exact path="/sessions/eventID" element={<SessionsPage />} />
+        <Route exact path="/sessions/:id" element={<SessionsPage />} />
         <Route exact path="/createsession" element={<CreateSession />} />
         <Route exact path="/:id" element={<ProfileSessionLanding />}/>
         <Route
