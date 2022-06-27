@@ -11,6 +11,7 @@ import ProfileHistoryLanding from "../Components/Profile/ProfileHistoryLanding";
 import ProfileFriendsLanding from "../Components/Profile/ProfileFriendsLanding";
 import ProfileReviewsLanding from "../Components/Profile/ProfileReviewsLanding";
 import { Loading } from "../Components/Loading/Loading";
+import NotAuthenticated from "../Components/NotAuthenticated/NotAuthenticated";
 
 function EndPoints() {
   return (
@@ -24,23 +25,12 @@ function EndPoints() {
         <Route exact path="/sessions" element={<Sessions />} />
         <Route exact path="/sessions/:id" element={<SessionsPage />} />
         <Route exact path="/createsession" element={<CreateSession />} />
-        <Route exact path="/:id" element={<ProfileSessionLanding />}/>
-        <Route
-          exact
-          path="/:id/history"
-          element={<ProfileHistoryLanding />}
-        />
-        <Route
-          exact
-          path="/:id/friends"
-          element={<ProfileFriendsLanding />}
-        />
-        <Route
-          exact
-          path="/:id/reviews"
-          element={<ProfileReviewsLanding />}
-        />
-        
+        <Route exact path="/:id" element={<ProfileSessionLanding />} />
+        <Route exact path="/unauthenticated" element={<NotAuthenticated />} />
+        <Route exact path="/:id/history" element={<ProfileHistoryLanding />} />
+        <Route exact path="/:id/friends" element={<ProfileFriendsLanding />} />
+        <Route exact path="/:id/reviews" element={<ProfileReviewsLanding />} />
+
         <Route exact path="/eventPillHost" element={<EventPillHost />} />
       </Routes>
     </BrowserRouter>

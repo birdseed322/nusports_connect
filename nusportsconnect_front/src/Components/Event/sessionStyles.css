@@ -4,6 +4,7 @@
   
   .session {
     height: 100vh;
+    padding-top: 5vh;
     display: flex;
     flex-direction: column;
     align-items: center;

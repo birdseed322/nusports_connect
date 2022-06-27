@@ -68,6 +68,15 @@ export function getUserIdentity(){
     return postQuery(query);
 }
 
+export function getUserUsername(){
+    const query = `
+    query{
+        userUsername
+      }
+    `
+    return postQuery(query);
+}
+
 export function logout(){
     const query = `
     mutation{

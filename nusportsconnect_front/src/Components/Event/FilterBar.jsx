@@ -25,7 +25,7 @@ function FilterBar() {
         <div className="filter-item">
           <label htmlFor="date">Date:</label>
           <DatePicker
-            className="create-input"
+            className="filter-input"
             placeholderText="Date"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -38,7 +38,7 @@ function FilterBar() {
         <div className="filter-item">
           <label htmlFor="time">Start Time:</label>
           <DatePicker
-            className="create-input"
+            className="filter-input"
             placeholderText="Start Time"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
