@@ -16,7 +16,7 @@
 .create-panel {
   background-color: #8BE0E5;
   width: 75%;
-  height: 82%;
+  height: 75vh;
   border-radius: 20px;
   margin-top: 2%;
   display: flex;

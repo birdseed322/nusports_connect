@@ -20,6 +20,7 @@
   height: 2em;
   width: 200px;
   cursor: pointer;
+  border-radius: 12px;
 }
 .filter-button {
   background-color: #0C4050;

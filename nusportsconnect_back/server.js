@@ -189,6 +189,18 @@ const RootQueryType = new GraphQLObjectType({
                 }
             }
         },
+        userUsername: {
+            type: GraphQLString,
+            description: "Get user Username",
+            resolve:(_, args, {req,res,user}) => {
+                if (!user) {
+                    console.log("Not Logged in");
+                    return "Not authenticated";
+                } else {
+                    return user.username;
+                }
+            }
+        },
         testAuth: {
             type: GraphQLString,
             description: "Test auth",
