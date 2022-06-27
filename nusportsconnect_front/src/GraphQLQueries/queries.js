@@ -86,6 +86,24 @@ export function logout(){
     return postQuery(query);
 }
 
+export function getAllSessions(){
+    const query = `
+    query{
+        sessions {
+          id
+          sport
+          location
+          date
+          startTime
+          endTime
+          currentParticipants
+          maxParticipants
+        }
+      }
+    `
+    return postQuery(query)
+}
+
 export function testAuth(){
     const query = `
     query{

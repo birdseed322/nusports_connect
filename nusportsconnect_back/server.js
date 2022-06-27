@@ -20,7 +20,7 @@ const cors = require('cors');
 const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth');
 const cookieParser = require('cookie-parser');
 const { verify } = require('jsonwebtoken');
-var getAccountCreationDate = require('./helperFunctions');
+var {getAccountCreationDate, formatAMPM} = require('./helperFunctions');
 const Session = require('./models/Session');
 const { ObjectId } = require('mongodb');
 
@@ -80,11 +80,12 @@ const SessionType = new GraphQLObjectType({
         id: {type: GraphQLNonNull(GraphQLString)},
         sport: { type: GraphQLNonNull(GraphQLString) },
         location : {type : GraphQLNonNull(GraphQLString)},
+        date: {type: GraphQLNonNull(GraphQLString)},
         startTime : {type : GraphQLNonNull(GraphQLString)},
         endTime : {type : GraphQLNonNull(GraphQLString)},
         currentParticipants : {type : GraphQLNonNull(GraphQLInt)},
         maxParticipants : {type : GraphQLNonNull(GraphQLInt)}
-    })
+})
 });
 
 //Defining GraphQL scalar types
@@ -93,7 +94,7 @@ const dateTime = new GraphQLScalarType({
     name : 'DateTime',
     description : 'Date time scalar type',
     parseValue(value){
-        return new Date(value)
+        return value
     },
     parseLiteral(ast){
         if(ast.kind === Kind.INT){
@@ -103,7 +104,7 @@ const dateTime = new GraphQLScalarType({
     },
     serialize(value){
         const date = new Date(value)
-        return date.toISOString()
+        return date
     }
 })
 
@@ -131,6 +132,26 @@ const RootQueryType = new GraphQLObjectType({
                     user.accountCreationDate = cDate;
                 })
                 return users
+            }
+        },
+        sessions: {
+            type: GraphQLList(SessionType),
+            description: "Retrieve all Session",
+            resolve: async () => {
+                let sessions = await Session.find().exec()
+                sessions = sessions.map((sesh) => {
+                    return {
+                        id: sesh.id,
+                        sport: sesh.sport,
+                        location: sesh.location,
+                        date: dateTime.serialize(sesh.startTime).toDateString(),
+                        startTime : formatAMPM(dateTime.serialize(sesh.startTime)),
+                        endTime : formatAMPM(dateTime.serialize(sesh.endTime)),
+                        currentParticipants : sesh.participants.length,
+                        maxParticipants : sesh.maxParticipant,
+                    } 
+                })
+                return sessions;
             }
         },
         userProfileInfo: {
@@ -224,6 +245,7 @@ const RootQueryType = new GraphQLObjectType({
                             maxParticipants : sesh.maxParticipant,
                         }
                     });
+                    console.log(res)
                     return res
                 }
                 

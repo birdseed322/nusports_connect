@@ -16,7 +16,7 @@ import {
 } from "../../GraphQLQueries/queries";
 
 function CreateSessionBody() {
-  const [sport, setSport] = useState("");
+  const [sport, setSport] = useState("badminton");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -80,9 +80,9 @@ function CreateSessionBody() {
               required
             >
               {/* <option value="sport">Select Sport</option> */}
-              <option value="badminton"> Badminton </option>
-              <option value="basketball"> Basketball </option>
-              <option value="ultimate"> Ultimate Frisbee </option>
+              <option value="Badminton"> Badminton </option>
+              <option value="Basketball"> Basketball </option>
+              <option value="Ultimate"> Ultimate Frisbee </option>
             </select>
           </div>
 
@@ -109,7 +109,10 @@ function CreateSessionBody() {
               className="create-input"
               placeholderText="Date"
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={(date) => {
+                setStartDate(date)
+                setEndDate(date)
+              }}
               minDate={new Date()}
               dateFormat="dd/MM/yyyy"
               required
