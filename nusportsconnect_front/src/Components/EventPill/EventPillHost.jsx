@@ -10,23 +10,24 @@ import NonParticipantButtons from "./Buttons/NonParticipantButtons";
 
 function EventPillHost(props) {
   const event = props.event;
+  console.log(event)
 
   return (
     <div className="event-pill">
-      <h1 className="event-pill-header">{event.eventName}</h1>
+      <h1 className="event-pill-header">{event.sport}</h1>
       <div className="event-location event-detail-header">
         <img alt="location-icon" className="location-icon" src={locationIcon} />
-        <p className="event-detail">{event.eventLocation}</p>
+        <p className="event-detail">{event.location}</p>
       </div>
       <div className="event-time event-detail-header">
         <img alt="time-icon" className="time-icon" src={timeIcon} />
         <p className="event-detail">
-          {event.eventStart} - {event.eventEnd}
+          {event.startTime} - {event.endTime}
         </p>
       </div>
       <div className="event-pax">
         <p className="event-attendance">
-          {event.eventCurrentPax}/{event.eventMaxPax}
+          {event.currentParticipants}/{event.maxParticipants}
         </p>
         <img alt="pax-icon" className="pax-icon" src={personIcon} />
       </div>
