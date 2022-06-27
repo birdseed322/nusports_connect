@@ -70,7 +70,17 @@ function Sessions() {
     apiCall()
   }, [])
 
-  console.log(data)
+  let uniqDatesSet = new Set()
+  data.forEach((session) => {
+    uniqDatesSet.add(session.date)
+  })
+  let uniqDates = Array.from(uniqDatesSet)
+  uniqDates = uniqDates.sort((a, b) => {
+    return new Date(a) - new Date(b)
+  })
+
+
+
   // const host = user.name === events.eventHost;
   // const participant = events.eventMembers.includes(user.name);
   // must use the map function to check
@@ -84,13 +94,25 @@ function Sessions() {
 
         Repeat with next date. (Or if database already filters by date then will be best) */}
 
-        {data.map((session) => {
-          return <EventPillHost 
-          history={false}
-          participant={user}
-          event={session}
-          />
-        })}
+        {uniqDates.map(date => {
+          let toRender = [];
+          for (const session of data) {
+            if (session.date === date){
+              toRender.push(session)
+            }
+          }
+          return(
+            <div><h1>{date}</h1>
+            {toRender.map(session => {
+              return <EventPillHost 
+                history={false}
+                participant={user}
+                event={session}
+                />
+            })}
+            </div>
+          )
+  })}
 
         {/* <h1 className="date-header">21st Feb 2022</h1>
         <EventPillHost
