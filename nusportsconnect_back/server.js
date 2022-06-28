@@ -9,7 +9,8 @@ const {
     defaultFieldResolver,
     GraphQLScalarType,
     Kind,
-    graphql
+    graphql,
+    GraphQLFloat
 } = require('graphql');
 const express = require('express');
 const expressGraphQL = require('express-graphql').graphqlHTTP;
@@ -58,6 +59,7 @@ const UserType = new GraphQLObjectType({
     description: "This represents a user",
     fields: () => ({
         username: { type: GraphQLNonNull(GraphQLString) },
+        ratings: {type: GraphQLNonNull(GraphQLFloat)},
         email : {type : GraphQLNonNull(GraphQLString)},
         fName : {type : GraphQLNonNull(GraphQLString)},
         lName : {type : GraphQLNonNull(GraphQLString)},
@@ -80,9 +82,13 @@ const SessionType = new GraphQLObjectType({
         id: {type: GraphQLNonNull(GraphQLString)},
         sport: { type: GraphQLNonNull(GraphQLString) },
         location : {type : GraphQLNonNull(GraphQLString)},
+        description : {type : GraphQLNonNull(GraphQLString)},
+        minStar : {type : GraphQLNonNull(GraphQLInt)},
         date: {type: GraphQLNonNull(GraphQLString)},
         startTime : {type : GraphQLNonNull(GraphQLString)},
         endTime : {type : GraphQLNonNull(GraphQLString)},
+        participants : {type : GraphQLList(UserType)},
+        host : {type: UserType},
         currentParticipants : {type : GraphQLNonNull(GraphQLInt)},
         maxParticipants : {type : GraphQLNonNull(GraphQLInt)}
 })
@@ -153,6 +159,34 @@ const RootQueryType = new GraphQLObjectType({
                 })
                 return sessions;
             }
+        },
+        getSessionInfo: {
+            type: SessionType,
+            description: "Retrieve info about session",
+            args: {
+                id: {type: GraphQLString}
+            },
+            resolve: async (parent, args) => {
+                let session = await Session.findById(args.id).exec().then(async (sesh) => {
+                    let host = await User.findById(sesh.host).exec()
+                    let users = await User.find({_id : {$in : sesh.participants}}).exec()
+                    return {
+                        sport: sesh.sport,
+                        location : sesh.location,
+                        date: dateTime.serialize(sesh.startTime).toDateString(),
+                        description: sesh.description,
+                        minStar: sesh.minStar,
+                        startTime : formatAMPM(dateTime.serialize(sesh.startTime)),
+                        endTime : formatAMPM(dateTime.serialize(sesh.endTime)),
+                        host,
+                        participants : users,
+                        currentParticipants : sesh.participants.length,
+                        maxParticipants : sesh.maxParticipant
+                    }
+                })
+                return session
+            }
+
         },
         userProfileInfo: {
             type: UserType,
