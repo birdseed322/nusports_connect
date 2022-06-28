@@ -18,7 +18,7 @@ function ProfileHistoryTab(props) {
 
   return (
     <div className="profile-tab-info">
-      <EventPillHost host={host} history={true} event={event} />
+      {/* <EventPillHost host={host} history={true} event={event} /> */}
     </div>
   );
 }

@@ -9,6 +9,7 @@ const userSchema = new Schema({
     tokenVersion : {type : Number, default : 0},
     fName : {type: String, required : true},
     lName : {type : String, required : true},
+    ratings : {type : Number, required : true, default: 5},
     currentSessions : {type : [ObjectId], default: [], required : true}
 }, {
     timestamps : true

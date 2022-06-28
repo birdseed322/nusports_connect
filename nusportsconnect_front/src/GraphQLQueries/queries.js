@@ -147,6 +147,37 @@ export function createSession(sport, location, description, startDate, endDate, 
     return postQuery(query);
 }
 
+export function getSessionInfo(sessionId){
+    const query = `
+    query{
+        getSessionInfo(id:"${sessionId}") {
+          sport
+          location
+          date
+          description
+          minStar
+          startTime
+          endTime
+          host {
+            fName
+            lName
+            username
+            ratings
+          }
+          participants {
+            fName
+            lName
+            username
+            ratings
+          }
+          currentParticipants
+          maxParticipants
+        }
+      }
+    `
+    return postQuery(query);
+}
+
 export function joinSession(userId, sessionId){
     const query = `
     mutation {

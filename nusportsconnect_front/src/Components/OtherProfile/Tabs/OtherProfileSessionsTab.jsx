@@ -20,12 +20,12 @@ function OtherProfileSessionsTab(props) {
 
   return (
     <div className="profile-tab-info">
-      <EventPillHost
+      {/* <EventPillHost
         host={host}
         history={false}
         event={event}
         participant={participant}
-      />
+      /> */}
     </div>
   );
 }

@@ -18,12 +18,12 @@ function OtherProfileHistoryTab(props) {
   const participant = event.eventMembers.includes(props.user.name);
   return (
     <div className="profile-tab-info">
-      <EventPillHost
+      {/* <EventPillHost
         host={event.eventHost}
         history={true}
         event={event}
         participant={participant}
-      />
+      /> */}
     </div>
   );
 }
