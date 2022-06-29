@@ -6,7 +6,7 @@ import EventPillHost from "../EventPill/EventPillHost";
 import { getAllSessions } from "../../GraphQLQueries/queries";
 
 function Sessions() {
-  //dummy code for events
+  //dummy code for user
   const user = {
     name: "Samuel Tay",
     email: "someemail@gmail.com",
@@ -20,7 +20,6 @@ function Sessions() {
 
   React.useEffect(() => {
     if (filterSessions[0] === "placeholder") {
-      // if (filterSessions.length === 0) {
       const apiCall = async () => {
         const sessions = await getAllSessions();
         setData(sessions.data.data.sessions);
@@ -32,9 +31,6 @@ function Sessions() {
       setData(filterSessions);
     }
   }, [filterSessions]);
-
-  let checkFilter = filterSessions;
-  console.log("how many sessions now " + checkFilter.length);
 
   let uniqDatesSet = new Set();
   data.forEach((session) => {
