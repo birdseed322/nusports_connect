@@ -30,7 +30,6 @@ function EndPoints() {
         <Route exact path="/:id/history" element={<ProfileHistoryLanding />} />
         <Route exact path="/:id/friends" element={<ProfileFriendsLanding />} />
         <Route exact path="/:id/reviews" element={<ProfileReviewsLanding />} />
-
         <Route exact path="/eventPillHost" element={<EventPillHost />} />
       </Routes>
     </BrowserRouter>

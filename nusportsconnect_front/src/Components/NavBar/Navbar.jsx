@@ -1,5 +1,4 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import "./navStyles.css";
 import Logo from "../../pics/Logo.png";
 import Notif from "../../pics/Notification.png";
@@ -11,10 +10,10 @@ function Navbar() {
     const apiCall = async () => {
       const user = await getUserUsername();
       setUsername(user.data.data.userUsername);
+      // console.log(username);
     };
     apiCall();
   });
-  console.log(username);
   return (
     <div>
       <nav className="navbar">
