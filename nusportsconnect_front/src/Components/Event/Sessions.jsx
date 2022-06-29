@@ -16,19 +16,25 @@ function Sessions() {
   };
 
   const [data, setData] = React.useState([]);
-  const [filterSessions, setFilterSessions] = React.useState([]);
+  const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
 
   React.useEffect(() => {
-    if (filterSessions.length === 0) {
+    if (filterSessions[0] === "placeholder") {
+      // if (filterSessions.length === 0) {
       const apiCall = async () => {
         const sessions = await getAllSessions();
         setData(sessions.data.data.sessions);
       };
       apiCall();
+    } else if (filterSessions.length === 0) {
+      setData([]);
     } else {
       setData(filterSessions);
     }
   }, [filterSessions]);
+
+  let checkFilter = filterSessions;
+  console.log("how many sessions now " + checkFilter.length);
 
   let uniqDatesSet = new Set();
   data.forEach((session) => {
@@ -39,6 +45,15 @@ function Sessions() {
     return new Date(a) - new Date(b);
   });
 
+  if (filterSessions.length === 0) {
+    return (
+      <div className="sessions-container">
+        <Navbar />
+        <FilterBar setFilterSessions={setFilterSessions} />
+        <h1 className="session">No Sessions Available</h1>
+      </div>
+    );
+  }
   return (
     <div className="sessions-container">
       <Navbar />
