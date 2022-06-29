@@ -6,12 +6,12 @@ import personIcon from '../../pics/person.png';
 import AnnouncementInput from './AnnouncementInput';
 import FriendOverlay from './FriendOverlay';
 import ChatBox from './ChatBox';
-import { getSessionInfo } from '../../GraphQLQueries/queries';
+import { getSessionInfo, getUserIdentity, joinSession } from '../../GraphQLQueries/queries';
 import { useParams } from 'react-router-dom';
 
 function SessionsPageBody(props){
     
-    const {id} = useParams()
+    const {id} = useParams();
     const [friendOverlay, setFriendOverlay] = React.useState(false);
     const [sessionInfo, setSessionInfo] = React.useState({
         "sport": "",
@@ -31,18 +31,24 @@ function SessionsPageBody(props){
         ],
         "currentParticipants": 0,
         "maxParticipants": 0
-      })
+      });
 
     React.useEffect(() => {
       const apiCall = async () => {
-        const session = await getSessionInfo(id)
-        setSessionInfo(session.data.data.getSessionInfo)
+        const session = await getSessionInfo(id);
+        setSessionInfo(session.data.data.getSessionInfo);
       };
     
-      apiCall()
-    }, [id])
+      apiCall();
+    }, [id]);
 
-    console.log(sessionInfo)
+    async function handleSessionJoin(e){
+        const userId = await getUserIdentity();
+        joinSession(userId.data.data.userIdentity, id);
+        window.location.reload();
+    }
+
+    console.log(sessionInfo);
 
 
     //props used to retrieve user information.
@@ -66,15 +72,15 @@ function SessionsPageBody(props){
     let participant = false
     sessionInfo.participants.forEach((x) => {
         if (x.username === user){
-            participant = true
+            participant = true;
         }
-    })
+    });
     //another api call to retrieve host details
-    const hostRating = sessionInfo.host.ratings
+    const hostRating = sessionInfo.host.ratings;
 
-    const participantsPax =  sessionInfo.currentParticipants + "/" + sessionInfo.maxParticipants
+    const participantsPax =  sessionInfo.currentParticipants + "/" + sessionInfo.maxParticipants;
     const title = sessionInfo.sport + " @ " + sessionInfo.location + ", " + sessionInfo.date + " " + sessionInfo.startTime + " (" + dummyEvent.duration + " hours)"
-    var minStars = []
+    var minStars = [];
     for (var i = 0; i < sessionInfo.minStar; i++){
         minStars.push("star");
     }
@@ -106,7 +112,7 @@ function SessionsPageBody(props){
                             </div>
                         </div>
                 </div>
-                {host||participant ? <ChatBox /> : <button className='join-btn'>I want to go!</button>}
+                {host||participant ? <ChatBox /> : <button className='join-btn' onClick={handleSessionJoin}>I want to go!</button>}
             </div>
             <div className='session-right'>
                 <div className='who-going-box'>
@@ -125,7 +131,7 @@ function SessionsPageBody(props){
                         Some code to map announcements
                     </div>         
                     {host ? <AnnouncementInput /> : null}
-                    <FriendOverlay open={friendOverlay} closeOverlay={()=>setFriendOverlay(false)} participants={dummyEvent.participants}/>
+                    <FriendOverlay open={friendOverlay} closeOverlay={()=>setFriendOverlay(false)} participants={sessionInfo.participants}/>
                 </div>                         
             </div>
         </div>

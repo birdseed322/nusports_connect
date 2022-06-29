@@ -4,11 +4,11 @@ import ProfileSessionsTab from "./ProfileSessionsTab";
 import {useParams} from 'react-router-dom'
 
 function ProfileSessionBody(props){
-    let {id} = useParams()
-    var sessionsTab = "profile-tab-text highlight"
-    var historyTab = "profile-tab profile-tab-text"
-    var friendsTab = "profile-tab profile-tab-text"
-    var reviewsTab = "profile-tab profile-tab-text"
+    let {id} = useParams();
+    var sessionsTab = "profile-tab-text highlight";
+    var historyTab = "profile-tab profile-tab-text";
+    var friendsTab = "profile-tab profile-tab-text";
+    var reviewsTab = "profile-tab profile-tab-text";
 
     return (
         <div className="profile-body">

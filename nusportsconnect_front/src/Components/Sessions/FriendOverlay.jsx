@@ -12,11 +12,9 @@ function FriendOverlay({open, closeOverlay, participants}){
             <button className='close-friend-overlay-btn' onClick={closeOverlay}>x</button>
                 <h2 className='friend-overlay-title'>Who's going?</h2>
                 <div className='friend-overlay-participant-list'>
-                    <ParticipantBubble name = "Joe" rating="3.2"/>
-                    <ParticipantBubble name = "Joe" rating="3.2"/>
-                    <ParticipantBubble name = "Joe" rating="3.2"/>
-                    <ParticipantBubble name = "Joe" rating="3.2"/>
-                    <ParticipantBubble name = "Joe" rating="3.2"/>
+                    {participants.map(participant => {
+                        return <ParticipantBubble name = {participant.fName + " " + participant.lName} rating={participant.ratings}/>
+                    })}
                 </div>
             </div>
         </div>

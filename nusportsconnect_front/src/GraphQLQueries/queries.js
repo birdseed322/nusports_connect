@@ -2,19 +2,19 @@ import axios from "axios";
 import { getAccessToken } from "../accessToken";
 import { graphqlURI } from "../Routes/routes"
 
-function postQuery(query){
+function postQuery(query) {
     let result = axios({
-        url : graphqlURI,
-        method : "post",
-        withCredentials: true,
-        headers: {
-            Authorization: "bearer " + getAccessToken()
-        },
-        data : {
-            query
-        }
-    })
-    .catch(err => console.log(err));
+            url: graphqlURI,
+            method: "post",
+            withCredentials: true,
+            headers: {
+                Authorization: "bearer " + getAccessToken()
+            },
+            data: {
+                query
+            }
+        })
+        .catch(err => console.log(err));
 
     return result;
 }
@@ -47,19 +47,19 @@ export async function loginUser(username, password) {
     `
 
     let result = await axios({
-        url : graphqlURI,
-        method : "post",
-        withCredentials: true,
-        data : {
-            query
-        }
-    })
-    .catch(err => console.log(err));
+            url: graphqlURI,
+            method: "post",
+            withCredentials: true,
+            data: {
+                query
+            }
+        })
+        .catch(err => console.log(err));
 
     return result;
 }
 
-export function getUserIdentity(){
+export function getUserIdentity() {
     const query = `
     query{
         userIdentity
@@ -68,7 +68,7 @@ export function getUserIdentity(){
     return postQuery(query);
 }
 
-export function getUserUsername(){
+export function getUserUsername() {
     const query = `
     query{
         userUsername
@@ -77,7 +77,7 @@ export function getUserUsername(){
     return postQuery(query);
 }
 
-export function logout(){
+export function logout() {
     const query = `
     mutation{
         logout
@@ -86,7 +86,7 @@ export function logout(){
     return postQuery(query);
 }
 
-export function getAllSessions(){
+export function getAllSessions() {
     const query = `
     query{
         sessions {
@@ -104,7 +104,7 @@ export function getAllSessions(){
     return postQuery(query)
 }
 
-export function testAuth(){
+export function testAuth() {
     const query = `
     query{
         testAuth
@@ -114,7 +114,7 @@ export function testAuth(){
     return postQuery(query)
 }
 
-export function findUser(username){
+export function findUser(username) {
     const query = `
     query{
         userProfileInfo(username:"${username}"){
@@ -129,7 +129,7 @@ export function findUser(username){
     return postQuery(query);
 }
 
-export function checkProfileOwner(username){
+export function checkProfileOwner(username) {
     const query = `
     query{
         checkProfileOwner(username:"${username}")
@@ -138,7 +138,7 @@ export function checkProfileOwner(username){
     return postQuery(query);
 }
 
-export function createSession(sport, location, description, startDate, endDate, maxParticipant, minStar, host){
+export function createSession(sport, location, description, startDate, endDate, maxParticipant, minStar, host) {
     const query = `
     mutation {
         createSession(sport:"${sport}" location:"${location}" description:"${description}" startTime:"${startDate}" endTime:"${endDate}" maxParticipant:${maxParticipant} minStar:${minStar} host:"${host}" participants:[])
@@ -147,7 +147,7 @@ export function createSession(sport, location, description, startDate, endDate, 
     return postQuery(query);
 }
 
-export function getSessionInfo(sessionId){
+export function getSessionInfo(sessionId) {
     const query = `
     query{
         getSessionInfo(id:"${sessionId}") {
@@ -178,11 +178,29 @@ export function getSessionInfo(sessionId){
     return postQuery(query);
 }
 
-export function joinSession(userId, sessionId){
+export function joinSession(userId, sessionId) {
     const query = `
     mutation {
         joinSession(userId:"${userId}" sessionId:"${sessionId}")
       }
     `
+    return postQuery(query);
+}
+
+export function getUserCurrentSessions(username) {
+    const query = `
+    query{
+    getUserCurrentSessions(username:"${username}") {
+      id
+      sport
+      location
+      date
+      startTime
+      endTime
+      currentParticipants
+      maxParticipants
+    }
+  }
+  `
     return postQuery(query);
 }

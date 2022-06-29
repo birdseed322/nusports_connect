@@ -15,6 +15,7 @@ function Sessions() {
     sportingInterests: ["Tennis", "Ultimate Frisbee"],
   };
 
+
   const [data, setData] = React.useState([]);
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
 
@@ -32,9 +33,12 @@ function Sessions() {
     }
   }, [filterSessions]);
 
+
   let uniqDatesSet = new Set();
   data.forEach((session) => {
-    uniqDatesSet.add(session.date);
+
+    uniqDatesSet.add(session.date)
+
   });
   let uniqDates = Array.from(uniqDatesSet);
   uniqDates = uniqDates.sort((a, b) => {

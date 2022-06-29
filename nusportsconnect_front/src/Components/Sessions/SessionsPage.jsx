@@ -4,16 +4,16 @@ import Navbar from '../NavBar/Navbar';
 import SessionsPageBody from './SessionsPageBody';
 
 function SessionsPage(props) {
-    const [user, setUser] = React.useState({})
+    const [user, setUser] = React.useState({});
 
     React.useEffect(() => {
         const apiCall = async () => {
-          const session = await getUserUsername()
-          setUser(session.data.data.userUsername)
+          const session = await getUserUsername();
+          setUser(session.data.data.userUsername);
         };
       
-        apiCall()
-      }, [])
+        apiCall();
+      }, []);
     //Dummy code to simulate drawing information of user from database. Should ideally be done in useEffect statement, so info loaded before rendering.
     // const user = {
     //     name : "Samuel Tay",
