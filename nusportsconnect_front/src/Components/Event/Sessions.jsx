@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "../NavBar/Navbar";
 import FilterBar from "./FilterBar";
 import "./sessionStyles.css";
-import { DateTime } from "luxon";
 import EventPillHost from "../EventPill/EventPillHost";
 import { getAllSessions } from "../../GraphQLQueries/queries";
 
@@ -16,68 +15,26 @@ function Sessions() {
     sportingInterests: ["Tennis", "Ultimate Frisbee"],
   };
 
-  const events = [
-    {
-      eventName: "Badminton",
-      eventLocation: "UTSH2",
-      eventDate: DateTime.local(2022, 2, 21).toLocaleString(),
-      eventStart: "9am",
-      eventEnd: "11am",
-      eventMembers: ["Wesley Teo", "Ezekiel Ang", "Peter Tan"],
-      eventCurrentPax: 3,
-      eventMaxPax: 8,
-      eventHost: "Peter Tan",
-    },
-    {
-      eventName: "Basketball",
-      eventLocation: "PGPR Basketball court 2",
-      eventDate: DateTime.local(2022, 2, 21).toLocaleString(),
-      eventStart: "3.30pm",
-      eventEnd: "5.30pm",
-      eventMembers: [
-        "Wesley Teo",
-        "Ezekiel Ang",
-        "Peter Tan",
-        "Klay Thompson",
-        "Steph Curry",
-      ],
-      eventCurrentPax: 5,
-      eventMaxPax: 8,
-      eventHost: "Peter Tan",
-    },
-    {
-      eventName: "Badminton",
-      eventLocation: "UTSH2",
-      eventDate: DateTime.local(2022, 2, 22).toLocaleString(),
-      eventStart: "9am",
-      eventEnd: "11am",
-      eventMembers: ["Wesley Teo", "Ezekiel Ang", "Samuel Tay"],
-      eventCurrentPax: 3,
-      eventMaxPax: 4,
-      eventHost: "Peter Tan",
-    },
-  ];
 
-
-  const [data, setData] = React.useState([])
+  const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
     const apiCall = async () => {
-      const sessions = await getAllSessions()
-      setData(sessions.data.data.sessions)
+      const sessions = await getAllSessions();
+      setData(sessions.data.data.sessions);
     };
   
-    apiCall()
-  }, [])
+    apiCall();
+  }, []);
 
   let uniqDatesSet = new Set()
   data.forEach((session) => {
     uniqDatesSet.add(session.date)
-  })
-  let uniqDates = Array.from(uniqDatesSet)
+  });
+  let uniqDates = Array.from(uniqDatesSet);
   uniqDates = uniqDates.sort((a, b) => {
-    return new Date(a) - new Date(b)
-  })
+    return new Date(a) - new Date(b);
+  });
 
 
 
