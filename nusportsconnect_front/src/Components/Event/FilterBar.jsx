@@ -34,6 +34,7 @@ function FilterBar({ setFilterSessions }) {
           (session) => session.currentParticipants < session.maxParticipants
         );
       }
+      console.log(filterSessions);
       setFilterSessions(filterSessions);
     } catch (err) {
       console.log(err);
