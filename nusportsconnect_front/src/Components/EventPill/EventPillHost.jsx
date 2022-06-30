@@ -10,7 +10,6 @@ import NonParticipantButtons from "./Buttons/NonParticipantButtons";
 
 function EventPillHost(props) {
   const event = props.event;
-  console.log(event)
 
   return (
     <div className="event-pill">

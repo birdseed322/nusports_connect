@@ -77,6 +77,19 @@ export function getUserUsername() {
     return postQuery(query);
 }
 
+export function getUserCurrentSessionsId(username) {
+  const query=`
+  query{
+    userProfileInfo(username:"${username}") {
+      currentSessions {
+        id
+      }
+    }
+  }
+  `
+  return postQuery(query);
+}
+
 export function logout() {
     const query = `
     mutation{
@@ -89,17 +102,20 @@ export function logout() {
 export function getAllSessions() {
     const query = `
     query{
-        sessions {
-          id
-          sport
-          location
-          date
-          startTime
-          endTime
-          currentParticipants
-          maxParticipants
+      sessions {
+        id
+        sport
+        location
+        date
+        startTime
+        endTime
+        host{
+          username
         }
+        currentParticipants
+        maxParticipants
       }
+    }
     `
     return postQuery(query)
 }
@@ -190,17 +206,22 @@ export function joinSession(userId, sessionId) {
 export function getUserCurrentSessions(username) {
     const query = `
     query{
-    getUserCurrentSessions(username:"${username}") {
-      id
-      sport
-      location
-      date
-      startTime
-      endTime
-      currentParticipants
-      maxParticipants
+      getUserCurrentSessions(username:"${username}") {
+        id
+        sport
+        location
+        date
+        startTime
+        endTime
+        fullStartTime
+        fullEndTime
+        host{
+          username
+        }
+        currentParticipants
+        maxParticipants
+      }
     }
-  }
   `
     return postQuery(query);
 }

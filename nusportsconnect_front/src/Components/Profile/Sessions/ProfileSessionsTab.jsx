@@ -15,8 +15,12 @@ function ProfileSessionsTab(props) {
     apiCall();
   }, [id])
 
+  const upcomingSessions = data.filter((session) =>{
+    return new Date() < new Date(parseInt(session.fullEndTime))
+  })
+
   let uniqDatesSet = new Set();
-  data.forEach((session) => {
+  upcomingSessions.forEach((session) => {
     uniqDatesSet.add(session.date);
   })
   let uniqDates = Array.from(uniqDatesSet);
@@ -24,22 +28,7 @@ function ProfileSessionsTab(props) {
     return new Date(a) - new Date(b);
   });
 
-  //Dummy code. Ideally will pull a list of events associated w member. Then use map function to create pill for each event.
-  const event = {
-    id: "62b6b0530eb2c24058edcf78",
-    eventName: "Badminton",
-    eventLocation: "UTSH2",
-    eventStart: "9am",
-    eventEnd: "11am",
-    eventMembers: ["Wesley Teo", "Ezekiel Ang", "Samuel Tay"],
-    eventCurrentPax: 3,
-    eventMaxPax: 4,
-    eventHost: "Peter Tan",
-  };
-
   //Check if host of event. Should be inside the map function when parsing through list of event.
-  const host = props.user.name === event.eventHost;
-  const participant = event.eventMembers.includes(props.user.name);
 
   return (
     <div className="profile-tab-info">
@@ -53,10 +42,11 @@ function ProfileSessionsTab(props) {
           return(
             <div><h1>{date}</h1>
             {toRender.map(session => {
+              const host = id === session.host.username;
               return <EventPillHost 
                 history={false}
                 host={host}
-                participant={participant}
+                participant={true}
                 event={session}
                 />
             })}
