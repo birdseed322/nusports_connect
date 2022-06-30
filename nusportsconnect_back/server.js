@@ -63,6 +63,7 @@ const UserType = new GraphQLObjectType({
         email: { type: GraphQLNonNull(GraphQLString) },
         fName: { type: GraphQLNonNull(GraphQLString) },
         lName: { type: GraphQLNonNull(GraphQLString) },
+        currentSessions: { type: GraphQLList(SessionType)},
         accountCreationDate: { type: GraphQLString }
     })
 });
@@ -87,6 +88,8 @@ const SessionType = new GraphQLObjectType({
         date: { type: GraphQLNonNull(GraphQLString) },
         startTime: { type: GraphQLNonNull(GraphQLString) },
         endTime: { type: GraphQLNonNull(GraphQLString) },
+        fullStartTime: {type: GraphQLNonNull(GraphQLString)},
+        fullEndTime: {type: GraphQLNonNull(GraphQLString)},
         participants: { type: GraphQLList(UserType) },
         host: { type: UserType },
         currentParticipants: { type: GraphQLNonNull(GraphQLInt) },
@@ -145,7 +148,8 @@ const RootQueryType = new GraphQLObjectType({
             description: "Retrieve all Session",
             resolve: async() => {
                 let sessions = await Session.find().exec()
-                sessions = sessions.map((sesh) => {
+                sessions = sessions.map(async (sesh) => {
+                    const host = await User.findById(sesh.host).exec()
                     return {
                         id: sesh.id,
                         sport: sesh.sport,
@@ -153,6 +157,9 @@ const RootQueryType = new GraphQLObjectType({
                         date: dateTime.serialize(sesh.startTime).toDateString(),
                         startTime: formatAMPM(dateTime.serialize(sesh.startTime)),
                         endTime: formatAMPM(dateTime.serialize(sesh.endTime)),
+                        host,
+                        fullStartTime: sesh.startTime,
+                        fullEndTime: sesh.endTime,
                         currentParticipants: sesh.participants.length,
                         maxParticipants: sesh.maxParticipant,
                     }
@@ -199,14 +206,16 @@ const RootQueryType = new GraphQLObjectType({
                     throw Error("Not authenticated");
                 }
 
-                let result = await User.findOne({ username: args.username }).exec()
+                const result = await User.findOne({ username: args.username }).exec()
                 const cDate = result.createdAt;
                 const accountCreationDate = getAccountCreationDate(cDate)
+                const currentSessions = await Session.find({_id : {$in : result.currentSessions}}).exec()
                 return {
                     username: result.username,
                     email: result.email,
                     fName: result.fName,
                     lName: result.lName,
+                    currentSessions,
                     accountCreationDate
                 };
             }
@@ -279,7 +288,6 @@ const RootQueryType = new GraphQLObjectType({
                             maxParticipants: sesh.maxParticipant,
                         }
                     });
-                    console.log(res);
                     return res;
                 }
 
@@ -292,10 +300,11 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 username: { type: GraphQLString }
             },
-            resolve: async(_, args) => {
+            resolve: async (_, args) => {
                 let res = await User.findOne({ username: args.username }).exec()
                 let userSessions = await Session.find({ _id: { $in: res.currentSessions } }).exec()
-                userSessions = userSessions.map((sesh) => {
+                userSessions = userSessions.map(async (sesh) => {
+                    const host = await User.findById(sesh.host).exec()
                     return {
                         id: sesh.id,
                         sport: sesh.sport,
@@ -303,6 +312,9 @@ const RootQueryType = new GraphQLObjectType({
                         date: dateTime.serialize(sesh.startTime).toDateString(),
                         startTime: formatAMPM(dateTime.serialize(sesh.startTime)),
                         endTime: formatAMPM(dateTime.serialize(sesh.endTime)),
+                        host,
+                        fullStartTime: sesh.startTime,
+                        fullEndTime: sesh.endTime,
                         currentParticipants: sesh.participants.length,
                         maxParticipants: sesh.maxParticipant,
                     };

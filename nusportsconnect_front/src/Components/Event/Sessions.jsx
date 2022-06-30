@@ -1,25 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "../NavBar/Navbar";
 import FilterBar from "./FilterBar";
 import "./sessionStyles.css";
 import EventPillHost from "../EventPill/EventPillHost";
-import { getAllSessions } from "../../GraphQLQueries/queries";
+import { getAllSessions, getUserCurrentSessionsId, getUserUsername } from "../../GraphQLQueries/queries";
 
 function Sessions() {
-  //dummy code for user
-  const user = {
-    name: "Samuel Tay",
-    email: "someemail@gmail.com",
-    rating: 4.6,
-    creationDate: "20/02/22",
-    sportingInterests: ["Tennis", "Ultimate Frisbee"],
-  };
-
-
   const [data, setData] = React.useState([]);
+  const [user, setUser] = React.useState({
+    username: "",
+    userSessions:[]
+  })
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
 
   React.useEffect(() => {
+    const fetchUser = async () => {
+      const userRes = await getUserUsername()
+      const userSessions = await getUserCurrentSessionsId(userRes.data.data.userUsername)
+      setUser({
+        username : userRes.data.data.userUsername,
+        userSessions: userSessions.data.data.userProfileInfo.currentSessions
+      })
+    }
+    fetchUser()
+
     if (filterSessions[0] === "placeholder") {
       const apiCall = async () => {
         const sessions = await getAllSessions();
@@ -32,7 +36,6 @@ function Sessions() {
       setData(filterSessions);
     }
   }, [filterSessions]);
-
 
   let uniqDatesSet = new Set();
   data.forEach((session) => {
@@ -54,6 +57,7 @@ function Sessions() {
       </div>
     );
   }
+
   return (
     <div className="sessions-container">
       <Navbar />
@@ -70,10 +74,13 @@ function Sessions() {
             <div>
               <h1>{date}</h1>
               {toRender.map((session) => {
+                let participant = false;
+                user.userSessions.forEach((x) => x.id === session.id ? participant = true : null)
                 return (
                   <EventPillHost
                     history={false}
-                    participant={user}
+                    participant={participant}
+                    host={user.username===session.host.username}
                     event={session}
                   />
                 );
