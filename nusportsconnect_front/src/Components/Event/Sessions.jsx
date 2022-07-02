@@ -17,7 +17,6 @@ function Sessions() {
   });
 
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
-  console.log("user is what " + user.username);
   React.useEffect(() => {
     const fetchUser = async () => {
       const userRes = await getUserUsername();

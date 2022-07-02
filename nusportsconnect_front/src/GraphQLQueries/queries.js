@@ -18,7 +18,6 @@ function postQuery(query) {
 
     return result;
 }
-
 export function addUser(username, password, email, fName, lName) {
     const query = `
     mutation {
@@ -83,7 +82,8 @@ export function getUserUsername() {
     return postQuery(query);
 }
 
-export function UpdateUser(username, email, fName, lName, interests) {
+
+export function updateUser(username, email, fName, lName, interests) {
 
     const query = `
     mutation {
@@ -96,7 +96,23 @@ export function UpdateUser(username, email, fName, lName, interests) {
         )
       }
     `
-    return postQuery(query);
+    // const result = axios.put( graphqlURI, {
+    //   query
+    // })
+    // .then(res => console.log(res))
+    // .catch(err => console.log(err));
+    
+    let result = axios({
+      url: graphqlURI,
+      method: "put",
+      withCredentials: true,
+      data: {
+        query
+      }
+    })
+    .catch(err => console.log(err));
+    
+    return result.status;
 }
 
 export function getUserCurrentSessionsId(username) {
@@ -161,12 +177,10 @@ export function findUser(username) {
           fName
           lName
           accountCreationDate
-          ratings
-          interests
         }
       }
     `
-    //cannot query interests here for some reason
+    //remove ratings and interests
     return postQuery(query);
 }
 

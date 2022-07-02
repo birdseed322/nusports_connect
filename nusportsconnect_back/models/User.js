@@ -11,9 +11,7 @@ const userSchema = new Schema({
     lName : {type : String, required : true},
     interests : {type: String},
     ratings : {type : Number, required : true, default: 5},
-    img: { data: Buffer, contentType: String },
     currentSessions : {type : [ObjectId], default: [], required : true},
-    historySessions : {type : [ObjectId], default: [], required : true}
 }, {
     timestamps : true
 })

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UpdateUser } from "../../../GraphQLQueries/queries";
+import { updateUser } from "../../../GraphQLQueries/queries";
 import "./EditProfileStyles.css";
 
 function EditProfileBody({ user }) {
@@ -22,7 +22,7 @@ function EditProfileBody({ user }) {
   function handleSubmit(e) {
     e.preventDefault();
     try {
-      UpdateUser(user.username, email, fName, lName, interests);
+      updateUser(user.username, email, fName, lName, interests);
     } catch (err) {
       console.log(err);
     }
