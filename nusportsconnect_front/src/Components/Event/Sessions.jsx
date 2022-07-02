@@ -12,9 +12,10 @@ import {
 function Sessions() {
   const [data, setData] = React.useState([]);
   const [user, setUser] = React.useState({
-    username: "11",
+    username: "",
     userSessions: [],
   });
+
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
   console.log("user is what " + user.username);
   React.useEffect(() => {
@@ -79,9 +80,11 @@ function Sessions() {
               <h1>{date}</h1>
               {toRender.map((session) => {
                 let participant = false;
+
                 user.userSessions.forEach((x) =>
                   x.id === session.id ? (participant = true) : null
                 );
+
                 return (
                   <EventPillHost
                     history={false}
