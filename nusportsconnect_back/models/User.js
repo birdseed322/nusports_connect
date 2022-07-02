@@ -12,7 +12,8 @@ const userSchema = new Schema({
     interests : {type: String},
     ratings : {type : Number, required : true, default: 5},
     img: { data: Buffer, contentType: String },
-    currentSessions : {type : [ObjectId], default: [], required : true}
+    currentSessions : {type : [ObjectId], default: [], required : true},
+    historySessions : {type : [ObjectId], default: [], required : true}
 }, {
     timestamps : true
 })

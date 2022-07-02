@@ -64,6 +64,7 @@ const UserType = new GraphQLObjectType({
         fName: { type: GraphQLNonNull(GraphQLString) },
         lName: { type: GraphQLNonNull(GraphQLString) },
         interests: { type: GraphQLString },
+        currentSessions: { type: GraphQLList(SessionType)},
         accountCreationDate: { type: GraphQLString }
     })
 });
@@ -202,8 +203,6 @@ const RootQueryType = new GraphQLObjectType({
 
                 let result = await User.findOne({ username: args.username }).exec()
                 const cDate = result.createdAt;
-                console.log(cDate);
-                // const accountCreationDate = getAccountCreationDate(cDate)
                 const accountCreationDate = getAccountCreationDate(cDate)
                 return {
                     username: result.username,

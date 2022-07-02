@@ -15,11 +15,8 @@ function ProfileSessionLanding() {
 
   React.useEffect(() => {
     const apiCall = async () => {
-      console.log("zero");
       const user = await findUser(id);
-      //finding user got problem
       setData(user.data.data.userProfileInfo);
-      //getting axios error here at line 19 for some reason
       const check = await checkProfileOwner(id);
       setOwner(check.data.data.checkProfileOwner);
     };
