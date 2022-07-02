@@ -22,7 +22,13 @@ function postQuery(query) {
 export function addUser(username, password, email, fName, lName) {
     const query = `
     mutation {
-        addUser(username:"${username}" password:"${password}" email:"${email}" fName:"${fName}" lName:"${lName}")
+        addUser(
+        username:"${username}"
+        password:"${password}" 
+        email:"${email}" 
+        fName:"${fName}" 
+        lName:"${lName}" 
+        )
     }
  
     `
@@ -123,9 +129,12 @@ export function findUser(username) {
           fName
           lName
           accountCreationDate
+          ratings
+          interests
         }
       }
     `
+    //cannot query interests here for some reason
     return postQuery(query);
 }
 

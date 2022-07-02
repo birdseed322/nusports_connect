@@ -12,17 +12,20 @@ function ProfileSessionLanding() {
   const [owner, setOwner] = React.useState(false);
   const { id } = useParams();
   //Upon mounting component, data retrieved and sent down to profile component.
+
   React.useEffect(() => {
     const apiCall = async () => {
+      console.log("zero");
       const user = await findUser(id);
+      //finding user got problem
       setData(user.data.data.userProfileInfo);
+      //getting axios error here at line 19 for some reason
       const check = await checkProfileOwner(id);
       setOwner(check.data.data.checkProfileOwner);
     };
-
     apiCall();
   }, [id]);
-
+  console.log(data);
   if (data === "Not authenticated") {
     return <NotAuthenticated />;
   } else if (data === "" || data === null) {

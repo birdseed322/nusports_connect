@@ -63,6 +63,7 @@ const UserType = new GraphQLObjectType({
         email: { type: GraphQLNonNull(GraphQLString) },
         fName: { type: GraphQLNonNull(GraphQLString) },
         lName: { type: GraphQLNonNull(GraphQLString) },
+        interests: { type: GraphQLString },
         accountCreationDate: { type: GraphQLString }
     })
 });
@@ -201,13 +202,17 @@ const RootQueryType = new GraphQLObjectType({
 
                 let result = await User.findOne({ username: args.username }).exec()
                 const cDate = result.createdAt;
+                console.log(cDate);
+                // const accountCreationDate = getAccountCreationDate(cDate)
                 const accountCreationDate = getAccountCreationDate(cDate)
                 return {
                     username: result.username,
                     email: result.email,
                     fName: result.fName,
                     lName: result.lName,
-                    accountCreationDate
+                    accountCreationDate,
+                    ratings: result.ratings,
+                    interests: result.interests
                 };
             }
         },
@@ -363,7 +368,7 @@ const RootMutationType = new GraphQLObjectType({
                 password: { type: GraphQLNonNull(GraphQLString) },
                 email: { type: GraphQLNonNull(GraphQLString) },
                 fName: { type: GraphQLNonNull(GraphQLString) },
-                lName: { type: GraphQLNonNull(GraphQLString) }
+                lName: { type: GraphQLNonNull(GraphQLString) },
             },
             resolve: (_, args) => {
                 try {
@@ -373,7 +378,7 @@ const RootMutationType = new GraphQLObjectType({
                             password: pw,
                             email: args.email,
                             fName: args.fName,
-                            lName: args.lName
+                            lName: args.lName,
                         });
                         newUser.save();
                     });

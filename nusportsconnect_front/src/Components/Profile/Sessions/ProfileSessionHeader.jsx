@@ -17,10 +17,10 @@ function ProfileSessionHeader(props) {
   //Friend
   const friend = props.friend;
 
+  console.log(user.username);
   return (
     <div className="profile-header">
       <img className="profile-picture" alt="profile" src={defaultProfilePic} />
-
       <div className="profile-details">
         <h1 className="profile-name">{user.fName + " " + user.lName}</h1>
         <p className="profile-info">{user.email}</p>
@@ -28,14 +28,24 @@ function ProfileSessionHeader(props) {
           Playing since: {user.accountCreationDate}
         </p>
         <p className="profile-info">
-          Interested in: {["Tennis", "Basketball"].join(", ")}
+          {/* Interested in: {["Tennis", "Basketball"].join(", ")} */}
+          Interested in: {user.interests}
         </p>
       </div>
       <div className="profile-rating">
         <img alt="star" src={star} className="star" />
         <h1 className="profile-rating-score">5/5</h1>
       </div>
-      {owner ? <img src={edit} alt="edit button" className="edit-btn" /> : null}
+      {owner ? (
+        <img
+          src={edit}
+          alt="edit button"
+          className="edit-btn"
+          onClick={() =>
+            (window.location.href = "/" + user.username + "/editprofile")
+          }
+        />
+      ) : null}
       {owner ? null : friend ? (
         <img src={friends} alt="friend icon" className="friended-icon" />
       ) : pending ? (
