@@ -388,6 +388,61 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
+        // updateUser: {
+        //     type: GraphQLBoolean,
+        //     description: "Update a user info",
+        //     args: {
+        //         username: { type: GraphQLString },
+        //         email: { type: GraphQLString },
+        //         fName: { type: GraphQLString },
+        //         lName: { type: GraphQLString },
+        //         interests: { type: GraphQLString }
+        //     },
+        //     resolve: (_, args) => {
+        //         try {
+        //             User.updateOne(
+        //                 {username: args.username},
+        //                 { $set: {
+        //                     email: args.email,
+        //                     fName: args.fName,
+        //                     lName: args.lName,
+        //                     interests: args.interests
+        //                     }
+        //                 }
+        //             );
+        //         } catch (err) {
+        //             console.log(err);
+        //             return false;
+        //         }
+        //         return true;
+        //     }
+        // },
+        updateUser: {
+            type: UserType,
+            description: "Update a user info",
+            args: {
+                username: { type:  GraphQLNonNull(GraphQLString) },
+                email: { type:  GraphQLNonNull(GraphQLString) },
+                fName: { type:  GraphQLNonNull(GraphQLString) },
+                lName: { type:  GraphQLNonNull(GraphQLString) },
+                interests: { type: GraphQLString }
+            },
+            resolve: (_, args) => {
+                try {
+                     User.findOneAndUpdate(
+                        {username: args.username},
+                        {
+                            email: args.email,
+                            fName: args.fName,
+                            lName: args.lName,
+                            interests: args.interests
+                        }
+                    );
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        },
         createSession: {
             type: GraphQLString,
             description: "create a session",

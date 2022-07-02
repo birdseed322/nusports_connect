@@ -27,10 +27,7 @@ function ProfileSessionHeader(props) {
         <p className="profile-info">
           Playing since: {user.accountCreationDate}
         </p>
-        <p className="profile-info">
-          {/* Interested in: {["Tennis", "Basketball"].join(", ")} */}
-          Interested in: {user.interests}
-        </p>
+        <p className="profile-info">Interested in: {user.interests}</p>
       </div>
       <div className="profile-rating">
         <img alt="star" src={star} className="star" />

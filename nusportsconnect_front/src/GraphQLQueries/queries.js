@@ -83,6 +83,22 @@ export function getUserUsername() {
     return postQuery(query);
 }
 
+export function UpdateUser(username, email, fName, lName, interests) {
+
+    const query = `
+    mutation {
+        updateUser(
+        username: "${username}" 
+        email: "${email}" 
+        fName: "${fName}" 
+        lName: "${lName}" 
+        interests: "${interests}"
+        )
+      }
+    `
+    return postQuery(query);
+}
+
 export function getUserCurrentSessionsId(username) {
   const query=`
   query{
@@ -166,7 +182,17 @@ export function checkProfileOwner(username) {
 export function createSession(sport, location, description, startDate, endDate, maxParticipant, minStar, host) {
     const query = `
     mutation {
-        createSession(sport:"${sport}" location:"${location}" description:"${description}" startTime:"${startDate}" endTime:"${endDate}" maxParticipant:${maxParticipant} minStar:${minStar} host:"${host}" participants:[])
+        createSession(
+          sport:"${sport}" 
+          location:"${location}" 
+          description:"${description}" 
+          startTime:"${startDate}" 
+          endTime:"${endDate}" 
+          maxParticipant:${maxParticipant} 
+          minStar:${minStar} 
+          host:"${host}" 
+          participants:[]
+          )
       }
     `
     return postQuery(query);

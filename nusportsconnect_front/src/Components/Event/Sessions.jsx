@@ -12,11 +12,11 @@ import {
 function Sessions() {
   const [data, setData] = React.useState([]);
   const [user, setUser] = React.useState({
-    username: "",
+    username: "11",
     userSessions: [],
   });
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
-
+  console.log("user is what " + user.username);
   React.useEffect(() => {
     const fetchUser = async () => {
       const userRes = await getUserUsername();
@@ -51,7 +51,7 @@ function Sessions() {
   uniqDates = uniqDates.sort((a, b) => {
     return new Date(a) - new Date(b);
   });
-  console.log("user is" + user.username);
+
   if (filterSessions.length === 0) {
     return (
       <div className="sessions-container">
