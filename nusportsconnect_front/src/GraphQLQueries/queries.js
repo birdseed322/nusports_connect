@@ -161,12 +161,12 @@ export function findUser(username) {
           email
           fName
           lName
-          accountCreationDate
           interests
+          ratings
+          accountCreationDate
         }
       }
     `
-    //remove ratings and interests
     return postQuery(query);
 }
 

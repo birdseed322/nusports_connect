@@ -217,6 +217,8 @@ const RootQueryType = new GraphQLObjectType({
                     fName: result.fName,
                     lName: result.lName,
                     interests: result.interests,
+                    image: result.image,
+                    ratings: result.ratings,
                     currentSessions,
                     accountCreationDate
                 };

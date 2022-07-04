@@ -72,7 +72,11 @@ function EditProfileBody({ user }) {
           value={interests}
         />
 
-        <button className="edit-button" type="submit">
+        <button
+          className="edit-button"
+          type="submit"
+          onClick={() => (window.location.href = "/" + user.username)}
+        >
           edit
         </button>
       </form>

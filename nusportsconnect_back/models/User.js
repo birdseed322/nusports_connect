@@ -10,6 +10,10 @@ const userSchema = new Schema({
     fName : {type: String, required : true},
     lName : {type : String, required : true},
     interests : {type: String, default: ""},
+    image: {
+        data: Buffer,
+        contentType: String,
+    },
     ratings : {type : Number, required : true, default: 5},
     currentSessions : {type : [ObjectId], default: [], required : true},
 }, {
