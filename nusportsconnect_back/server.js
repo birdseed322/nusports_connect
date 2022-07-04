@@ -64,6 +64,7 @@ const UserType = new GraphQLObjectType({
         fName: { type: GraphQLNonNull(GraphQLString) },
         lName: { type: GraphQLNonNull(GraphQLString) },
         interests: { type: GraphQLString },
+        image: { type: GraphQLString },
         currentSessions: { type: GraphQLList(SessionType)},
         accountCreationDate: { type: GraphQLString }
     })
@@ -217,8 +218,8 @@ const RootQueryType = new GraphQLObjectType({
                     fName: result.fName,
                     lName: result.lName,
                     interests: result.interests,
-                    image: result.image,
                     ratings: result.ratings,
+                    image: result.image,
                     currentSessions,
                     accountCreationDate
                 };
@@ -408,7 +409,8 @@ const RootMutationType = new GraphQLObjectType({
                 email: { type: GraphQLString },
                 fName: { type: GraphQLString },
                 lName: { type: GraphQLString },
-                interests: { type: GraphQLString }
+                interests: { type: GraphQLString },
+                image: { type: GraphQLString}
             },
             resolve: (_, args) => {
                 try {
@@ -418,7 +420,8 @@ const RootMutationType = new GraphQLObjectType({
                             email: args.email,
                             fName: args.fName,
                             lName: args.lName,
-                            interests: args.interests
+                            interests: args.interests,
+                            image: args.image
                             }
                         }
                     ).exec();
@@ -429,33 +432,6 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
-        // updateUser: {
-        //     type: UserType,
-        //     description: "Update a user info",
-        //     args: {
-        //         username: { type:  GraphQLNonNull(GraphQLString) },
-        //         email: { type:  GraphQLNonNull(GraphQLString) },
-        //         fName: { type:  GraphQLNonNull(GraphQLString) },
-        //         lName: { type:  GraphQLNonNull(GraphQLString) },
-        //         interests: { type: GraphQLString }
-        //     },
-        //     resolve: (_, args) => {
-        //         try {
-        //             console.log("test");
-        //              User.findOneAndUpdate(
-        //                 {username: args.username},
-        //                 {
-        //                     email: args.email,
-        //                     fName: args.fName,
-        //                     lName: args.lName,
-        //                     interests: args.interests
-        //                 }
-        //             );
-        //         } catch (err) {
-        //             console.log(err);
-        //         }
-        //     }
-        // },
         createSession: {
             type: GraphQLString,
             description: "create a session",
