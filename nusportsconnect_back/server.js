@@ -90,8 +90,8 @@ const SessionType = new GraphQLObjectType({
         date: { type: GraphQLNonNull(GraphQLString) },
         startTime: { type: GraphQLNonNull(GraphQLString) },
         endTime: { type: GraphQLNonNull(GraphQLString) },
-        fullStartTime: {type: GraphQLNonNull(GraphQLString)},
-        fullEndTime: {type: GraphQLNonNull(GraphQLString)},
+        fullStartTime: { type: GraphQLNonNull(GraphQLString) },
+        fullEndTime: { type: GraphQLNonNull(GraphQLString) },
         participants: { type: GraphQLList(UserType) },
         host: { type: UserType },
         currentParticipants: { type: GraphQLNonNull(GraphQLInt) },
@@ -150,7 +150,7 @@ const RootQueryType = new GraphQLObjectType({
             description: "Retrieve all Session",
             resolve: async() => {
                 let sessions = await Session.find().exec()
-                sessions = sessions.map(async (sesh) => {
+                sessions = sessions.map(async(sesh) => {
                     const host = await User.findById(sesh.host).exec()
                     return {
                         id: sesh.id,
@@ -177,8 +177,8 @@ const RootQueryType = new GraphQLObjectType({
             },
             resolve: async(parent, args) => {
                 let session = await Session.findById(args.id).exec().then(async(sesh) => {
-                    let host = await User.findById(sesh.host).exec()
-                    let users = await User.find({ _id: { $in: sesh.participants } }).exec()
+                    let host = await User.findById(sesh.host).exec();
+                    let users = await User.find({ _id: { $in: sesh.participants } }).exec();
                     return {
                         sport: sesh.sport,
                         location: sesh.location,
@@ -186,7 +186,9 @@ const RootQueryType = new GraphQLObjectType({
                         description: sesh.description,
                         minStar: sesh.minStar,
                         startTime: formatAMPM(dateTime.serialize(sesh.startTime)),
+                        fullStartTime: sesh.startTime,
                         endTime: formatAMPM(dateTime.serialize(sesh.endTime)),
+                        fullEndTime: sesh.endTime,
                         host,
                         participants: users,
                         currentParticipants: sesh.participants.length,
@@ -211,7 +213,7 @@ const RootQueryType = new GraphQLObjectType({
                 const result = await User.findOne({ username: args.username }).exec()
                 const cDate = result.createdAt;
                 const accountCreationDate = getAccountCreationDate(cDate)
-                const currentSessions = await Session.find({_id : {$in : result.currentSessions}}).exec()
+                const currentSessions = await Session.find({ _id: { $in: result.currentSessions } }).exec()
                 return {
                     username: result.username,
                     email: result.email,
@@ -269,7 +271,7 @@ const RootQueryType = new GraphQLObjectType({
                 username: { type: GraphQLString }
             },
             resolve: (parent, args, { req, res, user }) => {
-                return (user.username === args.username)
+                return (user.username === args.username);
             }
         },
         getSessions: {
@@ -305,10 +307,10 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 username: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
+            resolve: async(_, args) => {
                 let res = await User.findOne({ username: args.username }).exec()
                 let userSessions = await Session.find({ _id: { $in: res.currentSessions } }).exec()
-                userSessions = userSessions.map(async (sesh) => {
+                userSessions = userSessions.map(async(sesh) => {
                     const host = await User.findById(sesh.host).exec()
                     return {
                         id: sesh.id,
@@ -491,6 +493,38 @@ const RootMutationType = new GraphQLObjectType({
                     return false;
                 }
 
+            }
+        },
+        editSession: {
+            type: GraphQLBoolean,
+            description: "Update fields of session",
+            args: {
+                id: { type: GraphQLNonNull(GraphQLString) },
+                location: { type: GraphQLNonNull(GraphQLString) },
+                description: { type: GraphQLNonNull(GraphQLString) },
+                startTime: { type: GraphQLNonNull(GraphQLString) },
+                endTime: { type: GraphQLNonNull(GraphQLString) },
+                maxParticipant: { type: GraphQLNonNull(GraphQLInt) },
+                minStar: { type: GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: (_, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
+
+                try {
+                    Session.findById(args.id).exec().then(sesh => {
+                        sesh.location = args.location;
+                        sesh.description = args.description;
+                        sesh.startTime = dateTime.parseValue(args.startTime);
+                        sesh.endTime = dateTime.parseValue(args.endTime);
+                        sesh.maxParticipant = args.maxParticipant;
+                        sesh.minStar = args.minStar;
+                        sesh.save();
+                    })
+                } catch (err) {
+                    console.log(err)
+                }
             }
         },
         revokeRefreshTokenForUser: {

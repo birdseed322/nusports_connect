@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getAccessToken } from "../accessToken";
-import { graphqlURI } from "../Routes/routes"
+import { graphqlURI } from "../Routes/routes";
 
 function postQuery(query) {
     let result = axios({
@@ -101,7 +101,7 @@ export function updateUser(username, email, fName, lName, interests, image) {
 }
 
 export function getUserCurrentSessionsId(username) {
-  const query=`
+    const query = `
   query{
     userProfileInfo(username:"${username}") {
       currentSessions {
@@ -110,7 +110,7 @@ export function getUserCurrentSessionsId(username) {
     }
   }
   `
-  return postQuery(query);
+    return postQuery(query);
 }
 
 export function logout() {
@@ -198,6 +198,14 @@ export function createSession(sport, location, description, startDate, endDate, 
     `
     return postQuery(query);
 }
+export function editSession(id, location, description, startTime, endTime, maxParticipant, minStar) {
+    const query = `
+  mutation{
+    editSession(id:"${id}" location:"${location}" description:"${description}" startTime:"${startTime}" endTime:"${endTime}" maxParticipant:${maxParticipant} minStar:${minStar})
+  }
+  `;
+    return postQuery(query);
+}
 
 export function getSessionInfo(sessionId) {
     const query = `
@@ -209,7 +217,9 @@ export function getSessionInfo(sessionId) {
           description
           minStar
           startTime
+          fullStartTime
           endTime
+          fullEndTime
           host {
             fName
             lName
