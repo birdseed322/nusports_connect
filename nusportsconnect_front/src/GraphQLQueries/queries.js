@@ -96,23 +96,8 @@ export function updateUser(username, email, fName, lName, interests) {
         )
       }
     `
-    // const result = axios.put( graphqlURI, {
-    //   query
-    // })
-    // .then(res => console.log(res))
-    // .catch(err => console.log(err));
-    
-    let result = axios({
-      url: graphqlURI,
-      method: "put",
-      withCredentials: true,
-      data: {
-        query
-      }
-    })
-    .catch(err => console.log(err));
-    
-    return result.status;
+    console.log("working");
+     return postQuery(query);
 }
 
 export function getUserCurrentSessionsId(username) {
@@ -177,6 +162,7 @@ export function findUser(username) {
           fName
           lName
           accountCreationDate
+          interests
         }
       }
     `

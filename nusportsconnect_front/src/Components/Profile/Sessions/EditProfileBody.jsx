@@ -3,7 +3,6 @@ import { updateUser } from "../../../GraphQLQueries/queries";
 import "./EditProfileStyles.css";
 
 function EditProfileBody({ user }) {
-  // const [email, setEmail] = React.useState(user.email);
   const [email, setEmail] = React.useState(user.email);
   const [fName, setFName] = React.useState(user.fName);
   const [lName, setLName] = React.useState(user.lName);

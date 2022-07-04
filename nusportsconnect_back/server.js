@@ -216,6 +216,7 @@ const RootQueryType = new GraphQLObjectType({
                     email: result.email,
                     fName: result.fName,
                     lName: result.lName,
+                    interests: result.interests,
                     currentSessions,
                     accountCreationDate
                 };
@@ -418,7 +419,7 @@ const RootMutationType = new GraphQLObjectType({
                             interests: args.interests
                             }
                         }
-                    );
+                    ).exec();
                 } catch (err) {
                     console.log(err);
                     return false;
