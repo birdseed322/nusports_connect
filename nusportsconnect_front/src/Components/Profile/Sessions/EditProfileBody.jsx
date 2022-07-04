@@ -8,7 +8,7 @@ function EditProfileBody({ user }) {
   const [fName, setFName] = useState(user.fName);
   const [lName, setLName] = useState(user.lName);
   const [interests, setInterests] = useState(user.interests);
-  const [image, setImage] = useState({ noPic });
+  const [baseImage, setBaseImage] = useState({ noPic });
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -20,18 +20,36 @@ function EditProfileBody({ user }) {
     apiCall();
   }, [user.email, user.fName, user.lName, user.interests]);
 
+  const uploadImage = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertBase64(file);
+    setBaseImage(base64);
+  };
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
   function handleSubmit(e) {
     e.preventDefault();
     try {
-      // const imageData = new FormData();
-      // imageData.append("image", image, image.name);
-      // console.log(imageData.get("image"));
-      updateUser(user.username, email, fName, lName, interests);
+      updateUser(user.username, email, fName, lName, interests, baseImage);
     } catch (err) {
       console.log(err);
     }
   }
-
+  console.log(baseImage);
   return (
     <div className="edit-container">
       <div className="edit-header">
@@ -39,9 +57,8 @@ function EditProfileBody({ user }) {
       </div>
 
       <form className="edit-form" onSubmit={handleSubmit}>
-        {/* <label htmlFor="image">Profile Picture: </label>
-        <input type="file" onChange={(e) => setImage(e.target.files[0])} /> */}
-
+        <label htmlFor="image">Profile Picture: </label>
+        <input type="file" onChange={(e) => uploadImage(e)} />
         <label htmlFor="email">Email: </label>
         <input
           type="email"
@@ -49,7 +66,6 @@ function EditProfileBody({ user }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-
         <label htmlFor="fName">First Name: </label>
         <input
           type="text"
@@ -57,7 +73,6 @@ function EditProfileBody({ user }) {
           onChange={(e) => setFName(e.target.value)}
           value={fName}
         />
-
         <label htmlFor="lName">Last Name: </label>
         <input
           type="text"
@@ -65,7 +80,6 @@ function EditProfileBody({ user }) {
           onChange={(e) => setLName(e.target.value)}
           value={lName}
         />
-
         <label htmlFor="interests">Interested in: </label>
         <input
           type="text"
@@ -73,7 +87,6 @@ function EditProfileBody({ user }) {
           onChange={(e) => setInterests(e.target.value)}
           value={interests}
         />
-
         <button
           className="edit-button"
           type="submit"
