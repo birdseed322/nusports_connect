@@ -23,7 +23,6 @@ function CreateSessionBody() {
   const [endDate, setEndDate] = useState(null);
   const [maxParticipant, setMaxParticipant] = useState(2);
   const [minStar, setMinStar] = useState(0);
-  const [id, setId] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -206,11 +205,7 @@ function CreateSessionBody() {
               required
             ></textarea>
           </div>
-          <button
-            className="create-button"
-            type="submit"
-            // onClick={() => (window.location.href = "/sessions/" + id)}
-          >
+          <button className="create-button" type="submit">
             create
           </button>
         </form>

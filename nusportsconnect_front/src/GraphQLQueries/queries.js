@@ -96,7 +96,6 @@ export function updateUser(username, email, fName, lName, interests) {
         )
       }
     `
-    console.log("working");
      return postQuery(query);
 }
 

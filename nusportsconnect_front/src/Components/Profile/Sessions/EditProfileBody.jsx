@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { updateUser } from "../../../GraphQLQueries/queries";
 import "./EditProfileStyles.css";
+import noPic from "../../../pics/defaultProfilePic.png";
 
 function EditProfileBody({ user }) {
-  const [email, setEmail] = React.useState(user.email);
-  const [fName, setFName] = React.useState(user.fName);
-  const [lName, setLName] = React.useState(user.lName);
-  const [interests, setInterests] = React.useState(user.interests);
+  const [email, setEmail] = useState(user.email);
+  const [fName, setFName] = useState(user.fName);
+  const [lName, setLName] = useState(user.lName);
+  const [interests, setInterests] = useState(user.interests);
+  const [image, setImage] = useState({ noPic });
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -21,6 +23,9 @@ function EditProfileBody({ user }) {
   function handleSubmit(e) {
     e.preventDefault();
     try {
+      // const imageData = new FormData();
+      // imageData.append("image", image, image.name);
+      // console.log(imageData.get("image"));
       updateUser(user.username, email, fName, lName, interests);
     } catch (err) {
       console.log(err);
@@ -32,14 +37,11 @@ function EditProfileBody({ user }) {
       <div className="edit-header">
         <h1 className="edit-title">Edit Profile</h1>
       </div>
-      {/* Can edit:
-      email
-      fName
-      lName
-      interests
-      profile picture */}
 
       <form className="edit-form" onSubmit={handleSubmit}>
+        {/* <label htmlFor="image">Profile Picture: </label>
+        <input type="file" onChange={(e) => setImage(e.target.files[0])} /> */}
+
         <label htmlFor="email">Email: </label>
         <input
           type="email"
