@@ -45,10 +45,13 @@ function CreateSessionBody() {
         minStar,
         hostId.data.data.userIdentity
       );
+      console.log(sessionId);
       await joinSession(
         hostId.data.data.userIdentity,
         sessionId.data.data.createSession
       );
+
+      window.location.href = "/sessions/" + sessionId.data.data.createSession;
     } catch (err) {
       console.log(err);
     }
@@ -202,7 +205,6 @@ function CreateSessionBody() {
               required
             ></textarea>
           </div>
-
           <button className="create-button" type="submit">
             create
           </button>

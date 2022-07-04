@@ -63,6 +63,7 @@ const UserType = new GraphQLObjectType({
         email: { type: GraphQLNonNull(GraphQLString) },
         fName: { type: GraphQLNonNull(GraphQLString) },
         lName: { type: GraphQLNonNull(GraphQLString) },
+        interests: { type: GraphQLString },
         currentSessions: { type: GraphQLList(SessionType)},
         accountCreationDate: { type: GraphQLString }
     })
@@ -215,6 +216,9 @@ const RootQueryType = new GraphQLObjectType({
                     email: result.email,
                     fName: result.fName,
                     lName: result.lName,
+                    interests: result.interests,
+                    image: result.image,
+                    ratings: result.ratings,
                     currentSessions,
                     accountCreationDate
                 };
@@ -375,7 +379,7 @@ const RootMutationType = new GraphQLObjectType({
                 password: { type: GraphQLNonNull(GraphQLString) },
                 email: { type: GraphQLNonNull(GraphQLString) },
                 fName: { type: GraphQLNonNull(GraphQLString) },
-                lName: { type: GraphQLNonNull(GraphQLString) }
+                lName: { type: GraphQLNonNull(GraphQLString) },
             },
             resolve: (_, args) => {
                 try {
@@ -385,7 +389,7 @@ const RootMutationType = new GraphQLObjectType({
                             password: pw,
                             email: args.email,
                             fName: args.fName,
-                            lName: args.lName
+                            lName: args.lName,
                         });
                         newUser.save();
                     });
@@ -396,6 +400,62 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
+        updateUser: {
+            type: GraphQLBoolean,
+            description: "Update a user info",
+            args: {
+                username: { type: GraphQLString },
+                email: { type: GraphQLString },
+                fName: { type: GraphQLString },
+                lName: { type: GraphQLString },
+                interests: { type: GraphQLString }
+            },
+            resolve: (_, args) => {
+                try {
+                    User.updateOne(
+                        {username: args.username},
+                        { $set: {
+                            email: args.email,
+                            fName: args.fName,
+                            lName: args.lName,
+                            interests: args.interests
+                            }
+                        }
+                    ).exec();
+                } catch (err) {
+                    console.log(err);
+                    return false;
+                }
+                return true;
+            }
+        },
+        // updateUser: {
+        //     type: UserType,
+        //     description: "Update a user info",
+        //     args: {
+        //         username: { type:  GraphQLNonNull(GraphQLString) },
+        //         email: { type:  GraphQLNonNull(GraphQLString) },
+        //         fName: { type:  GraphQLNonNull(GraphQLString) },
+        //         lName: { type:  GraphQLNonNull(GraphQLString) },
+        //         interests: { type: GraphQLString }
+        //     },
+        //     resolve: (_, args) => {
+        //         try {
+        //             console.log("test");
+        //              User.findOneAndUpdate(
+        //                 {username: args.username},
+        //                 {
+        //                     email: args.email,
+        //                     fName: args.fName,
+        //                     lName: args.lName,
+        //                     interests: args.interests
+        //                 }
+        //             );
+        //         } catch (err) {
+        //             console.log(err);
+        //         }
+        //     }
+        // },
         createSession: {
             type: GraphQLString,
             description: "create a session",

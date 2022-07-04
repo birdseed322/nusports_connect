@@ -18,15 +18,20 @@ function postQuery(query) {
 
     return result;
 }
-
 export function addUser(username, password, email, fName, lName) {
     const query = `
     mutation {
-        addUser(username:"${username}" password:"${password}" email:"${email}" fName:"${fName}" lName:"${lName}")
+        addUser(
+        username:"${username}"
+        password:"${password}" 
+        email:"${email}" 
+        fName:"${fName}" 
+        lName:"${lName}" 
+        )
     }
  
     `
-
+    
     const result = axios.post(graphqlURI, {
             query
         })
@@ -75,6 +80,23 @@ export function getUserUsername() {
       }
     `
     return postQuery(query);
+}
+
+
+export function updateUser(username, email, fName, lName, interests) {
+
+    const query = `
+    mutation {
+        updateUser(
+        username: "${username}" 
+        email: "${email}" 
+        fName: "${fName}" 
+        lName: "${lName}" 
+        interests: "${interests}"
+        )
+      }
+    `
+     return postQuery(query);
 }
 
 export function getUserCurrentSessionsId(username) {
@@ -138,6 +160,8 @@ export function findUser(username) {
           email
           fName
           lName
+          interests
+          ratings
           accountCreationDate
         }
       }
@@ -157,7 +181,17 @@ export function checkProfileOwner(username) {
 export function createSession(sport, location, description, startDate, endDate, maxParticipant, minStar, host) {
     const query = `
     mutation {
-        createSession(sport:"${sport}" location:"${location}" description:"${description}" startTime:"${startDate}" endTime:"${endDate}" maxParticipant:${maxParticipant} minStar:${minStar} host:"${host}" participants:[])
+        createSession(
+          sport:"${sport}" 
+          location:"${location}" 
+          description:"${description}" 
+          startTime:"${startDate}" 
+          endTime:"${endDate}" 
+          maxParticipant:${maxParticipant} 
+          minStar:${minStar} 
+          host:"${host}" 
+          participants:[]
+          )
       }
     `
     return postQuery(query);
