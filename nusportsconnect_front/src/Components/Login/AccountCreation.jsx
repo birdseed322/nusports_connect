@@ -25,12 +25,12 @@ function AccountCreationForm(props) {
     setEmail(updatedEmail);
   }
 
-  function handleFNameChange(e){
+  function handleFNameChange(e) {
     const updatedFName = e.target.value;
     setFName(updatedFName);
   }
 
-  function handleLNameChange(e){
+  function handleLNameChange(e) {
     const updatedLName = e.target.value;
     setLName(updatedLName);
   }

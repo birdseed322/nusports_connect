@@ -1,5 +1,5 @@
 function getAccountCreationDate(cDate){
-    return cDate.getDate() + "/" + cDate.getMonth() + "/" + cDate.getFullYear();
+    return cDate.getDate() + "/" + (cDate.getMonth() + 1) + "/" + cDate.getFullYear();
 };
 
 function formatAMPM(date) {

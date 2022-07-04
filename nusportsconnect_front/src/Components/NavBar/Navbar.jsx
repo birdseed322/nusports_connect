@@ -10,7 +10,6 @@ function Navbar() {
     const apiCall = async () => {
       const user = await getUserUsername();
       setUsername(user.data.data.userUsername);
-      // console.log(username);
     };
     apiCall();
   });

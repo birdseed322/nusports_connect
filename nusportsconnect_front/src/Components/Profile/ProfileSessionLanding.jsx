@@ -12,6 +12,7 @@ function ProfileSessionLanding() {
   const [owner, setOwner] = React.useState(false);
   const { id } = useParams();
   //Upon mounting component, data retrieved and sent down to profile component.
+
   React.useEffect(() => {
     const apiCall = async () => {
       const user = await findUser(id);
@@ -19,10 +20,9 @@ function ProfileSessionLanding() {
       const check = await checkProfileOwner(id);
       setOwner(check.data.data.checkProfileOwner);
     };
-
     apiCall();
   }, [id]);
-
+  console.log(data);
   if (data === "Not authenticated") {
     return <NotAuthenticated />;
   } else if (data === "" || data === null) {
