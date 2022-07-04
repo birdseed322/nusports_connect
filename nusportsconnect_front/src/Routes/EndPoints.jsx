@@ -12,6 +12,7 @@ import ProfileFriendsLanding from "../Components/Profile/ProfileFriendsLanding";
 import ProfileReviewsLanding from "../Components/Profile/ProfileReviewsLanding";
 import { Loading } from "../Components/Loading/Loading";
 import NotAuthenticated from "../Components/NotAuthenticated/NotAuthenticated";
+import EditSession from "../Components/Sessions/EditSession";
 
 function EndPoints() {
   return (
@@ -24,6 +25,7 @@ function EndPoints() {
         <Route exact path="/loading" element={<Loading />} />
         <Route exact path="/sessions" element={<Sessions />} />
         <Route exact path="/sessions/:id" element={<SessionsPage />} />
+        <Route exact path="/sessions/:id/edit" element={<EditSession />} />
         <Route exact path="/createsession" element={<CreateSession />} />
         <Route exact path="/:id" element={<ProfileSessionLanding />} />
         <Route exact path="/unauthenticated" element={<NotAuthenticated />} />

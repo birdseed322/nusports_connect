@@ -1,111 +1,124 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .create-container {
-  height: 100vh;
-  background-image: url("../../pics/Sessions_background.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
-  display: flex;
-  justify-content: center;
+    height: 100vh;
+    background-image: url("../../pics/Sessions_background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
 }
 
 .create-panel {
-  background-color: #8BE0E5;
-  width: 75%;
-  height: 75vh;
-  border-radius: 20px;
-  margin-top: 2%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    background-color: #8BE0E5;
+    width: 75%;
+    height: 75vh;
+    border-radius: 20px;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .create-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .create-title {
-  display: block;
-  margin: 0 auto;
-  font-size: 24px;
+    display: block;
+    margin: 0 auto;
+    font-size: 24px;
 }
 
 .create-warning {
-  display: block;
-  font-size: small;
-  color: red;
+    display: block;
+    font-size: small;
+    color: red;
 }
 
-
 .create-form {
-  height: inherit;
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 0;
+    height: inherit;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0;
 }
 
 .input-icon {
-  width: 2em;
-  height: 2em;
-  display: inline;
+    width: 2em;
+    height: 2em;
+    display: inline;
 }
 
 .create-item {
-  margin: .5vh;
+    margin: .5vh;
 }
 
 .create-item.create-date {
-  display: flex;
+    display: flex;
 }
 
-
 .create-input {
-  display: inline;
-  height: 5vh;
-  width: 20vw;
-  border-radius: 2em;
-  cursor: text;
-  margin: .5vh;
-  font-size: 16px;
-  border: none;
-  padding-left: 1.5vw;
-  padding-top: 0;
+    display: inline;
+    height: 5vh;
+    width: 20vw;
+    border-radius: 2em;
+    cursor: text;
+    margin: .5vh;
+    font-size: 16px;
+    border: none;
+    padding-left: 1.5vw;
+    padding-top: 0;
 }
 
 .create-input.create-sport {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .create-input.create-description {
-  height: 50vh;
-  width: 40vw;
-  font-family: arial;
-  font-size: 18px;
-  padding: 2%;
+    height: 50vh;
+    width: 40vw;
+    font-family: arial;
+    font-size: 18px;
+    padding: 2%;
 }
 
-
 .create-button {
-  width: 100px;
-  background-color: #3DAD49;
-  color: white;
-  padding: .8em;
-  font-size: 20px;
-  border: none;
-  border-radius: 12px;
-  transition: 5ms ease-in;
-  cursor: pointer;
+    width: 100px;
+    background-color: #3DAD49;
+    color: white;
+    padding: .8em;
+    font-size: 20px;
+    border: none;
+    border-radius: 12px;
+    transition: 5ms ease-in;
+    cursor: pointer;
+}
+
+.change-button {
+    width: 100px;
+    background-color: #48B9DC;
+    color: black;
+    padding: .8em;
+    font-size: 20px;
+    border: none;
+    border-radius: 12px;
+    transition: 5ms ease-in;
+    cursor: pointer;
 }
 
 .create-button:hover {
-  background-color: #328f3b;
+    background-color: #328f3b;
+}
+
+.change-button:hover {
+    background-color: #3EA7C8;
 }

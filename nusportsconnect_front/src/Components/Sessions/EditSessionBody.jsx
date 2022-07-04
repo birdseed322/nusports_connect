@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useParams} from 'react-router-dom'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./createBodyStyles.css";
@@ -10,12 +11,12 @@ import date from "../../pics/frame.png";
 import start from "../../pics/start.png";
 import end from "../../pics/end.png";
 import {
-  createSession,
-  getUserIdentity,
-  joinSession,
+    editSession,
+  getSessionInfo
 } from "../../GraphQLQueries/queries";
 
-function CreateSessionBody() {
+function EditSessionBody() {
+  const {id} = useParams();  
   const [sport, setSport] = useState("Badminton");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
@@ -23,26 +24,51 @@ function CreateSessionBody() {
   const [endDate, setEndDate] = useState(null);
   const [maxParticipant, setMaxParticipant] = useState(2);
   const [minStar, setMinStar] = useState(0);
+  const [currentParticipants, setCurrentParticipants] = useState(0);
+
+  React.useEffect(() => {
+    const apiCall = async () => {
+        let session = await getSessionInfo(id);
+        session = session.data.data.getSessionInfo; 
+        setSport(session.sport);
+        setLocation(session.location);
+        setDescription(session.description);
+        setStartDate(new Date(parseInt(session.fullStartTime)));
+        setEndDate(new Date(parseInt(session.fullEndTime)));
+        setMaxParticipant(session.maxParticipants);
+        setCurrentParticipants(session.currentParticipants);
+        setMinStar(session.minStar);
+      };
+
+      apiCall();
+
+  }, [id]);
+
+  const filterPassedTime = (time) => {
+    let currentDate = new Date();
+    currentDate = currentDate.setHours(currentDate.getHours() + 2);
+    currentDate = new Date(currentDate);
+    const selectedDate = new Date(time);
+    return currentDate.getTime() < selectedDate.getTime();
+  };
+
+  if (startDate < new Date()){
+    let currentDate = new Date();
+    currentDate = currentDate.setHours(currentDate.getHours() + 2);
+    currentDate = new Date(currentDate);
+    setStartDate(currentDate);
+  }
+
+  if (endDate < startDate){
+    setEndDate(startDate);
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const hostId = await getUserIdentity();
-      const sessionId = await createSession(
-        sport,
-        location,
-        description,
-        startDate,
-        endDate,
-        maxParticipant,
-        minStar,
-        hostId.data.data.userIdentity
-      );
-      await joinSession(
-        hostId.data.data.userIdentity,
-        sessionId.data.data.createSession
-      );
-
+        editSession(id, location, description, startDate, endDate, maxParticipant, minStar);
+        window.location.href="/sessions/" + id;
+      
     } catch (err) {
       console.log(err);
     }
@@ -52,7 +78,7 @@ function CreateSessionBody() {
     <div className="create-container">
       <div className="create-panel">
         <div className="create-header">
-          <h1 className="create-title">Create your own session</h1>
+          <h1 className="create-title">Edit your session</h1>
           <div className="create-warning">
             Note: Please ensure that the location is available for use before
             creating!
@@ -65,6 +91,7 @@ function CreateSessionBody() {
               <img className="input-icon" src={sportIcon} alt="" />
             </label>
             <select
+              disabled
               className="create-input create-sport"
               name="#"
               id="sport"
@@ -99,17 +126,18 @@ function CreateSessionBody() {
               <img className="input-icon" src={date} alt="" />
             </label>
             <DatePicker
-              className="create-input"
-              placeholderText="Date"
-              selected={startDate}
-              onChange={(date) => {
-                setStartDate(date);
-                setEndDate(date);
-              }}
-              minDate={new Date()}
-              dateFormat="dd/MM/yyyy"
-              required
-            ></DatePicker>
+            className="create-input"
+            placeholderText="Date"
+            selected={startDate}
+            onChange={(date) => {
+              setStartDate(date);
+              setEndDate(date);
+            }}
+            minDate={new Date()}
+            filterTime={filterPassedTime}
+            dateFormat="dd/MM/yyyy"
+            required
+          ></DatePicker>
           </div>
 
           <div className="create-item create-date">
@@ -123,8 +151,10 @@ function CreateSessionBody() {
               onChange={(date) => setStartDate(date)}
               minDate={startDate}
               maxDate={startDate}
+              filterTime={filterPassedTime}
               dateFormat="HH:mm"
               showTimeSelect
+              showTimeSelectOnly
               timeIntervals={15}
               required
             ></DatePicker>
@@ -141,8 +171,10 @@ function CreateSessionBody() {
               onChange={(date) => setEndDate(date)}
               minDate={startDate}
               maxDate={startDate}
+              filterTime={filterPassedTime}
               dateFormat="HH:mm"
               showTimeSelect
+              showTimeSelectOnly
               timeIntervals={15}
               required
             ></DatePicker>
@@ -157,7 +189,7 @@ function CreateSessionBody() {
               type="number"
               placeholder="No. Participants"
               id="participant"
-              min="2"
+              min={currentParticipants}
               max="30"
               value={maxParticipant}
               onChange={(e) => setMaxParticipant(e.target.value)}
@@ -197,8 +229,8 @@ function CreateSessionBody() {
             ></textarea>
           </div>
 
-          <button className="create-button" type="submit">
-            create
+          <button className="change-button" type="submit">
+            change
           </button>
         </form>
       </div>
@@ -206,4 +238,4 @@ function CreateSessionBody() {
   );
 }
 
-export default CreateSessionBody;
+export default EditSessionBody;
