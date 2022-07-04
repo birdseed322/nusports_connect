@@ -17,13 +17,12 @@ function ProfileSessionHeader(props) {
   //Friend
   const friend = props.friend;
 
-  console.log(user);
   return (
     <div className="profile-header">
       <img
         className="profile-picture"
-        alt={defaultProfilePic}
         src={user.image}
+        alt={defaultProfilePic}
       />
       <div className="profile-details">
         <h1 className="profile-name">{user.fName + " " + user.lName}</h1>
