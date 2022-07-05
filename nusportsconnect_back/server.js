@@ -24,6 +24,7 @@ const { verify } = require('jsonwebtoken');
 var { getAccountCreationDate, formatAMPM } = require('./helperFunctions');
 const Session = require('./models/Session');
 const { ObjectId } = require('mongodb');
+// const multer = require('multer');
 
 require('dotenv').config();
 
@@ -36,7 +37,8 @@ const port = process.env.PORT || 5000;
 app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000" }));
 app.use(cookieParser());
 app.use(isAuth);
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+
 
 //Create connection to database. Change to appropriate database URI
 const dbURI = process.env.LOCAL_DB_URI;
@@ -64,6 +66,7 @@ const UserType = new GraphQLObjectType({
         fName: { type: GraphQLNonNull(GraphQLString) },
         lName: { type: GraphQLNonNull(GraphQLString) },
         interests: { type: GraphQLString },
+        image: { type: GraphQLString },
         currentSessions: { type: GraphQLList(SessionType)},
         accountCreationDate: { type: GraphQLString }
     })
@@ -117,7 +120,6 @@ const dateTime = new GraphQLScalarType({
         return date
     }
 })
-
 
 //Root query and Root mutation
 const RootQueryType = new GraphQLObjectType({
@@ -219,8 +221,8 @@ const RootQueryType = new GraphQLObjectType({
                     fName: result.fName,
                     lName: result.lName,
                     interests: result.interests,
-                    image: result.image,
                     ratings: result.ratings,
+                    image: result.image,
                     currentSessions,
                     accountCreationDate
                 };
@@ -410,7 +412,8 @@ const RootMutationType = new GraphQLObjectType({
                 email: { type: GraphQLString },
                 fName: { type: GraphQLString },
                 lName: { type: GraphQLString },
-                interests: { type: GraphQLString }
+                interests: { type: GraphQLString },
+                image: { type: GraphQLString}
             },
             resolve: (_, args) => {
                 try {
@@ -420,7 +423,8 @@ const RootMutationType = new GraphQLObjectType({
                             email: args.email,
                             fName: args.fName,
                             lName: args.lName,
-                            interests: args.interests
+                            interests: args.interests,
+                            image: args.image
                             }
                         }
                     ).exec();
@@ -431,33 +435,6 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
-        // updateUser: {
-        //     type: UserType,
-        //     description: "Update a user info",
-        //     args: {
-        //         username: { type:  GraphQLNonNull(GraphQLString) },
-        //         email: { type:  GraphQLNonNull(GraphQLString) },
-        //         fName: { type:  GraphQLNonNull(GraphQLString) },
-        //         lName: { type:  GraphQLNonNull(GraphQLString) },
-        //         interests: { type: GraphQLString }
-        //     },
-        //     resolve: (_, args) => {
-        //         try {
-        //             console.log("test");
-        //              User.findOneAndUpdate(
-        //                 {username: args.username},
-        //                 {
-        //                     email: args.email,
-        //                     fName: args.fName,
-        //                     lName: args.lName,
-        //                     interests: args.interests
-        //                 }
-        //             );
-        //         } catch (err) {
-        //             console.log(err);
-        //         }
-        //     }
-        // },
         createSession: {
             type: GraphQLString,
             description: "create a session",
@@ -581,6 +558,8 @@ app.use('/graphql',
         };
     })
 );
+
+
 
 //Route to refresh token
 

@@ -83,7 +83,7 @@ export function getUserUsername() {
 }
 
 
-export function updateUser(username, email, fName, lName, interests) {
+export function updateUser(username, email, fName, lName, interests, image) {
 
     const query = `
     mutation {
@@ -93,9 +93,11 @@ export function updateUser(username, email, fName, lName, interests) {
         fName: "${fName}" 
         lName: "${lName}" 
         interests: "${interests}"
+        image: "${image}"
         )
       }
     `
+    console.log("working");
      return postQuery(query);
 }
 
@@ -162,6 +164,7 @@ export function findUser(username) {
           lName
           interests
           ratings
+          image
           accountCreationDate
         }
       }
