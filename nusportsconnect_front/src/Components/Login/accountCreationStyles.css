@@ -49,6 +49,10 @@
   font-family: 'Average Sans', sans-serif;
 
 }
+.sign-input.username {
+  text-transform: lowercase;
+  font-size: 14px;
+}
 
 .sign-e {
   width: fit-content;

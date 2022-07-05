@@ -16,14 +16,17 @@ function ProfileSessionHeader(props) {
   const pending = props.pending;
   //Friend
   const friend = props.friend;
-
   return (
     <div className="profile-header">
-      <img
-        className="profile-picture"
-        src={user.image}
-        alt={defaultProfilePic}
-      />
+      {user.image === "" ? (
+        <img className="profile-picture" src={defaultProfilePic} />
+      ) : (
+        <img
+          className="profile-picture"
+          src={user.image}
+          alt={defaultProfilePic}
+        />
+      )}
       <div className="profile-details">
         <h1 className="profile-name">{user.fName + " " + user.lName}</h1>
         <p className="profile-info">{user.email}</p>

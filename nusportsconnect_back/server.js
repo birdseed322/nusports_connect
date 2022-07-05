@@ -24,6 +24,7 @@ const { verify } = require('jsonwebtoken');
 var { getAccountCreationDate, formatAMPM } = require('./helperFunctions');
 const Session = require('./models/Session');
 const { ObjectId } = require('mongodb');
+// const multer = require('multer');
 
 require('dotenv').config();
 
@@ -36,7 +37,8 @@ const port = process.env.PORT || 5000;
 app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000" }));
 app.use(cookieParser());
 app.use(isAuth);
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+
 
 //Create connection to database. Change to appropriate database URI
 const dbURI = process.env.LOCAL_DB_URI;
@@ -118,7 +120,6 @@ const dateTime = new GraphQLScalarType({
         return date
     }
 })
-
 
 //Root query and Root mutation
 const RootQueryType = new GraphQLObjectType({
@@ -557,6 +558,8 @@ app.use('/graphql',
         };
     })
 );
+
+
 
 //Route to refresh token
 

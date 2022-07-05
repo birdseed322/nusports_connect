@@ -40,7 +40,7 @@ function SignInForm(props) {
               placeholder="Username"
               name="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value.toLowerCase())}
               required
             />
             <br />

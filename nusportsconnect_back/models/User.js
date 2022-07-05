@@ -1,7 +1,6 @@
 const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
-
 const userSchema = new Schema({
     username : { type : String, required : true},
     password : {type : String, required : true},
@@ -10,7 +9,7 @@ const userSchema = new Schema({
     fName : {type: String, required : true},
     lName : {type : String, required : true},
     interests : {type: String, default: ""},
-    image: { type: String, default: "" },
+    image: { type: String, default:"" },
     ratings : {type : Number, required : true, default: 5},
     currentSessions : {type : [ObjectId], default: [], required : true},
 }, {

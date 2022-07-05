@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { updateUser } from "../../../GraphQLQueries/queries";
 import "./EditProfileStyles.css";
-import noPic from "../../../pics/defaultProfilePic.png";
 
 function EditProfileBody({ user }) {
   const [email, setEmail] = useState(user.email);
   const [fName, setFName] = useState(user.fName);
   const [lName, setLName] = useState(user.lName);
   const [interests, setInterests] = useState(user.interests);
-  const [baseImage, setBaseImage] = useState({ noPic });
+  const [baseImage, setBaseImage] = useState(user.image);
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -16,9 +15,10 @@ function EditProfileBody({ user }) {
       setFName(user.fName);
       setLName(user.lName);
       setInterests(user.interests);
+      setBaseImage(user.image);
     };
     apiCall();
-  }, [user.email, user.fName, user.lName, user.interests]);
+  }, [user.email, user.fName, user.lName, user.interests, user.image]);
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
@@ -59,6 +59,11 @@ function EditProfileBody({ user }) {
       <form className="edit-form" onSubmit={handleSubmit}>
         <label htmlFor="image">Profile Picture: </label>
         <input type="file" onChange={(e) => uploadImage(e)} />
+        {/* <button onClick={(e) => setBaseImage("")}>
+          {" "}
+          Remove Profile Picture
+        </button> */}
+        {/*see whether we want this feature to remove profile picture. */}
         <label htmlFor="email">Email: </label>
         <input
           type="email"
