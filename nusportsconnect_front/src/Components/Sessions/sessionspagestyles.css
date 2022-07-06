@@ -123,6 +123,11 @@
     border-style: hidden;
     background-color: #3DAD48;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.join-btn:hover {
+    background-color: #328f3b;
 }
 
 

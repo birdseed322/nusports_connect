@@ -86,7 +86,7 @@ function CreateSessionBody() {
             </label>
             <select
               className="create-input create-sport"
-              name="#"
+              name="sport"
               id="sport"
               value={sport}
               onChange={(e) => setSport(e.target.value)}

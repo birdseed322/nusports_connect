@@ -36,6 +36,13 @@ body {
   padding: 0 0 .5em 1em;
   display: flex;
 }
+.nav-search-input {
+  width: 20vw;
+  height: 5vh;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-right: 15px;
+}
 
 .create {
   background-color: #3DAD49;

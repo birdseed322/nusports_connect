@@ -37,7 +37,7 @@ function AccountCreationForm(props) {
 
   function handleUsernameChange(e) {
     const updatedUserName = e.target.value;
-    setUsername(updatedUserName);
+    setUsername(updatedUserName.toLowerCase());
   }
 
   function handlePasswordChange(e) {
@@ -82,7 +82,7 @@ function AccountCreationForm(props) {
               />
             </div>
             <input
-              className="sign-input"
+              className="sign-input username"
               type="text"
               placeholder="Username"
               name="username"
