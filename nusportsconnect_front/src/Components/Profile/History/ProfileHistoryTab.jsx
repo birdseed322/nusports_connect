@@ -35,8 +35,10 @@ function ProfileHistoryTab(props) {
     <div className="profile-tab-info">
               {uniqDates.map(date => {
           let toRender = [];
+          const now = new Date()
           for (const session of data) {
-            if (session.date === date){
+            const endTime = new Date(parseInt(session.fullEndTime))
+            if (now > endTime && session.date === date){
               toRender.push(session)
             }
           }

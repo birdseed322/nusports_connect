@@ -45,8 +45,13 @@ function Sessions() {
 
   let uniqDatesSet = new Set();
   data.forEach((session) => {
-    uniqDatesSet.add(session.date);
+    const now = new Date()
+    const sessionStart = new Date(parseInt(session.fullStartTime))
+    if (now < sessionStart) {
+      uniqDatesSet.add(session.date);
+    }
   });
+  
   let uniqDates = Array.from(uniqDatesSet);
   uniqDates = uniqDates.sort((a, b) => {
     return new Date(a) - new Date(b);
@@ -68,9 +73,11 @@ function Sessions() {
       <FilterBar setFilterSessions={setFilterSessions} />
       <div className="session">
         {uniqDates.map((date) => {
+          const now = new Date()
           let toRender = [];
           for (const session of data) {
-            if (session.date === date) {
+            const sessionStart = new Date(parseInt(session.fullStartTime))
+            if (now < sessionStart && session.date === date) {
               toRender.push(session);
             }
           }

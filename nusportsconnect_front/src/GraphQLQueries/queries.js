@@ -130,6 +130,7 @@ export function getAllSessions() {
         location
         date
         startTime
+        fullStartTime
         endTime
         host{
           username
@@ -245,6 +246,15 @@ export function joinSession(userId, sessionId) {
       }
     `
     return postQuery(query);
+}
+
+export function leaveSession(sessionId) {
+  const query = `
+  mutation{
+    leaveSession(sessionId:"${sessionId}")
+  }
+  `
+  return postQuery(query);
 }
 
 export function getUserCurrentSessions(username) {

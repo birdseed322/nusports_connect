@@ -189,7 +189,7 @@ function EditSessionBody() {
               type="number"
               placeholder="No. Participants"
               id="participant"
-              min={currentParticipants}
+              min={currentParticipants < 2 ? 2 : currentParticipants}
               max="30"
               value={maxParticipant}
               onChange={(e) => setMaxParticipant(e.target.value)}
