@@ -8,6 +8,7 @@ import {
   getUserCurrentSessionsId,
   getUserUsername,
 } from "../../GraphQLQueries/queries";
+import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 
 function Sessions() {
   const [data, setData] = React.useState([]);
@@ -16,7 +17,9 @@ function Sessions() {
     userSessions: [],
   });
 
+  
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
+
   React.useEffect(() => {
     const fetchUser = async () => {
       const userRes = await getUserUsername();
@@ -43,11 +46,17 @@ function Sessions() {
     }
   }, [filterSessions]);
 
+  if (user.username === "") {
+    return <NotAuthenticated />;
+  }
+
+
   let uniqDatesSet = new Set();
+
   data.forEach((session) => {
     const now = new Date()
     const sessionStart = new Date(parseInt(session.fullStartTime))
-    if (now < sessionStart) {
+    if (now < sessionStart && session.currentParticipants !== 0) {
       uniqDatesSet.add(session.date);
     }
   });
@@ -77,7 +86,7 @@ function Sessions() {
           let toRender = [];
           for (const session of data) {
             const sessionStart = new Date(parseInt(session.fullStartTime))
-            if (now < sessionStart && session.date === date) {
+            if (now < sessionStart && session.date === date && session.currentParticipants !== 0) {
               toRender.push(session);
             }
           }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {useParams} from 'react-router-dom'
 import { checkProfileOwner, findUser } from '../../GraphQLQueries/queries';
+import { Loading } from '../Loading/Loading';
 import NotAuthenticated from '../NotAuthenticated/NotAuthenticated';
 import OtherPersonalProfileReviews from '../OtherProfile/Reviews/OtherPersonalProfileReviews';
 import PersonalProfileReview from './Reviews/PersonalProfileReviews';
@@ -23,8 +24,10 @@ function ProfileReviewsLanding(){
     apiCall()
   },[id])
 
-  if (data === "Not authenticated" || data === "" || data === null){
-    return <NotAuthenticated />
+  if (data === "Not authenticated" || data === null) {
+    return <NotAuthenticated />;
+  } else if (data === "") {
+    return <Loading />;
   }
 
     return owner ? <PersonalProfileReview user={data}/> : <OtherPersonalProfileReviews user={data}/>
