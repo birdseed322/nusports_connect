@@ -165,6 +165,7 @@
 .expand-who-going {
     display: inline;
     font-size: 15pt;
+    cursor: pointer;
 }
 
 .participant-pax-grp {
@@ -285,17 +286,28 @@
 
 .participant-bubble {
     margin: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border: 2px solid red; */
+    height: 50%;
+
 }
 
 .participant-prof-pic {
     width: 70px;
     height: 70px;
     border-radius: 50%;
+    /* border: 2px solid green; */
 }
 
 .participant-details {
     display: flex;
+    justify-content: center;
     align-items: center;
+    /* border: 2px solid blue; */
+    height: 50%;
 }
 
 .participant-name {

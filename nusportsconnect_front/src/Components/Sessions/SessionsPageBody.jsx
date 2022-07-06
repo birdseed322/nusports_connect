@@ -1,7 +1,7 @@
 import React from "react";
 import "./sessionspagestyles.css";
 import star from "../../pics/star.png";
-import dummyHostProfilePic from "../../pics/defaultProfilePic.png";
+import defaultProfilePic from "../../pics/defaultProfilePic.png";
 import personIcon from "../../pics/person.png";
 import AnnouncementInput from "./AnnouncementInput";
 import FriendOverlay from "./FriendOverlay";
@@ -29,6 +29,7 @@ function SessionsPageBody(props) {
       lName: "",
       username: "",
       ratings: 0,
+      image: "",
     },
     participants: [],
     currentParticipants: 0,
@@ -51,7 +52,6 @@ function SessionsPageBody(props) {
   }
 
   console.log(sessionInfo);
-
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
   const user = props.user;
@@ -107,11 +107,13 @@ function SessionsPageBody(props) {
             <h3 className="event-subtitle">
               Hosted by: {sessionInfo.host.fName + " " + sessionInfo.host.lName}
             </h3>
-            <img
-              className="event-host-img"
-              alt="event host profile pic"
-              src={dummyHostProfilePic}
-            />
+
+            {sessionInfo.host.image === "" ? (
+              <img className="event-host-img" src={defaultProfilePic} />
+            ) : (
+              <img className="event-host-img" src={sessionInfo.host.image} />
+            )}
+
             <img
               className="event-host-star-icon"
               alt="event host star icon"
@@ -159,11 +161,11 @@ function SessionsPageBody(props) {
       <div className="session-right">
         <div className="who-going-box">
           <p className="who-going-box-title">Who's going?</p>
-          <img
-            className="participant-pic"
-            alt="participant pic"
-            src={dummyHostProfilePic}
-          />
+          {sessionInfo.host.image === "" ? (
+            <img className="event-host-img" src={defaultProfilePic} />
+          ) : (
+            <img className="event-host-img" src={sessionInfo.host.image} />
+          )}
           <p
             className="expand-who-going"
             onClick={() => setFriendOverlay(true)}

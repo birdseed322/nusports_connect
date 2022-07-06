@@ -97,7 +97,6 @@ export function updateUser(username, email, fName, lName, interests, image) {
         )
       }
     `
-    console.log("working");
      return postQuery(query);
 }
 
@@ -227,12 +226,14 @@ export function getSessionInfo(sessionId) {
             lName
             username
             ratings
+            image
           }
           participants {
             fName
             lName
             username
             ratings
+            image
           }
           currentParticipants
           maxParticipants

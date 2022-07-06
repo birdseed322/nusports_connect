@@ -37,15 +37,18 @@ function Navbar() {
         <ul>
           <li>
             <form className="nav-search-form" onSubmit={handleSubmit}>
-              {/* <label htmlFor="search">Find a friend:</label> */}
               <input
                 className="nav-search-input"
                 type="text"
                 name="search"
                 id="search"
-                placeholder="Find a friend"
+                placeholder="Find username"
                 onChange={(e) => setSearchInput(e.target.value)}
               />
+              <button className="search-button" type="submit">
+                {" "}
+                search{" "}
+              </button>
             </form>
           </li>
           <li>

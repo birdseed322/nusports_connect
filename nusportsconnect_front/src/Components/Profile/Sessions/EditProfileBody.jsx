@@ -41,10 +41,19 @@ function EditProfileBody({ user }) {
     });
   };
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     try {
-      updateUser(user.username, email, fName, lName, interests, baseImage);
+      await updateUser(
+        user.username,
+        email,
+        fName,
+        lName,
+        interests,
+        baseImage
+      );
+      console.log("updated");
+      window.location.href = "/" + user.username;
     } catch (err) {
       console.log(err);
     }
@@ -59,10 +68,11 @@ function EditProfileBody({ user }) {
       <form className="edit-form" onSubmit={handleSubmit}>
         <label htmlFor="image">Profile Picture: </label>
         <input type="file" onChange={(e) => uploadImage(e)} />
-        {/* <button onClick={(e) => setBaseImage("")}>
+        <img src={baseImage} alt="" />
+        <button type="button" onClick={(e) => setBaseImage("")}>
           {" "}
           Remove Profile Picture
-        </button> */}
+        </button>
         {/*see whether we want this feature to remove profile picture. */}
         <label htmlFor="email">Email: </label>
         <input
@@ -95,7 +105,7 @@ function EditProfileBody({ user }) {
         <button
           className="edit-button"
           type="submit"
-          onClick={() => (window.location.href = "/" + user.username)}
+          // onClick={() => (window.location.href = "/" + user.username)}
         >
           edit
         </button>
