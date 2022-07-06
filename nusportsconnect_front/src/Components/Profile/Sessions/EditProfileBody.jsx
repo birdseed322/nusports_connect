@@ -69,7 +69,7 @@ function EditProfileBody({ user }) {
         <label htmlFor="image">Profile Picture: </label>
         <input type="file" onChange={(e) => uploadImage(e)} />
         <img src={baseImage} alt="" />
-        <button onClick={(e) => setBaseImage("")}>
+        <button type="button" onClick={(e) => setBaseImage("")}>
           {" "}
           Remove Profile Picture
         </button>

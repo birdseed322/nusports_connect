@@ -8,11 +8,7 @@ function ParticipantBubble(props) {
       {props.image === "" ? (
         <img className="participant-prof-pic" src={defaultProfilePic} />
       ) : (
-        <img
-          className="participant-prof-pic"
-          src={props.image}
-          alt={defaultProfilePic}
-        />
+        <img className="participant-prof-pic" src={props.image} />
       )}
 
       <div className="participant-details">

@@ -1,7 +1,7 @@
 import React from "react";
 import "./sessionspagestyles.css";
 import star from "../../pics/star.png";
-import dummyHostProfilePic from "../../pics/defaultProfilePic.png";
+import defaultProfilePic from "../../pics/defaultProfilePic.png";
 import personIcon from "../../pics/person.png";
 import AnnouncementInput from "./AnnouncementInput";
 import FriendOverlay from "./FriendOverlay";
@@ -107,11 +107,13 @@ function SessionsPageBody(props) {
             <h3 className="event-subtitle">
               Hosted by: {sessionInfo.host.fName + " " + sessionInfo.host.lName}
             </h3>
-            <img
-              className="event-host-img"
-              alt="event host profile pic"
-              src={sessionInfo.host.image}
-            />
+
+            {sessionInfo.host.image === "" ? (
+              <img className="event-host-img" src={defaultProfilePic} />
+            ) : (
+              <img className="event-host-img" src={sessionInfo.host.image} />
+            )}
+
             <img
               className="event-host-star-icon"
               alt="event host star icon"
@@ -159,11 +161,11 @@ function SessionsPageBody(props) {
       <div className="session-right">
         <div className="who-going-box">
           <p className="who-going-box-title">Who's going?</p>
-          <img
-            className="participant-pic"
-            alt="participant pic"
-            src={sessionInfo.host.image}
-          />
+          {sessionInfo.host.image === "" ? (
+            <img className="event-host-img" src={defaultProfilePic} />
+          ) : (
+            <img className="event-host-img" src={sessionInfo.host.image} />
+          )}
           <p
             className="expand-who-going"
             onClick={() => setFriendOverlay(true)}
