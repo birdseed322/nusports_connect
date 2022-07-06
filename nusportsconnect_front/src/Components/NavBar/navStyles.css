@@ -37,11 +37,26 @@ body {
   display: flex;
 }
 .nav-search-input {
-  width: 20vw;
-  height: 5vh;
+  width: 70%;
+  height: 50%;
   border-radius: 12px;
   font-size: 16px;
-  margin-right: 15px;
+  margin-right: 10px;
+}
+
+.search-button {
+  background-color: #6495ed;
+  border: none;
+  color: white;
+  font-size: 14px;
+  padding: .5em;
+  border-radius: 16px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #5077c0 ;
 }
 
 .create {

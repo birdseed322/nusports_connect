@@ -57,14 +57,14 @@ function CreateSessionBody() {
     return currentDate.getTime() < selectedDate.getTime();
   };
 
-  if (startDate < new Date()){
+  if (startDate < new Date()) {
     let currentDate = new Date();
     currentDate = currentDate.setHours(currentDate.getHours() + 2);
     currentDate = new Date(currentDate);
     setStartDate(currentDate);
   }
 
-  if (endDate < startDate){
+  if (endDate < startDate) {
     setEndDate(startDate);
   }
 

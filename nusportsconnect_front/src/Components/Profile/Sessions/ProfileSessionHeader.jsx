@@ -29,7 +29,7 @@ function ProfileSessionHeader(props) {
       )}
       <div className="profile-details">
         <h1 className="profile-name">{user.fName + " " + user.lName}</h1>
-        <p className="profile-info">{user.email}</p>
+        {/* <p className="profile-info">{user.email}</p> */}
         <p className="profile-info">
           Playing since: {user.accountCreationDate}
         </p>

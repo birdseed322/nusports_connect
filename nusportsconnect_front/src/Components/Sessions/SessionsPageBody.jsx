@@ -29,6 +29,7 @@ function SessionsPageBody(props) {
       lName: "",
       username: "",
       ratings: 0,
+      image: "",
     },
     participants: [],
     currentParticipants: 0,
@@ -51,7 +52,6 @@ function SessionsPageBody(props) {
   }
 
   console.log(sessionInfo);
-
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
   const user = props.user;
@@ -110,7 +110,7 @@ function SessionsPageBody(props) {
             <img
               className="event-host-img"
               alt="event host profile pic"
-              src={dummyHostProfilePic}
+              src={sessionInfo.host.image}
             />
             <img
               className="event-host-star-icon"
@@ -162,7 +162,7 @@ function SessionsPageBody(props) {
           <img
             className="participant-pic"
             alt="participant pic"
-            src={dummyHostProfilePic}
+            src={sessionInfo.host.image}
           />
           <p
             className="expand-who-going"
