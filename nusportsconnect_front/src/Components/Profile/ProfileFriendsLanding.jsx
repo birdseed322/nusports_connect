@@ -1,6 +1,7 @@
 import React from 'react';
 import {useParams} from 'react-router-dom'
 import { checkProfileOwner, findUser } from '../../GraphQLQueries/queries';
+import { Loading } from '../Loading/Loading';
 import NotAuthenticated from '../NotAuthenticated/NotAuthenticated';
 import OtherPersonalProfileFriends from '../OtherProfile/Friends/OtherPersonalProfileFriends';
 import PersonalProfileFriends from './Friends/PersonalProfileFriends';
@@ -23,8 +24,10 @@ function ProfileFriendsLanding(){
     apiCall()
   },[id])
 
-  if (data === "Not authenticated" || data === "" || data === null){
-    return <NotAuthenticated />
+  if (data === "Not authenticated" || data === null) {
+    return <NotAuthenticated />;
+  } else if (data === "") {
+    return <Loading />;
   }
 
   return owner ? <PersonalProfileFriends user={data}/> : <OtherPersonalProfileFriends user={data}/>

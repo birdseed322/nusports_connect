@@ -16,16 +16,17 @@ function ProfileSessionLanding() {
   React.useEffect(() => {
     const apiCall = async () => {
       const user = await findUser(id);
+      console.log(user)
       setData(user.data.data.userProfileInfo);
       const check = await checkProfileOwner(id);
       setOwner(check.data.data.checkProfileOwner);
     };
     apiCall();
   }, [id]);
-  console.log(data);
-  if (data === "Not authenticated") {
+
+  if (data === "Not authenticated" || data === null) {
     return <NotAuthenticated />;
-  } else if (data === "" || data === null) {
+  } else if (data === "") {
     return <Loading />;
   }
 
