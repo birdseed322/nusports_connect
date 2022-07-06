@@ -31,12 +31,11 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
-
 //Add dependencies for app to use
 app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000" }));
 app.use(cookieParser());
 app.use(isAuth);
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 
 //Create connection to database. Change to appropriate database URI
 const dbURI = process.env.LOCAL_DB_URI;
@@ -410,7 +409,8 @@ const RootMutationType = new GraphQLObjectType({
                 email: { type: GraphQLString },
                 fName: { type: GraphQLString },
                 lName: { type: GraphQLString },
-                interests: { type: GraphQLString }
+                interests: { type: GraphQLString },
+                image: {type: GraphQLString}
             },
             resolve: (_, args) => {
                 try {
@@ -420,7 +420,8 @@ const RootMutationType = new GraphQLObjectType({
                             email: args.email,
                             fName: args.fName,
                             lName: args.lName,
-                            interests: args.interests
+                            interests: args.interests,
+                            image: args.image
                             }
                         }
                     ).exec();
