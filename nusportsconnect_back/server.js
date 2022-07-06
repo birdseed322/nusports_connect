@@ -496,6 +496,27 @@ const RootMutationType = new GraphQLObjectType({
 
             }
         },
+        leaveSession: {
+            type: GraphQLBoolean,
+            description: "Remove user from session",
+            args: {
+                sessionId: {type : GraphQLNonNull(GraphQLString)}
+            },
+            resolve: async (_,args,{req, res, user}) => {
+                try {
+                    const session = await Session.findById(args.sessionId).exec()
+                    session.participants = session.participants.filter((participant) => participant.toString() !== user.userId)
+                    session.save()
+                    const participant = await User.findById(user.userId).exec()
+                    participant.currentSessions = participant.currentSessions.filter((session) => session.toString() !== args.sessionId)
+                    participant.save()
+                    return true
+                } catch (err) {
+                    console.log(err);
+                    return false;
+                }
+            }
+        },
         editSession: {
             type: GraphQLBoolean,
             description: "Update fields of session",
@@ -515,6 +536,9 @@ const RootMutationType = new GraphQLObjectType({
 
                 try {
                     Session.findById(args.id).exec().then(sesh => {
+                        if (args.maxParticipant === 1 || args.maxParticipant < sesh.participants.length || args.maxParticipant > 30) {
+                            return false;
+                        }
                         sesh.location = args.location;
                         sesh.description = args.description;
                         sesh.startTime = dateTime.parseValue(args.startTime);

@@ -7,9 +7,15 @@ import ParticipantButtons from "./Buttons/ParticipantButtons";
 import "./EventPillStyles.css";
 import HistoryButtons from "./Buttons/HistoryButtons";
 import NonParticipantButtons from "./Buttons/NonParticipantButtons";
+import { leaveSession } from "../../GraphQLQueries/queries";
 
 function EventPillHost(props) {
   const event = props.event;
+
+  function handleLeave(e){
+    leaveSession(event.id)
+    window.location.reload()
+  }
 
   return (
     <div className="event-pill">
@@ -33,9 +39,9 @@ function EventPillHost(props) {
       {props.history ? (
         <HistoryButtons id={event.id} />
       ) : props.host ? (
-        <HostButtons id={event.id}/>
+        <HostButtons id={event.id} handleLeave={handleLeave}/>
       ) : props.participant ? (
-        <ParticipantButtons id={event.id}/>
+        <ParticipantButtons id={event.id} handleLeave={handleLeave}/>
       ) : (
         <NonParticipantButtons id={event.id}/>
       )}

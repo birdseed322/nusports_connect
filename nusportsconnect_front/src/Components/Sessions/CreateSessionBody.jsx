@@ -49,6 +49,25 @@ function CreateSessionBody() {
     }
   }
 
+  const filterPassedTime = (time) => {
+    let currentDate = new Date();
+    currentDate = currentDate.setHours(currentDate.getHours() + 2);
+    currentDate = new Date(currentDate);
+    const selectedDate = new Date(time);
+    return currentDate.getTime() < selectedDate.getTime();
+  };
+
+  if (startDate < new Date()){
+    let currentDate = new Date();
+    currentDate = currentDate.setHours(currentDate.getHours() + 2);
+    currentDate = new Date(currentDate);
+    setStartDate(currentDate);
+  }
+
+  if (endDate < startDate){
+    setEndDate(startDate);
+  }
+
   return (
     <div className="create-container">
       <div className="create-panel">
@@ -108,6 +127,7 @@ function CreateSessionBody() {
                 setEndDate(date);
               }}
               minDate={new Date()}
+              filterTime={filterPassedTime}
               dateFormat="dd/MM/yyyy"
               required
             ></DatePicker>
@@ -124,8 +144,10 @@ function CreateSessionBody() {
               onChange={(date) => setStartDate(date)}
               minDate={startDate}
               maxDate={startDate}
+              filterTime={filterPassedTime}
               dateFormat="HH:mm"
               showTimeSelect
+              showTimeSelectOnly
               timeIntervals={15}
               required
             ></DatePicker>
@@ -142,8 +164,10 @@ function CreateSessionBody() {
               onChange={(date) => setEndDate(date)}
               minDate={startDate}
               maxDate={startDate}
+              filterTime={filterPassedTime}
               dateFormat="HH:mm"
               showTimeSelect
+              showTimeSelectOnly
               timeIntervals={15}
               required
             ></DatePicker>
