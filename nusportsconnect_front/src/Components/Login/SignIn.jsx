@@ -4,10 +4,12 @@ import { loginUser } from "../../GraphQLQueries/queries";
 import { setAccessToken } from "../../accessToken";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import Alert from "../Alert/Alert";
 
 function SignInForm(props) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [alert, setAlert] = React.useState(false)
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -20,15 +22,20 @@ function SignInForm(props) {
         const username = jwt_decode(jwt).username;
         navigate("/" + username);
       } else {
-        console.log("Not okay. Render prompt here");
+        setAlert(true)
       }
     } catch (err) {
       console.log(err);
     }
   }
 
+  function handleCloseAlert(){
+    setAlert(false)
+  }
+
   return (
     <div className="container">
+    {alert ? <Alert message="Wrong username or password" handleCloseAlert={handleCloseAlert}/> : null}
       <div className="sign-form-box">
         <form action="/#" onSubmit={handleSubmit}>
           <div className="center">

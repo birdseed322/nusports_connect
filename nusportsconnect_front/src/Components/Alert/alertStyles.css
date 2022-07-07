@@ -1,0 +1,38 @@
+.alert {
+    background-color: red;
+    position: absolute;
+    top: 40px;
+    padding: 0 20px;
+    border-radius: 50px;
+    animation: showAlert 1s ease forwards
+}
+
+.close-alert {
+    position: absolute;
+    right: 5px;
+    background-color: transparent;
+    border-style: hidden;
+    color: white;
+    font-size: 10pt;
+    cursor: pointer;
+}
+
+.alert-message {
+    color: white;
+    font-weight: bold;
+}
+
+@keyframes showAlert {
+    0% {
+        transform: translateY(-100%);
+    }
+    40% {
+        transform: translateY(15%);
+    }
+    80% {
+        transform: translateY(0%)
+    }
+    100% {
+        transform: translateY(10%);
+    }
+}

@@ -22,7 +22,7 @@ function CreateSessionBody() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [maxParticipant, setMaxParticipant] = useState(2);
-  const [minStar, setMinStar] = useState(0);
+  const [minStar, setMinStar] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -65,7 +65,9 @@ function CreateSessionBody() {
   }
 
   if (endDate < startDate) {
-    setEndDate(startDate);
+    let updatedEndTime = new Date(startDate);
+    updatedEndTime = updatedEndTime.setMinutes(updatedEndTime.getMinutes() + 15)
+    setEndDate(updatedEndTime);
   }
 
   return (
@@ -73,10 +75,6 @@ function CreateSessionBody() {
       <div className="create-panel">
         <div className="create-header">
           <h1 className="create-title">Create your own session</h1>
-          <div className="create-warning">
-            Note: Please ensure that the location is available for use before
-            creating!
-          </div>
         </div>
 
         <form className="create-form" onSubmit={handleSubmit}>
@@ -101,7 +99,7 @@ function CreateSessionBody() {
 
           <div className="create-item">
             <label htmlFor="location">
-              <img className="input-icon" src={locationIcon} alt="" />
+              <img className="input-icon loc" src={locationIcon} alt="" />
             </label>
             <input
               className="create-input"
@@ -113,7 +111,10 @@ function CreateSessionBody() {
               required
             />
           </div>
-
+          <div className="create-warning">
+            Please ensure that the location is available for use before
+            creating!
+            </div>
           <div className="create-item create-date">
             <label htmlFor="date">
               <img className="input-icon" src={date} alt="" />
@@ -130,6 +131,7 @@ function CreateSessionBody() {
               filterTime={filterPassedTime}
               dateFormat="dd/MM/yyyy"
               required
+              onKeyDown={(e) => {e.preventDefault();}}
             ></DatePicker>
           </div>
 
@@ -150,6 +152,7 @@ function CreateSessionBody() {
               showTimeSelectOnly
               timeIntervals={15}
               required
+              onKeyDown={(e) => {e.preventDefault();}}
             ></DatePicker>
           </div>
 
@@ -170,6 +173,7 @@ function CreateSessionBody() {
               showTimeSelectOnly
               timeIntervals={15}
               required
+              onKeyDown={(e) => {e.preventDefault();}}
             ></DatePicker>
           </div>
 
@@ -198,7 +202,7 @@ function CreateSessionBody() {
             <input
               className="create-input"
               type="number"
-              placeholder="Min.stars"
+              placeholder="Minimum number of stars required"
               id="stars"
               min="0"
               max="5"
@@ -207,7 +211,9 @@ function CreateSessionBody() {
               required
             />
           </div>
-
+          <div className="create-warning">
+            Reminder that the stars represent a person's attitude not skill level!
+          </div>
           <div className="create-item">
             <label htmlFor="description"></label>
             <textarea
