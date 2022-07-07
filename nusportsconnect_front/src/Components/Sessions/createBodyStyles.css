@@ -38,6 +38,8 @@
 
 .create-warning {
     display: block;
+    margin: 0 0 0 30px;
+    text-align: center;
     font-size: small;
     color: red;
 }
@@ -58,12 +60,20 @@
     display: inline;
 }
 
+.loc {
+    width: 2em;
+    height: 2.5em; 
+}
+
 .create-item {
     margin: .5vh;
+    display: flex;
+    align-items: center;
 }
 
 .create-item.create-date {
     display: flex;
+    align-items: center;
 }
 
 .create-input {
@@ -89,6 +99,7 @@
     font-family: arial;
     font-size: 18px;
     padding: 2%;
+    resize: none;
 }
 
 .create-button {

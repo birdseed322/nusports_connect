@@ -16,15 +16,11 @@ function ProfileSessionHeader(props) {
   const pending = props.pending;
   //Friend
   const friend = props.friend;
-  console.log(user);
+
   return (
     <div className="profile-header">
       {user.image === "" ? (
-        <img
-          className="profile-picture"
-          src={defaultProfilePic}
-          alt="profile-pic"
-        />
+        <img className="profile-picture" alt="profile-pic" src={defaultProfilePic} />
       ) : (
         <img
           className="profile-picture"
@@ -54,7 +50,7 @@ function ProfileSessionHeader(props) {
 
       <div className="profile-rating">
         <img alt="star" src={star} className="star" />
-        <h1 className="profile-rating-score">{user.ratings}/5</h1>
+        <h1 className="profile-rating-score">{user.ratings}</h1>
       </div>
       {owner ? null : friend ? (
         <img src={friends} alt="friend icon" className="friended-icon" />
