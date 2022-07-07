@@ -655,7 +655,7 @@ app.post("/refresh_token", async(req, res) => {
 //Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
     //Set static folder
-    app.use(express.static('/nustportsconnect_front/build'))
+    app.use(express.static('/nusportsconnect_front/build'))
 
     app.get('*', (req, res) => {
         console.log("Loading other files")
