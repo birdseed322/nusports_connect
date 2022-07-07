@@ -16,10 +16,15 @@ function ProfileSessionHeader(props) {
   const pending = props.pending;
   //Friend
   const friend = props.friend;
+  console.log(user);
   return (
     <div className="profile-header">
       {user.image === "" ? (
-        <img className="profile-picture" src={defaultProfilePic} />
+        <img
+          className="profile-picture"
+          src={defaultProfilePic}
+          alt="profile-pic"
+        />
       ) : (
         <img
           className="profile-picture"
@@ -27,28 +32,30 @@ function ProfileSessionHeader(props) {
           alt={defaultProfilePic}
         />
       )}
-      <div className="profile-details">
+
+      <span className="profile-info">
         <h1 className="profile-name">{user.fName + " " + user.lName}</h1>
-        {/* <p className="profile-info">{user.email}</p> */}
-        <p className="profile-info">
-          Playing since: {user.accountCreationDate}
+        <p>
+          Playing since: {user.accountCreationDate} <br /> <br />
+          Interested in: {user.interests}
         </p>
-        <p className="profile-info">Interested in: {user.interests}</p>
-      </div>
-      <div className="profile-rating">
-        <img alt="star" src={star} className="star" />
-        <h1 className="profile-rating-score">5/5</h1>
-      </div>
+      </span>
       {owner ? (
         <img
           src={edit}
           alt="edit button"
           className="edit-btn"
           onClick={() =>
-            (window.location.href = "/" + user.username + "/editprofile")
+            (window.location.href =
+              "/profile/" + user.username + "/editprofile")
           }
         />
       ) : null}
+
+      <div className="profile-rating">
+        <img alt="star" src={star} className="star" />
+        <h1 className="profile-rating-score">{user.ratings}/5</h1>
+      </div>
       {owner ? null : friend ? (
         <img src={friends} alt="friend icon" className="friended-icon" />
       ) : pending ? (
@@ -56,16 +63,18 @@ function ProfileSessionHeader(props) {
       ) : (
         <button className="friend-btn">+ add friend</button>
       )}
-      <button
-        className="logout"
-        onClick={async () => {
-          await logout();
-          setAccessToken("");
-          navigate("/");
-        }}
-      >
-        logout
-      </button>
+      {owner ? (
+        <button
+          className="logout"
+          onClick={async () => {
+            await logout();
+            setAccessToken("");
+            navigate("/");
+          }}
+        >
+          logout
+        </button>
+      ) : null}
     </div>
   );
 }

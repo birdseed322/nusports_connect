@@ -56,20 +56,6 @@ function SessionsPageBody(props) {
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
   const user = props.user;
 
-  const dummyEvent = {
-    host: "Wesley Teo",
-    sport: "Badminton",
-    location: "UTSH3",
-    date: "21st May 2022",
-    startTime: "3.30pm",
-    duration: 2,
-    description:
-      "This is a long sentence.This is a long sentence.This is a long sentence.This is a long sentence.This is a long sentence.",
-    minStars: 4,
-    participants: ["Joe", "Tom", "Peter", "James", "Wesley Teo"],
-    maxParticipants: 8,
-  };
-
   const host = sessionInfo.host.username === user;
   let participant = false;
   sessionInfo.participants.forEach((x) => {
@@ -82,17 +68,16 @@ function SessionsPageBody(props) {
 
   const participantsPax =
     sessionInfo.currentParticipants + "/" + sessionInfo.maxParticipants;
-  const title =
-    sessionInfo.sport +
-    " @ " +
-    sessionInfo.location +
-    ", " +
+
+  const sessionTitle = sessionInfo.sport + " @ " + sessionInfo.location + ", ";
+
+  const sessionDetails =
     sessionInfo.date +
     " " +
     sessionInfo.startTime +
-    " (" +
-    dummyEvent.duration +
-    " hours)";
+    " to " +
+    sessionInfo.endTime;
+
   var minStars = [];
   for (var i = 0; i < sessionInfo.minStar; i++) {
     minStars.push("star");
@@ -102,24 +87,34 @@ function SessionsPageBody(props) {
     <div className="session-page-body">
       <div className="session-left">
         <div className="event-header">
-          <h1 className="event-title">{title}</h1>
+          <h1 className="event-title">
+            {sessionTitle} <br /> {sessionDetails}{" "}
+          </h1>
           <div className="event-host-details">
             <h3 className="event-subtitle">
               Hosted by: {sessionInfo.host.fName + " " + sessionInfo.host.lName}
             </h3>
 
             {sessionInfo.host.image === "" ? (
-              <img className="event-host-img" src={defaultProfilePic} />
+              <img
+                className="event-host-img"
+                src={defaultProfilePic}
+                alt="profile-pic"
+              />
             ) : (
-              <img className="event-host-img" src={sessionInfo.host.image} />
+              <img
+                className="event-host-img"
+                src={sessionInfo.host.image}
+                alt="profile-pic"
+              />
             )}
 
+            <p className="event-host-rating">{hostRating}</p>
             <img
               className="event-host-star-icon"
               alt="event host star icon"
               src={star}
             />
-            <p className="event-host-rating">{hostRating}</p>
           </div>
         </div>
         <div className="event-description-box">
@@ -131,7 +126,9 @@ function SessionsPageBody(props) {
               </p>
             </div>
             <div className="event-description-desc">
-              <p className="event-description-header">Minimum stars</p>
+              <p className="event-description-header">
+                Minimum stars required to join session
+              </p>
               {minStars.length === 0 ? (
                 <p>No Minimum Stars!</p>
               ) : (
@@ -162,9 +159,17 @@ function SessionsPageBody(props) {
         <div className="who-going-box">
           <p className="who-going-box-title">Who's going?</p>
           {sessionInfo.host.image === "" ? (
-            <img className="event-host-img" src={defaultProfilePic} />
+            <img
+              className="event-host-img"
+              src={defaultProfilePic}
+              alt="profile-pic"
+            />
           ) : (
-            <img className="event-host-img" src={sessionInfo.host.image} />
+            <img
+              className="event-host-img"
+              src={sessionInfo.host.image}
+              alt="profile-pic"
+            />
           )}
           <p
             className="expand-who-going"

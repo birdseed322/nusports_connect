@@ -28,12 +28,28 @@ function EndPoints() {
         <Route exact path="/sessions/:id" element={<SessionsPage />} />
         <Route exact path="/sessions/:id/edit" element={<EditSession />} />
         <Route exact path="/createsession" element={<CreateSession />} />
-        <Route exact path="/:id" element={<ProfileSessionLanding />} />
-        <Route exact path="/:id/editprofile" element={<EditProfile />} />
+        <Route exact path="/profile/:id" element={<ProfileSessionLanding />} />
+        <Route
+          exact
+          path="/profile/:id/editprofile"
+          element={<EditProfile />}
+        />
         <Route exact path="/unauthenticated" element={<NotAuthenticated />} />
-        <Route exact path="/:id/history" element={<ProfileHistoryLanding />} />
-        <Route exact path="/:id/friends" element={<ProfileFriendsLanding />} />
-        <Route exact path="/:id/reviews" element={<ProfileReviewsLanding />} />
+        <Route
+          exact
+          path="/profile/:id/history"
+          element={<ProfileHistoryLanding />}
+        />
+        <Route
+          exact
+          path="/profile/:id/friends"
+          element={<ProfileFriendsLanding />}
+        />
+        <Route
+          exact
+          path="/profile/:id/reviews"
+          element={<ProfileReviewsLanding />}
+        />
         <Route exact path="/eventPillHost" element={<EventPillHost />} />
       </Routes>
     </BrowserRouter>

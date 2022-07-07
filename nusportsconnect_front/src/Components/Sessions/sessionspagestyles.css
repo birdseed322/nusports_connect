@@ -47,17 +47,17 @@
     border-width: 1px;
 }
 
+.event-host-rating {
+    font-size: 16pt;
+    margin-left: 20px;
+    margin-right: 5px;
+}
+
 .event-host-star-icon {
     display: inline;
     width: 25px;
     height: 25px;
-    margin: 0 5px 0 10px;
-}
-
-.event-host-rating {
-    display: inline;
-    font-size: 15pt;
-    margin: 0;
+    /* margin: 0 5px 0 10px; */
 }
 
 .event-description-box {
@@ -69,6 +69,7 @@
 }
 
 .event-description-header {
+    font-size: 16pt;
     font-weight: bold;
     margin: 5px 0;
 }
