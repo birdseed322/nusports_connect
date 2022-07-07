@@ -13,8 +13,10 @@
 }
 
 .profile-tabs {
-    padding: 0 px;
+    padding: 0px;
     display: flex;
+    justify-content: space-around;
+    padding: 0 1vw;
     position: sticky;
     top: 0;
     height: 60px;
@@ -33,7 +35,7 @@
 
 .profile-tab-info {
     height: 550px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .friends-tab {

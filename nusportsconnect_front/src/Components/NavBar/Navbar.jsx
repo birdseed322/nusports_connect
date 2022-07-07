@@ -23,7 +23,7 @@ function Navbar() {
       const searchedUser = await findUser(searchInputLower);
       console.log(searchedUser);
       window.location.href =
-        "/" + searchedUser.data.data.userProfileInfo.username;
+        "/profile/" + searchedUser.data.data.userProfileInfo.username;
     } catch (err) {
       console.log(err);
     }
@@ -63,7 +63,7 @@ function Navbar() {
             </a>
           </li>
           <li>
-            <a href={"/" + username}>
+            <a href={"/profile/" + username}>
               <div className="profile">My Profile</div>
             </a>
           </li>

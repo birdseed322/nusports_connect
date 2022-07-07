@@ -10,10 +10,9 @@ function PersonalProfileSession(props) {
   //Dummy code to simulate drawing information of user from database. Should ideally be done in useEffect statement, so info loaded before rendering.
 
   const user = props.user;
-
   return (
     <div className="profile-container">
-      <Navbar />  
+      <Navbar />
       <ProfileSessionHeader user={user} owner={true} />
       <ProfileSessionBody user={user} />
     </div>

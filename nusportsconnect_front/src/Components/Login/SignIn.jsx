@@ -18,7 +18,7 @@ function SignInForm(props) {
         const jwt = response.data.data.login.accessToken;
         setAccessToken(jwt);
         const username = jwt_decode(jwt).username;
-        navigate("/" + username);
+        navigate("/profile/" + username);
       } else {
         console.log("Not okay. Render prompt here");
       }
@@ -71,7 +71,7 @@ function SignInForm(props) {
 
         <div className="center">
           <p className="sign-sign-off">
-            Don't have an account?
+            Don't have an account? <br />
             <a href="/#" onClick={() => props.handleClick("signUp")}>
               Sign Up
             </a>

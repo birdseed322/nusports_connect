@@ -6,21 +6,21 @@ import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import EditSessionBody from "./EditSessionBody";
 
 function EditSession() {
-  const [data, setData] = React.useState("")
+  const [data, setData] = React.useState("");
   React.useEffect(() => {
     const apiCall = async () => {
       const res = await testAuth();
       setData(res.data.data.testAuth);
-    }
-    apiCall()
-  },[])
+    };
+    apiCall();
+  }, []);
 
   if (data === "Not authenticated" || data === null) {
     return <NotAuthenticated />;
   } else if (data === "") {
     return <Loading />;
   }
-  
+
   return (
     <div>
       <Navbar />

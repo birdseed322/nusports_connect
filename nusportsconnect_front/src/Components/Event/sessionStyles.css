@@ -14,6 +14,12 @@
     background-position: center center;
     background-attachment: fixed;
   }
+
+  .event-title {
+    display: flex;
+    flex-direction: column;
+  }
+
   .date-header {
         width: 750px;
         margin: 0 auto;
