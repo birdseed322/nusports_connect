@@ -4,7 +4,7 @@ import { graphqlURI } from "../Routes/routes";
 
 function postQuery(query) {
     let result = axios({
-            url: graphqlURI,
+            url: '/graphql',
             method: "post",
             withCredentials: true,
             headers: {
@@ -32,7 +32,7 @@ export function addUser(username, password, email, fName, lName) {
  
     `
     
-    const result = axios.post(graphqlURI, {
+    const result = axios.post('/graphql', {
             query
         })
         .then(res => console.log(res))
@@ -52,7 +52,7 @@ export async function loginUser(username, password) {
     `
 
     let result = await axios({
-            url: graphqlURI,
+            url: '/graphql',
             method: "post",
             withCredentials: true,
             data: {
