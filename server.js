@@ -24,6 +24,7 @@ const { verify } = require('jsonwebtoken');
 var { getAccountCreationDate, formatAMPM } = require('./helperFunctions');
 const Session = require('./models/Session');
 const { ObjectId } = require('mongodb');
+const path = require('path')
 
 require('dotenv').config();
 
@@ -613,6 +614,15 @@ app.use('/graphql',
         };
     })
 );
+
+//Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+    //Set static folder
+    app.use(express.static('/nustportsconnect_front/build'))
+    app.get('*', (req, res) => {
+
+    })
+}
 
 //Route to refresh token
 
