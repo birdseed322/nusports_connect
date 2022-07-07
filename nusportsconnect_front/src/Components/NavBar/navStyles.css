@@ -19,7 +19,7 @@ body {
   font-family: Helvetica;
   font-weight: 300;
   gap: 2rem;
-  padding: 0 1rem;
+  padding: .5em 1rem;
 }
 
 .navbar ul {

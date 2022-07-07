@@ -16,7 +16,7 @@ function ProfileSessionLanding() {
   React.useEffect(() => {
     const apiCall = async () => {
       const user = await findUser(id);
-      console.log(user)
+      console.log(user);
       setData(user.data.data.userProfileInfo);
       const check = await checkProfileOwner(id);
       setOwner(check.data.data.checkProfileOwner);

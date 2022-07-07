@@ -5,43 +5,43 @@ body{
 
 .profile-header{
     background-color: #8BE0E5;
-    margin: 1% auto;
+    margin: 1vh auto;
     width: 50vw;
-    height: 250px;
+    min-height: 30vh;
+    height: fit-content;
     border-radius: 50px;
     overflow: hidden;
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     position: relative;
+    border: 2px solid white;
     box-shadow: 0px 2px 2px gray;
-    border-width: 2px;
-    border-style: solid;
-    border-color: white;
+    padding: 0;
 }
 
 .profile-picture {
     background-color: white;
-    height: 150px;
-    width: 150px;
+    height: 30vh;
     border-radius: 50%;
-    margin: 25px 5%;
-    border-width: 1px;
-    border-color: white;
-
+    margin: 0 2% 0 5%;
+    border-width: 100px;
 }
 
-.profile-details {
-    height: 250px;
-    flex:2;
+.profile-info {
+    display: flex;
+    height: 100%;
+    width: 40%;
+    font-size: 1em;
 }
 
 .profile-rating{
     margin: 0 50px;
     display: flex;
     align-items: center;
+    margin: 0 1vw;
 }
 .profile-rating-score{
-    flex: 1;
     font-size: 250%;
 }
 
@@ -55,10 +55,12 @@ body{
     top:20px;
     right: 20px;
     height: 30px;
-    width: 30px;
+    width: 30px; 
     cursor: pointer;
 }
-
+.profile-info {
+    display: inline;
+}
 .friended-icon {
     height: 30px;
     width: 30px;
@@ -68,17 +70,16 @@ body{
 }
 
 .friend-btn {
-    border-style: hidden;
+    border: none;
     border-radius: 45px;
     background-color: #3DAD49;
     color: white;
     font-weight: bold;
     font-size: 13pt;
-    width: 130px;
-    height: 40px;
+    padding: 10px;
     position: absolute;
-    bottom: 30px;
-    right: 70px;
+    right: 2vw;
+    bottom: 3vh;
     text-align: center;
 }
 .pending {
@@ -88,13 +89,16 @@ body{
 .logout {
     background-color: #3DAD49;
     color: white;
-    width: 6vw;
-    height: 6vh ;
+    border: none;
+    padding: 10px;
     font-size: 20px;
     margin-right: 1vw;
     margin-left: 0;
     cursor: pointer;
     border-radius: 12px;
+    position: absolute;
+    right: 2vw;
+    bottom: 3vh;
 }
 
 .logout:hover {

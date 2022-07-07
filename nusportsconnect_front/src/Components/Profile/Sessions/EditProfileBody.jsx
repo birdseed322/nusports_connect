@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { updateUser } from "../../../GraphQLQueries/queries";
 import "./EditProfileStyles.css";
-
+import defaultProfilePic from "../../../pics/defaultProfilePic.png";
 function EditProfileBody({ user }) {
   const [email, setEmail] = useState(user.email);
   const [fName, setFName] = useState(user.fName);
   const [lName, setLName] = useState(user.lName);
   const [interests, setInterests] = useState(user.interests);
   const [baseImage, setBaseImage] = useState(user.image);
-
+  const defaultPic = defaultProfilePic;
   React.useEffect(() => {
     const apiCall = async () => {
       setEmail(user.email);
@@ -53,7 +53,7 @@ function EditProfileBody({ user }) {
         baseImage
       );
       console.log("updated");
-      window.location.href = "/" + user.username;
+      window.location.href = "/profile/" + user.username;
     } catch (err) {
       console.log(err);
     }
@@ -61,55 +61,84 @@ function EditProfileBody({ user }) {
   console.log(baseImage);
   return (
     <div className="edit-container">
-      <div className="edit-header">
+      <div className="edit-panel">
         <h1 className="edit-title">Edit Profile</h1>
-      </div>
 
-      <form className="edit-form" onSubmit={handleSubmit}>
-        <label htmlFor="image">Profile Picture: </label>
-        <input type="file" onChange={(e) => uploadImage(e)} />
-        <img src={baseImage} alt="" />
-        <button type="button" onClick={(e) => setBaseImage("")}>
-          {" "}
-          Remove Profile Picture
-        </button>
-        {/*see whether we want this feature to remove profile picture. */}
-        <label htmlFor="email">Email: </label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label htmlFor="fName">First Name: </label>
-        <input
-          type="text"
-          id="fName"
-          onChange={(e) => setFName(e.target.value)}
-          value={fName}
-        />
-        <label htmlFor="lName">Last Name: </label>
-        <input
-          type="text"
-          id="lName"
-          onChange={(e) => setLName(e.target.value)}
-          value={lName}
-        />
-        <label htmlFor="interests">Interested in: </label>
-        <input
-          type="text"
-          id="interests"
-          onChange={(e) => setInterests(e.target.value)}
-          value={interests}
-        />
-        <button
-          className="edit-button"
-          type="submit"
-          // onClick={() => (window.location.href = "/" + user.username)}
-        >
-          edit
-        </button>
-      </form>
+        <form className="edit-form" onSubmit={handleSubmit}>
+          <div className="edit-item">
+            <label htmlFor="image">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Profile Picture:{" "}
+            </label>
+            <input
+              className="image-upload"
+              type="file"
+              onChange={(e) => uploadImage(e)}
+            />
+          </div>
+          {baseImage !== "" ? (
+            <img className="profile-pic" name="image" src={baseImage} alt="" />
+          ) : (
+            <img
+              className="profile-pic"
+              name="image"
+              src={defaultProfilePic}
+              alt=""
+            />
+          )}
+          <button
+            type="button"
+            className="remove-button"
+            onClick={(e) => setBaseImage("")}
+          >
+            Remove Profile Picture
+          </button>
+          <div className="edit-item">
+            <label htmlFor="email">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:{" "}
+            </label>
+            <input
+              type="email"
+              className="edit-input"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="edit-item">
+            <label htmlFor="fName">First Name: </label>
+            <input
+              type="text"
+              className="edit-input"
+              id="fName"
+              onChange={(e) => setFName(e.target.value)}
+              value={fName}
+            />
+          </div>
+          <div className="edit-item">
+            <label htmlFor="lName">Last Name: </label>
+            <input
+              type="text"
+              className="edit-input"
+              id="lName"
+              onChange={(e) => setLName(e.target.value)}
+              value={lName}
+            />
+          </div>
+          <div className="edit-item">
+            <label htmlFor="interests">Interested in: </label>
+            <textarea
+              type="text"
+              className="edit-input edit-description"
+              id="interests"
+              onChange={(e) => setInterests(e.target.value)}
+              value={interests}
+            />
+          </div>
+          <button className="edit-button" type="submit">
+            edit
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

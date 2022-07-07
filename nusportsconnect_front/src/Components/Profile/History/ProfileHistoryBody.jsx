@@ -15,25 +15,25 @@ function ProfileHistoryBody(props) {
       <div className="profile-tabs">
         <h2
           className={sessionsTab}
-          onClick={() => (window.location.href = "/" + id)}
+          onClick={() => (window.location.href = "/profile/" + id)}
         >
           sessions
         </h2>
         <h2
           className={historyTab}
-          onClick={() => (window.location.href = "/" + id + "/history")}
+          onClick={() => (window.location.href = "/profile/" + id + "/history")}
         >
           history
         </h2>
         <h2
           className={friendsTab}
-          onClick={() => (window.location.href = "/" + id + "/friends")}
+          onClick={() => (window.location.href = "/profile/" + id + "/friends")}
         >
           friends
         </h2>
         <h2
           className={reviewsTab}
-          onClick={() => (window.location.href = "/" + id + "/reviews")}
+          onClick={() => (window.location.href = "/profile/" + id + "/reviews")}
         >
           reviews
         </h2>
