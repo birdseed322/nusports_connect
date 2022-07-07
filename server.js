@@ -33,7 +33,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 //Add dependencies for app to use
-app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json({limit: '50mb'}));
@@ -53,16 +53,7 @@ app.listen(port, () => {
     console.log('Server is running on port: ' + port);
 })
 
-//Serve static assets if in production
-if (process.env.NODE_ENV === 'production') {
-    //Set static folder
-    app.use(express.static('/nustportsconnect_front/build'))
 
-    app.get('*', (req, res) => {
-        console.log("Loading other files")
-        res.sendFile(path.resolve(__dirname, 'nusportsconnect_front','build','index.html'))
-    })
-}
 
 //Definining GraphQL object types
 const UserType = new GraphQLObjectType({
@@ -660,3 +651,14 @@ app.post("/refresh_token", async(req, res) => {
     res.send({ ok: true, accessToken: createAccessToken(user) });
 
 });
+
+//Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+    //Set static folder
+    app.use(express.static('/nustportsconnect_front/build'))
+
+    app.get('*', (req, res) => {
+        console.log("Loading other files")
+        res.sendFile(path.resolve(__dirname, 'nusportsconnect_front','build','index.html'))
+    })
+}
