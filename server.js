@@ -24,7 +24,7 @@ const { verify } = require('jsonwebtoken');
 var { getAccountCreationDate, formatAMPM } = require('./helperFunctions');
 const Session = require('./models/Session');
 const { ObjectId } = require('mongodb');
-const path = require('path')
+const path = require('path');
 
 require('dotenv').config();
 
@@ -52,6 +52,17 @@ connection.once('open', () => {
 app.listen(port, () => {
     console.log('Server is running on port: ' + port);
 })
+
+//Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+    //Set static folder
+    app.use(express.static('/nustportsconnect_front/build'))
+
+    app.get('*', (req, res) => {
+        console.log("Loading other files")
+        res.sendFile(path.resolve(__dirname, 'nusportsconnect_front','build','index.html'))
+    })
+}
 
 //Definining GraphQL object types
 const UserType = new GraphQLObjectType({
@@ -615,14 +626,7 @@ app.use('/graphql',
     })
 );
 
-//Serve static assets if in production
-if (process.env.NODE_ENV === 'production') {
-    //Set static folder
-    app.use(express.static('/nustportsconnect_front/build'))
-    app.get('*', (req, res) => {
 
-    })
-}
 
 //Route to refresh token
 
