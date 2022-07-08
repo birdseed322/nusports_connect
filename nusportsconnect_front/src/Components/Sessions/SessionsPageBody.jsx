@@ -12,6 +12,7 @@ import {
   joinSession,
 } from "../../GraphQLQueries/queries";
 import { useParams } from "react-router-dom";
+import { Loading } from "../Loading/Loading";
 
 function SessionsPageBody(props) {
   const { id } = useParams();
@@ -45,13 +46,15 @@ function SessionsPageBody(props) {
     apiCall();
   }, [id]);
 
+  if (sessionInfo.sport === "") {
+    return <Loading />
+  }
+
   async function handleSessionJoin(e) {
     const userId = await getUserIdentity();
     joinSession(userId.data.data.userIdentity, id);
     window.location.reload();
   }
-
-  console.log(sessionInfo);
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
   const user = props.user;
