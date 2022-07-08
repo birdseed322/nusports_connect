@@ -1,5 +1,5 @@
 //Add routes here for organisational purposes. Routes will change once we publish to a hosting service.
-export const loginRoute = "http://localhost:3000";
+// export const loginRoute = "http://localhost:3000";
 //Production
 // export const refreshTokenRoute = "http://localhost:5000/refresh_token";
 // export const reqOriginRoute = "http://localhost:3000";
