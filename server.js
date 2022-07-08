@@ -25,6 +25,7 @@ var { getAccountCreationDate, formatAMPM } = require('./helperFunctions');
 const Session = require('./models/Session');
 const { ObjectId } = require('mongodb');
 const path = require('path');
+const { reqOriginRoute } = require('./nusportsconnect_front/src/Routes/routes');
 
 require('dotenv').config();
 
@@ -33,7 +34,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 //Add dependencies for app to use
-app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin:  }));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin:  reqOriginRoute}));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json({limit: '50mb'}));
