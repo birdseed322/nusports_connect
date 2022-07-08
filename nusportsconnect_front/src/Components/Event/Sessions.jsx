@@ -9,6 +9,7 @@ import {
   getUserUsername,
 } from "../../GraphQLQueries/queries";
 import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
+import { Loading } from "../Loading/Loading";
 
 function Sessions() {
   const [data, setData] = React.useState([]);
@@ -26,11 +27,15 @@ function Sessions() {
       const userSessions = await getUserCurrentSessionsId(
         userRes.data.data.userUsername
       );
-      setUser({
-        username: userRes.data.data.userUsername,
-        userSessions: userSessions.data.data.userProfileInfo.currentSessions,
-      });
-    };
+
+      if(userRes.data.data.userUsername !== null && userSessions.data.data.userProfileInfo !== null){
+        setUser({
+          username: userRes.data.data.userUsername,
+          userSessions: userSessions.data.data.userProfileInfo.currentSessions,
+        });
+      };
+      }
+
     fetchUser();
 
     if (filterSessions[0] === "placeholder") {
@@ -47,7 +52,9 @@ function Sessions() {
   }, [filterSessions]);
 
   if (user.username === "") {
-    return <NotAuthenticated />;
+    return <Loading />;
+  } else if (user.username === null){
+    return <NotAuthenticated />
   }
 
 
