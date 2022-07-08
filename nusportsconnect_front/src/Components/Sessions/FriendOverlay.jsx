@@ -17,6 +17,7 @@ function FriendOverlay({ open, closeOverlay, participants }) {
           {participants.map((participant) => {
             return (
               <ParticipantBubble
+                username={participant.username}
                 name={participant.fName + " " + participant.lName}
                 rating={participant.ratings}
                 image={participant.image}

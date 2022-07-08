@@ -86,6 +86,11 @@ body {
   background-color: #b9b9b9;
 }
 
+.nav-pic {
+  width:50px;
+  height: 50px;
+  border-radius: 50%;
+}
 .profile {
   width: fit-content;
   padding-right: 20px;

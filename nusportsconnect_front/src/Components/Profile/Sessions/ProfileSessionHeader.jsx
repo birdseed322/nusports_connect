@@ -20,7 +20,11 @@ function ProfileSessionHeader(props) {
   return (
     <div className="profile-header">
       {user.image === "" ? (
-        <img className="profile-picture" alt="profile-pic" src={defaultProfilePic} />
+        <img
+          className="profile-picture"
+          alt="profile-pic"
+          src={defaultProfilePic}
+        />
       ) : (
         <img
           className="profile-picture"
@@ -35,8 +39,6 @@ function ProfileSessionHeader(props) {
           Playing since: {user.accountCreationDate} <br /> <br />
           Interested in: {user.interests}
         </p>
-      </span>
-      {owner ? (
         <img
           src={edit}
           alt="edit button"
@@ -46,7 +48,18 @@ function ProfileSessionHeader(props) {
               "/profile/" + user.username + "/editprofile")
           }
         />
-      ) : null}
+        {/* {owner ? (
+          <img
+            src={edit}
+            alt="edit button"
+            className="edit-btn"
+            onClick={() =>
+              (window.location.href =
+                "/profile/" + user.username + "/editprofile")
+            }
+          />
+        ) : null} */}
+      </span>
 
       <div className="profile-rating">
         <img alt="star" src={star} className="star" />
