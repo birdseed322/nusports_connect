@@ -33,7 +33,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 //Add dependencies for app to use
-app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin:  }));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json({limit: '50mb'}));
