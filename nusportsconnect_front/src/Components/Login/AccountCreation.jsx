@@ -1,6 +1,6 @@
 import "./accountCreationStyles.css";
 import { addUser } from "../../GraphQLQueries/queries";
-import { loginRoute } from "../../Routes/routes";
+import { reqOriginRoute } from "../../Routes/routes";
 import React from "react";
 
 function AccountCreationForm(props) {
@@ -14,7 +14,7 @@ function AccountCreationForm(props) {
     event.preventDefault();
     const status = addUser(username, password, email, fName, lName);
     if (status === 200) {
-      window.location.href = loginRoute;
+      window.location.href = reqOriginRoute;
     } else {
       window.location.reload();
     }
