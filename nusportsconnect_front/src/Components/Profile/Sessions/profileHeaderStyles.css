@@ -17,15 +17,16 @@ body{
     position: relative;
     border: 2px solid white;
     box-shadow: 0px 2px 2px gray;
-    padding: 0;
+    padding: .5em;
 }
 
 .profile-picture {
     background-color: white;
-    height: 30vh;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     margin: 0 2% 0 5%;
-    border-width: 100px;
+
 }
 
 .profile-info {
@@ -36,7 +37,6 @@ body{
 }
 
 .profile-rating{
-    margin: 0 50px;
     display: flex;
     align-items: center;
     margin: 0 1vw;

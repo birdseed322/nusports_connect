@@ -88,26 +88,33 @@ function SessionsPageBody(props) {
       <div className="session-left">
         <div className="event-header">
           <h1 className="event-title">
-            {sessionTitle} <br /> {sessionDetails}{" "}
+            {sessionTitle} <br /> {sessionDetails}
           </h1>
           <div className="event-host-details">
             <h3 className="event-subtitle">
-              Hosted by: {sessionInfo.host.fName + " " + sessionInfo.host.lName}
+              Hosted by:&nbsp;
+              <a
+                className="profile-link"
+                href={"/profile/" + sessionInfo.host.username}
+              >
+                {sessionInfo.host.fName + " " + sessionInfo.host.lName}
+              </a>
             </h3>
-
-            {sessionInfo.host.image === "" ? (
-              <img
-                className="event-host-img"
-                src={defaultProfilePic}
-                alt="profile-pic"
-              />
-            ) : (
-              <img
-                className="event-host-img"
-                src={sessionInfo.host.image}
-                alt="profile-pic"
-              />
-            )}
+            <a href={"/profile/" + sessionInfo.host.username}>
+              {sessionInfo.host.image === "" ? (
+                <img
+                  className="event-host-img"
+                  src={defaultProfilePic}
+                  alt="profile-pic"
+                />
+              ) : (
+                <img
+                  className="event-host-img"
+                  src={sessionInfo.host.image}
+                  alt="profile-pic"
+                />
+              )}
+            </a>
 
             <p className="event-host-rating">{hostRating}</p>
             <img

@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "./navStyles.css";
 import Logo from "../../pics/Logo.png";
 import Notif from "../../pics/Notification.png";
 import { findUser, getUserUsername } from "../../GraphQLQueries/queries";
+import defaultPic from "../../pics/defaultProfilePic.png";
 
 function Navbar() {
-  const [username, setUsername] = React.useState("");
-  const [searchInput, setSearchInput] = React.useState("");
+  const [username, setUsername] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [userImage, setUserImage] = useState("");
 
   React.useEffect(() => {
     const apiCall = async () => {
-      const user = await getUserUsername();
-      setUsername(user.data.data.userUsername);
+      const userUsername = await getUserUsername();
+      setUsername(userUsername.data.data.userUsername);
+      const userDetails = await findUser(username);
+      console.log(userDetails);
+      setUserImage(userDetails.data.data.userProfileInfo.image);
     };
     apiCall();
   });
@@ -28,6 +33,7 @@ function Navbar() {
       console.log(err);
     }
   }
+  console.log(userImage);
   return (
     <div>
       <nav className="navbar">
@@ -62,6 +68,13 @@ function Navbar() {
               <img className="notif" src={Notif} alt="" />
             </a>
           </li>
+          <a href={"/profile/" + username}>
+            {userImage === "" ? (
+              <img className="nav-pic" src={defaultPic} alt="profile-pic" />
+            ) : (
+              <img className="nav-pic" src={userImage} alt="profile-pic" />
+            )}
+          </a>
           <li>
             <a href={"/profile/" + username}>
               <div className="profile">My Profile</div>
