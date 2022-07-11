@@ -16,7 +16,11 @@ function Navbar() {
       setUsername(userUsername.data.data.userUsername);
       const userDetails = await findUser(username);
       console.log(userDetails);
-      setUserImage(userDetails.data.data.userProfileInfo.image);
+      try {
+        setUserImage(userDetails.data.data.userProfileInfo.image);
+      } catch (err) {
+
+      }
     };
     apiCall();
   });
@@ -30,10 +34,9 @@ function Navbar() {
       window.location.href =
         "/profile/" + searchedUser.data.data.userProfileInfo.username;
     } catch (err) {
-      console.log(err);
+      
     }
   }
-  console.log(userImage);
   return (
     <div>
       <nav className="navbar">

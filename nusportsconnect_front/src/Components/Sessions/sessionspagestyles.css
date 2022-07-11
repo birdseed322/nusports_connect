@@ -19,6 +19,7 @@
 
 .event-header {
     flex: 1;
+    position: relative;
     width: 900px;
     margin: 0 0 20px 0;
     padding: 0 40px;
@@ -37,6 +38,7 @@
 .event-subtitle {
     margin: 0 10px 0 0;
 }
+
 
 .profile-link {
     text-decoration: none;
@@ -80,6 +82,33 @@
 .event-minimum-stars {
     height: 20px;
     width: 20px;
+}
+
+.session-action-btns {
+    position: absolute;
+    right: 0%;
+    top: 20%;
+}
+
+.session-btn {
+    cursor:pointer;
+    margin: 0 10px;
+    height: 40px;
+    width: 120px;
+    border-width: 0;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14pt;
+}
+
+.leave {
+    background-color: #DC4848;
+}
+
+.edit {
+    background-color: #48B9DC;
 }
 
 .chat-box {
