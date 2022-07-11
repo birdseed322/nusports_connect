@@ -8,7 +8,6 @@ function EditProfileBody({ user }) {
   const [lName, setLName] = useState(user.lName);
   const [interests, setInterests] = useState(user.interests);
   const [baseImage, setBaseImage] = useState(user.image);
-  const defaultPic = defaultProfilePic;
   React.useEffect(() => {
     const apiCall = async () => {
       setEmail(user.email);
@@ -58,7 +57,6 @@ function EditProfileBody({ user }) {
       console.log(err);
     }
   }
-  console.log(baseImage);
   return (
     <div className="edit-container">
       <div className="edit-panel">
@@ -67,7 +65,7 @@ function EditProfileBody({ user }) {
         <form className="edit-form" onSubmit={handleSubmit}>
           <div className="edit-item">
             <label htmlFor="image">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Profile Picture:{" "}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Profile Picture:&nbsp;
             </label>
             <input
               className="image-upload"
@@ -94,7 +92,7 @@ function EditProfileBody({ user }) {
           </button>
           <div className="edit-item">
             <label htmlFor="email">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:{" "}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:
             </label>
             <input
               type="email"
@@ -135,7 +133,7 @@ function EditProfileBody({ user }) {
             />
           </div>
           <button className="edit-button" type="submit">
-            edit
+            save changes
           </button>
         </form>
       </div>

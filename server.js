@@ -33,8 +33,8 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 //Add dependencies for app to use
-app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
-// app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost/:3000" }));
+// app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost/:3000" }));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json({limit: '50mb'}));
@@ -142,10 +142,10 @@ const RootQueryType = new GraphQLObjectType({
             resolve: async() => {
                 let users = await User.find().exec()
                 users.map((user) => {
-                    const cDate = getAccountCreationDate(user.createdAt);
+                    const cDate = getAccountCreationDate(user.createdAt)
                     user.accountCreationDate = cDate;
                 })
-                return users
+                return users;
             }
         },
         sessions: {
@@ -202,6 +202,14 @@ const RootQueryType = new GraphQLObjectType({
             }
 
         },
+        allUsernames: {
+            type: GraphQLList(UserType),
+            description: "Retrive all users",
+            resolve: async() => {
+                let all = await User.find().exec();
+                return all;
+        }
+    }, 
         userProfileInfo: {
             type: UserType,
             description: "Retrieve a user profile information",
@@ -436,33 +444,6 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
-        // updateUser: {
-        //     type: UserType,
-        //     description: "Update a user info",
-        //     args: {
-        //         username: { type:  GraphQLNonNull(GraphQLString) },
-        //         email: { type:  GraphQLNonNull(GraphQLString) },
-        //         fName: { type:  GraphQLNonNull(GraphQLString) },
-        //         lName: { type:  GraphQLNonNull(GraphQLString) },
-        //         interests: { type: GraphQLString }
-        //     },
-        //     resolve: (_, args) => {
-        //         try {
-        //             console.log("test");
-        //              User.findOneAndUpdate(
-        //                 {username: args.username},
-        //                 {
-        //                     email: args.email,
-        //                     fName: args.fName,
-        //                     lName: args.lName,
-        //                     interests: args.interests
-        //                 }
-        //             );
-        //         } catch (err) {
-        //             console.log(err);
-        //         }
-        //     }
-        // },
         createSession: {
             type: GraphQLString,
             description: "create a session",

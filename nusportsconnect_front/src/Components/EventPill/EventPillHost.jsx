@@ -12,9 +12,9 @@ import { leaveSession } from "../../GraphQLQueries/queries";
 function EventPillHost(props) {
   const event = props.event;
 
-  function handleLeave(e){
-    leaveSession(event.id)
-    window.location.reload()
+  function handleLeave(e) {
+    leaveSession(event.id);
+    window.location.reload();
   }
 
   return (
@@ -39,11 +39,11 @@ function EventPillHost(props) {
       {props.history ? (
         <HistoryButtons id={event.id} />
       ) : props.host ? (
-        <HostButtons id={event.id} handleLeave={handleLeave}/>
+        <HostButtons id={event.id} handleLeave={handleLeave} />
       ) : props.participant ? (
-        <ParticipantButtons id={event.id} handleLeave={handleLeave}/>
+        <ParticipantButtons id={event.id} handleLeave={handleLeave} />
       ) : (
-        <NonParticipantButtons id={event.id}/>
+        <NonParticipantButtons id={event.id} />
       )}
     </div>
   );

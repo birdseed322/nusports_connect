@@ -4,7 +4,8 @@
     top: 40px;
     padding: 0 20px;
     border-radius: 50px;
-    animation: showAlert 1s ease forwards
+    animation: showAlert 1s ease forwards;
+    z-index: 2;
 }
 
 .close-alert {

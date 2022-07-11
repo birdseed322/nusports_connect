@@ -10,14 +10,14 @@
 .event-pill-header {
     position: absolute;
     margin: 0;
-    top: 5px;
-    left: 20px;
+    top: 15px;
+    left: 40px;
     font-family: 'Montserrat', sans-serif;
 }
 
 .event-detail-header {
     position: absolute;
-    left: 20px;
+    left: 40px;
     display: flex;
     align-items: center;
     margin: 5px 0;
@@ -36,8 +36,8 @@
     position: absolute;
     display: flex;
     align-items: center;
-    top: 8px;
-    right: 20px;
+    top: 15px;
+    right: 30px;
     margin: 0;
 }
 
@@ -45,6 +45,7 @@
     font-size: 14pt;
     font-weight: bold;
     margin: 0;
+
 }
 
 .host-btns {

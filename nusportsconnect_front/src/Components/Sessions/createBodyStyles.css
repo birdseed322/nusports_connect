@@ -95,11 +95,11 @@
 
 .create-input.create-description {
     height: 50vh;
-    width: 40vw;
+    width: 30vw;
+    border-radius: 20px;
     font-family: arial;
     font-size: 18px;
     padding: 2%;
-    resize: none;
 }
 
 .create-button {

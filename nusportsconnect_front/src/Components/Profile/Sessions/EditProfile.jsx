@@ -21,14 +21,10 @@ function EditProfile() {
     apiCall();
   }, [id]);
 
-  if (
-    user === "Not authenticated" ||
-    user === null ||
-    user.username !== ownUser
-  ) {
-    return <NotAuthenticated />;
-  } else if (user === "") {
+  if (ownUser === "" || user === null) {
     return <Loading />;
+  } else if (user.username !== ownUser) {
+    return <NotAuthenticated />;
   }
 
   return (
