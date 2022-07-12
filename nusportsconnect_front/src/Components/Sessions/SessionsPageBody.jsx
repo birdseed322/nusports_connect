@@ -10,6 +10,7 @@ import {
   getSessionInfo,
   getUserIdentity,
   joinSession,
+  leaveSession,
 } from "../../GraphQLQueries/queries";
 import { useParams } from "react-router-dom";
 import { Loading } from "../Loading/Loading";
@@ -54,6 +55,11 @@ function SessionsPageBody(props) {
     const userId = await getUserIdentity();
     joinSession(userId.data.data.userIdentity, id);
     window.location.reload();
+  }
+
+  function handleLeave(e){
+    leaveSession(id)
+    window.location.reload()
   }
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
@@ -126,6 +132,15 @@ function SessionsPageBody(props) {
               src={star}
             />
           </div>
+          {host ? 
+            <div className="session-action-btns">
+            <button className="session-btn edit" onClick={() => window.location.href = "/sessions/" + id + "/edit"}>Edit</button>
+            <button className="session-btn leave" onClick={handleLeave}>Leave</button>
+          </div> : participant ? 
+          <div className="session-action-btns">
+            <button className="session-btn leave" onClick={handleLeave}>Leave</button>
+          </div> : null
+          }
         </div>
         <div className="event-description-box">
           <div className="event-description">
