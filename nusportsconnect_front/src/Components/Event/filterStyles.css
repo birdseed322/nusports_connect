@@ -16,6 +16,10 @@
   flex-direction: column;
 }
 
+.filter-item.filter-avail label {
+  margin: 0 auto;
+}
+
 .filter-input {
   height: 2em;
   width: 200px;

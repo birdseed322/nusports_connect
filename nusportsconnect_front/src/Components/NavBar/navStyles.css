@@ -6,10 +6,6 @@ body {
   margin: 0;
 }
 
-.yo {
-  color: black;
-}
-
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -18,8 +14,8 @@ body {
   color: white;
   font-family: Helvetica;
   font-weight: 300;
-  gap: 2rem;
-  padding: .5em 1rem;
+  padding: 0 1rem;
+  height: 10%;
 }
 
 .navbar ul {
@@ -32,16 +28,18 @@ body {
 }
 
 .logo {
-  width: 200px;
+  /* width: 200px; */
+  width: 75%;
   padding: 0 0 .5em 1em;
-  display: flex;
+  /* display: flex; */
 }
 .nav-search-input {
-  width: 70%;
+  width: 60%;
   height: 50%;
   border-radius: 12px;
   font-size: 16px;
   margin-right: 10px;
+  padding: 5px;
 }
 
 .search-button {

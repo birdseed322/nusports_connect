@@ -22,7 +22,7 @@ function CreateSessionBody() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [maxParticipant, setMaxParticipant] = useState(2);
-  const [minStar, setMinStar] = useState("");
+  const [minStar, setMinStar] = useState(2);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -59,17 +59,22 @@ function CreateSessionBody() {
 
   if (startDate < new Date()) {
     let currentDate = new Date();
-    currentDate = currentDate.setHours(currentDate.getHours() + 2);
+    currentDate.setMinutes(Math.ceil(currentDate.getMinutes() / 15) * 15);
+    currentDate.setHours(currentDate.getHours() + 2);
     currentDate = new Date(currentDate);
     setStartDate(currentDate);
   }
 
-  if (endDate < startDate) {
+  if (endDate <= startDate) {
     let updatedEndTime = new Date(startDate);
-    updatedEndTime = updatedEndTime.setMinutes(updatedEndTime.getMinutes() + 15)
+    updatedEndTime = updatedEndTime.setMinutes(
+      updatedEndTime.getMinutes() + 15
+    );
     setEndDate(updatedEndTime);
   }
-
+  console.log(startDate);
+  console.log(endDate);
+  console.log(minStar);
   return (
     <div className="create-container">
       <div className="create-panel">
@@ -114,7 +119,7 @@ function CreateSessionBody() {
           <div className="create-warning">
             Please ensure that the location is available for use before
             creating!
-            </div>
+          </div>
           <div className="create-item create-date">
             <label htmlFor="date">
               <img className="input-icon" src={date} alt="" />
@@ -131,7 +136,9 @@ function CreateSessionBody() {
               filterTime={filterPassedTime}
               dateFormat="dd/MM/yyyy"
               required
-              onKeyDown={(e) => {e.preventDefault();}}
+              onKeyDown={(e) => {
+                e.preventDefault();
+              }}
             ></DatePicker>
           </div>
 
@@ -152,7 +159,9 @@ function CreateSessionBody() {
               showTimeSelectOnly
               timeIntervals={15}
               required
-              onKeyDown={(e) => {e.preventDefault();}}
+              onKeyDown={(e) => {
+                e.preventDefault();
+              }}
             ></DatePicker>
           </div>
 
@@ -173,7 +182,9 @@ function CreateSessionBody() {
               showTimeSelectOnly
               timeIntervals={15}
               required
-              onKeyDown={(e) => {e.preventDefault();}}
+              onKeyDown={(e) => {
+                e.preventDefault();
+              }}
             ></DatePicker>
           </div>
 
@@ -195,24 +206,30 @@ function CreateSessionBody() {
           </div>
 
           <div className="create-item">
-            {" "}
             <label htmlFor="stars">
               <img className="input-icon" src={star} alt="" />
             </label>
-            <input
+
+            <select
               className="create-input"
-              type="number"
-              placeholder="Minimum number of stars required"
               id="stars"
-              min="0"
-              max="5"
-              value={minStar}
-              onChange={(e) => setMinStar(e.target.value)}
+              onChange={(e) => setMinStar(parseInt(e.target.value))}
               required
-            />
+            >
+              <option value="0"> 0 </option>
+              <option value="1"> 1 </option>
+              <option value="2" selected>
+                2
+              </option>
+              <option value="3"> 3 </option>
+              <option value="4"> 4 </option>
+              <option value="5"> 5 </option>
+            </select>
           </div>
+
           <div className="create-warning">
-            Reminder that the stars represent a person's attitude not skill level!
+            Reminder that the stars represent a person's attitude not skill
+            level!
           </div>
           <div className="create-item">
             <label htmlFor="description"></label>
@@ -222,8 +239,6 @@ function CreateSessionBody() {
               placeholder="Write a Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              cols="20"
-              rows="10"
               required
             ></textarea>
           </div>

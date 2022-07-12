@@ -82,6 +82,16 @@ export function getUserUsername() {
     return postQuery(query);
 }
 
+export function getAllUsernames() {
+    const query = `
+    query{
+        allUsernames {
+          username
+        }
+      }
+    `
+    return postQuery(query);
+}
 
 export function updateUser(username, email, fName, lName, interests, image) {
 

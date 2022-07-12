@@ -18,7 +18,6 @@ function Sessions() {
     userSessions: [],
   });
 
-  
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
 
   React.useEffect(() => {
@@ -28,13 +27,16 @@ function Sessions() {
         userRes.data.data.userUsername
       );
 
-      if(userRes.data.data.userUsername !== null && userSessions.data.data.userProfileInfo !== null){
+      if (
+        userRes.data.data.userUsername !== null &&
+        userSessions.data.data.userProfileInfo !== null
+      ) {
         setUser({
           username: userRes.data.data.userUsername,
           userSessions: userSessions.data.data.userProfileInfo.currentSessions,
         });
-      };
       }
+    };
 
     fetchUser();
 
@@ -53,21 +55,20 @@ function Sessions() {
 
   if (user.username === "") {
     return <Loading />;
-  } else if (user.username === null){
-    return <NotAuthenticated />
+  } else if (user.username === null) {
+    return <NotAuthenticated />;
   }
-
 
   let uniqDatesSet = new Set();
 
   data.forEach((session) => {
-    const now = new Date()
-    const sessionStart = new Date(parseInt(session.fullStartTime))
+    const now = new Date();
+    const sessionStart = new Date(parseInt(session.fullStartTime));
     if (now < sessionStart && session.currentParticipants !== 0) {
       uniqDatesSet.add(session.date);
     }
   });
-  
+
   let uniqDates = Array.from(uniqDatesSet);
   uniqDates = uniqDates.sort((a, b) => {
     return new Date(a) - new Date(b);
@@ -89,11 +90,15 @@ function Sessions() {
       <FilterBar setFilterSessions={setFilterSessions} />
       <div className="session">
         {uniqDates.map((date) => {
-          const now = new Date()
+          const now = new Date();
           let toRender = [];
           for (const session of data) {
-            const sessionStart = new Date(parseInt(session.fullStartTime))
-            if (now < sessionStart && session.date === date && session.currentParticipants !== 0) {
+            const sessionStart = new Date(parseInt(session.fullStartTime));
+            if (
+              now < sessionStart &&
+              session.date === date &&
+              session.currentParticipants !== 0
+            ) {
               toRender.push(session);
             }
           }

@@ -5,8 +5,10 @@ import "./filterStyles.css";
 
 function FilterBar({ setFilterSessions }) {
   const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [endDisabled, setendDisabled] = useState(true);
   const [sport, setSport] = useState("");
-  const [avail, setAvail] = useState(false);
+  const [avail, setAvail] = useState(true);
   let filterSessions = [];
 
   async function handleSubmit(e) {
@@ -14,6 +16,7 @@ function FilterBar({ setFilterSessions }) {
     try {
       const sessions = await getAllSessions();
       filterSessions = sessions.data.data.sessions;
+
       console.log(sport);
       if (sport !== "") {
         filterSessions = filterSessions.filter(
@@ -23,9 +26,18 @@ function FilterBar({ setFilterSessions }) {
 
       console.log(startDate);
       if (startDate !== "") {
-        filterSessions = filterSessions.filter(
-          (session) => session.date === startDate.toDateString()
-        );
+        if (endDate === "") {
+          filterSessions = filterSessions.filter((session) => {
+            return session.date === startDate.toDateString();
+          });
+        } else {
+          filterSessions = filterSessions.filter((session) => {
+            return (
+              startDate <= session.fullStartTime &&
+              session.fullStartTime <= endDate
+            );
+          });
+        }
       }
 
       console.log(avail);
@@ -40,7 +52,6 @@ function FilterBar({ setFilterSessions }) {
       console.log(err);
     }
   }
-
   return (
     <div className="filter-box">
       <form className="filter-form" onSubmit={handleSubmit}>
@@ -52,7 +63,7 @@ function FilterBar({ setFilterSessions }) {
             placeholder="Sport"
             onChange={(e) => setSport(e.target.value)}
           >
-            <option value=""> Select Sport </option>
+            <option value=""> All Sports </option>
             <option value="Badminton"> Badminton </option>
             <option value="Basketball"> Basketball </option>
             <option value="Ultimate Frisbee"> Ultimate Frisbee </option>
@@ -60,41 +71,43 @@ function FilterBar({ setFilterSessions }) {
         </div>
 
         <div className="filter-item">
-          <label htmlFor="date">Date:</label>
+          <label htmlFor="start-date"> Start Date:</label>
           <DatePicker
             className="filter-input"
-            placeholderText="Date"
+            placeholderText="Start Date"
             selected={startDate}
             onChange={(date) => {
               setStartDate(date);
+              setendDisabled(false);
             }}
             minDate={new Date()}
             dateFormat="dd/MM/yyyy"
           ></DatePicker>
         </div>
 
-        {/* <div className="filter-item">
-          <label htmlFor="time">Start Time:</label>
+        <div className="filter-item">
+          <label htmlFor="end-date"> End Date:</label>
           <DatePicker
             className="filter-input"
-            placeholderText="Start Time"
-            selected={startDate}
-            onChange={(date) => setStartDate(date) && setFilterTime(date)}
+            placeholderText="End Date"
+            selected={endDate}
+            onChange={(date) => {
+              setEndDate(date);
+            }}
             minDate={startDate}
-            maxDate={startDate}
-            dateFormat="HH:mm"
-            showTimeSelect
-            timeIntervals={15}
+            dateFormat="dd/MM/yyyy"
+            disabled={endDisabled}
           ></DatePicker>
-        </div> */}
+        </div>
 
-        <div className="filter-item">
-          <label htmlFor="avail">Show events with availability</label>
+        <div className="filter-item filter-avail">
+          <label htmlFor="avail">Available Events</label>
           <input
             type="checkbox"
             className="filter-input"
             id="avail"
             name="avail"
+            defaultChecked
             onChange={(e) => setAvail(e.target.checked)}
           />
         </div>

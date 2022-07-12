@@ -84,7 +84,6 @@
 
 .edit-input.edit-description {
   height: 50vh;
-  /* width: ; */
   font-family: arial;
   font-size: 18px;
   padding: 2%;
@@ -92,10 +91,10 @@
 }
 
 .edit-button {
-  width: 100px;
+  width: fit-content;
   background-color: #3DAD49;
   color: white;
-  padding: .5em 1em;
+  padding: 1em 1em;
   font-size: 20px;
   border: none;
   border-radius: 12px;

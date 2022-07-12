@@ -1,9 +1,11 @@
 * {
     box-sizing: border-box;
   }
-  
+
+
   .session {
-    height: 86vh;
+    height: 100vh;
+    width: 100vw;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
