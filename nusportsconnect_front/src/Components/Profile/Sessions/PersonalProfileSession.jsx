@@ -1,38 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import "./profileStyles.css";
 import Navbar from "../../NavBar/Navbar";
-import ProfileSessionBody from "./ProfileSessionBody";
 import ProfileSessionHeader from "./ProfileSessionHeader";
-
-//Assume loads to profile sessions by default
+import ProfileSessionBody from "./ProfileSessionBody";
+import ProfileHistoryBody from "../History/ProfileHistoryBody";
+import ProfileFriendsBody from "../Friends/ProfileFriendsBody";
+import ProfileReviewsBody from "../Reviews/ProfileReviewsBody";
 
 function PersonalProfileSession(props) {
-  // const [view, setView] = useState("sessions");
+  const [view, setView] = useState("sessions");
 
-  // const handleClick = (viewState) => {
-  //   setView(viewState);
-  // };
+  const handleClick = (viewState) => {
+    setView(viewState);
+  };
 
   const user = props.user;
   return (
     <div className="profile-container">
       <Navbar />
-      {/* {(() => {
+      <ProfileSessionHeader user={user} owner={true} />
+      {(() => {
         switch (view) {
           case "sessions":
             return <ProfileSessionBody handleClick={handleClick} user={user} />;
-          case "signUp":
-            return <AccountCreation handleClick={handleClick} />;
-          case "pwReset":
-            return <PasswordReset handleClick={handleClick} />;
-          case "sessions":
-            return <Sessions />;
+          case "history":
+            return <ProfileHistoryBody handleClick={handleClick} user={user} />;
+          case "friends":
+            return <ProfileFriendsBody handleClick={handleClick} user={user} />;
+          case "reviews":
+            return <ProfileReviewsBody handleClick={handleClick} user={user} />;
           default:
             return null;
         }
-      })()} */}
-      <ProfileSessionHeader user={user} owner={true} />
-      <ProfileSessionBody user={user} />
+      })()}
     </div>
   );
 }

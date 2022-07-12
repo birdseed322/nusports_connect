@@ -1,9 +1,7 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import OtherProfileFriendsTab from "../Tabs/OtherProfileFriendTab";
 
 function OtherProfileFriendsBody(props) {
-  let { id } = useParams();
   var sessionsTab = "profile-tab profile-tab-text";
   var historyTab = "profile-tab profile-tab-text";
   var friendsTab = "profile-tab-text highlight";
@@ -15,26 +13,30 @@ function OtherProfileFriendsBody(props) {
         {props.friend ? (
           <h2
             className={sessionsTab}
-            onClick={() => (window.location.href = "/" + id)}
+            // onClick={() => (window.location.href = "/" + id)}
+            onClick={() => props.handleClick("sessions")}
           >
             sessions
           </h2>
         ) : null}
         <h2
           className={historyTab}
-          onClick={() => (window.location.href = "/profile/" + id + "/history")}
+          // onClick={() => (window.location.href = "/profile/" + id + "/history")}
+          onClick={() => props.handleClick("history")}
         >
           history
         </h2>
         <h2
           className={friendsTab}
-          onClick={() => (window.location.href = "/profile/" + id + "/friends")}
+          // onClick={() => (window.location.href = "/profile/" + id + "/friends")}
+          onClick={() => props.handleClick("friends")}
         >
           friends
         </h2>
         <h2
           className={reviewsTab}
-          onClick={() => (window.location.href = "/profile/" + id + "/reviews")}
+          // onClick={() => (window.location.href = "/profile/" + id + "/reviews")}
+          onClick={() => props.handleClick("reviews")}
         >
           reviews
         </h2>
