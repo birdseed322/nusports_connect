@@ -1,5 +1,6 @@
 import React from 'react';
 import {useParams} from 'react-router-dom'
+import { setPageTitle } from '../../generalFunctions';
 import { checkProfileOwner, findUser } from '../../GraphQLQueries/queries';
 import { Loading } from '../Loading/Loading';
 import NotAuthenticated from '../NotAuthenticated/NotAuthenticated';
@@ -20,6 +21,7 @@ function ProfileHistoryLanding(props){
       setData(user.data.data.userProfileInfo)
       const check = await checkProfileOwner(id)
       setOwner(check.data.data.checkProfileOwner)
+      setPageTitle("NUSportsConnect - " + user.data.data.userProfileInfo.fName + "'s profile")
     };
 
     apiCall()

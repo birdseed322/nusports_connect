@@ -1,4 +1,5 @@
 import React from "react";
+import { setPageTitle } from "../../generalFunctions";
 import { testAuth } from "../../GraphQLQueries/queries";
 import { Loading } from "../Loading/Loading";
 import Navbar from "../NavBar/Navbar";
@@ -13,6 +14,7 @@ function CreateSession() {
       setData(res.data.data.testAuth);
     }
     apiCall()
+    setPageTitle("NUSportsConnect - Create session")
   },[])
 
   if (data === "Not authenticated" || data === null) {

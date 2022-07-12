@@ -14,6 +14,7 @@ import {
 } from "../../GraphQLQueries/queries";
 import { useParams } from "react-router-dom";
 import { Loading } from "../Loading/Loading";
+import { setPageTitle } from "../../generalFunctions";
 
 function SessionsPageBody(props) {
   const { id } = useParams();
@@ -42,6 +43,7 @@ function SessionsPageBody(props) {
     const apiCall = async () => {
       const session = await getSessionInfo(id);
       setSessionInfo(session.data.data.getSessionInfo);
+      setPageTitle("NUSportsConnect - " + session.data.data.getSessionInfo.sport + " session")
     };
 
     apiCall();
@@ -59,7 +61,7 @@ function SessionsPageBody(props) {
 
   function handleLeave(e){
     leaveSession(id)
-    window.location.reload()
+    window.location.href = "/sessions"
   }
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.

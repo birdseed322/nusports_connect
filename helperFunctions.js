@@ -15,5 +15,5 @@ function formatAMPM(date) {
 
 module.exports = {
     getAccountCreationDate,
-    formatAMPM
+    formatAMPM,
 }

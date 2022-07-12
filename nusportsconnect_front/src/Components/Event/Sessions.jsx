@@ -10,6 +10,7 @@ import {
 } from "../../GraphQLQueries/queries";
 import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import { Loading } from "../Loading/Loading";
+import { setPageTitle } from "../../generalFunctions";
 
 function Sessions() {
   const [data, setData] = React.useState([]);
@@ -39,6 +40,7 @@ function Sessions() {
     };
 
     fetchUser();
+    setPageTitle("NUSportsConnect - All Events")
 
     if (filterSessions[0] === "placeholder") {
       const apiCall = async () => {

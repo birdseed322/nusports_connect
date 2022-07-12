@@ -15,7 +15,7 @@ function OtherProfileFriendsBody(props) {
         {props.friend ? (
           <h2
             className={sessionsTab}
-            onClick={() => (window.location.href = "/" + id)}
+            onClick={() => (window.location.href = "/profile/" + id)}
           >
             sessions
           </h2>

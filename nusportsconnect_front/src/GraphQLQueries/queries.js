@@ -286,6 +286,7 @@ export function getUserCurrentSessions(username) {
         host{
           username
         }
+        participantsId
         currentParticipants
         maxParticipants
       }

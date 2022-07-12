@@ -97,6 +97,7 @@ const SessionType = new GraphQLObjectType({
         fullStartTime: { type: GraphQLNonNull(GraphQLString) },
         fullEndTime: { type: GraphQLNonNull(GraphQLString) },
         participants: { type: GraphQLList(UserType) },
+        participantsId: {type: GraphQLList(GraphQLString)},
         host: { type: UserType },
         currentParticipants: { type: GraphQLNonNull(GraphQLInt) },
         maxParticipants: { type: GraphQLNonNull(GraphQLInt) }
@@ -333,6 +334,7 @@ const RootQueryType = new GraphQLObjectType({
                         host,
                         fullStartTime: sesh.startTime,
                         fullEndTime: sesh.endTime,
+                        participantsId: sesh.participants,
                         currentParticipants: sesh.participants.length,
                         maxParticipants: sesh.maxParticipant,
                     };

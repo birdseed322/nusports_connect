@@ -9,7 +9,7 @@ function OtherPersonalProfileHistory(props) {
   const user = props.user;
 
   //Based on user info and the API call to backend retrieving this profile's info
-  const friend = false;
+  const friend = true;
 
   return (
     <div className="profile-container">
