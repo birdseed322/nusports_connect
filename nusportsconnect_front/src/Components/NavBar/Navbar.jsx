@@ -23,9 +23,13 @@ function Navbar() {
       const userUsername = await getUserUsername();
       setUsername(userUsername.data.data.userUsername);
       const userDetails = await findUser(username);
-      setUserImage(userDetails.data.data.userProfileInfo.image);
-      // let users = await getAllUsernames();
-      // setAllUsers(users.data.data.allUsernames);
+      console.log(userDetails);
+      try {
+        setUserImage(userDetails.data.data.userProfileInfo.image);
+      } catch (err) {
+
+      }
+
     };
     apiCall();
   });
@@ -51,7 +55,7 @@ function Navbar() {
         }
       }
     } catch (err) {
-      console.log(err);
+      
     }
   }
   return (
