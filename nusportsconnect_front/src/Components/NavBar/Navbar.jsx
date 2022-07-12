@@ -9,6 +9,7 @@ import {
 } from "../../GraphQLQueries/queries";
 import defaultPic from "../../pics/defaultProfilePic.png";
 import Alert from "../Alert/Alert";
+import Dropdown from "./Dropdown";
 
 function Navbar() {
   const [username, setUsername] = useState("");
@@ -72,13 +73,14 @@ function Navbar() {
               />
               {alert ? (
                 <Alert
-                  message="No user found!"
+                  message="No user found"
                   handleCloseAlert={handleCloseAlert}
                 />
               ) : null}
               <button className="search-button" type="submit">
                 search
               </button>
+              {/* <Dropdown /> */}
             </form>
             {/* <div className="dropdown">
               {allUsers !== "" ? (
