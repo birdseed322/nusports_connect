@@ -1,10 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { checkProfileOwner, findUser } from "../../GraphQLQueries/queries";
+import { setPageTitle } from '../../generalFunctions';
 import { Loading } from "../Loading/Loading";
 import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import OtherPersonalProfileHistory from "../OtherProfile/History/OtherPersonalProfileHistory";
 import PersonalProfileHistory from "./History/PersonalProfileHistory";
+
 
 //Landing page for profile. Checks the info given in the browser cookie (Generated during login) to see if the profile you are viewing is yours
 
@@ -15,10 +17,11 @@ function ProfileHistoryLanding(props) {
   //Upon mounting component, data retrieved and sent down to profile component.
   React.useEffect(() => {
     const apiCall = async () => {
-      const user = await findUser(id);
-      setData(user.data.data.userProfileInfo);
-      const check = await checkProfileOwner(id);
-      setOwner(check.data.data.checkProfileOwner);
+      const user = await findUser(id)
+      setData(user.data.data.userProfileInfo)
+      const check = await checkProfileOwner(id)
+      setOwner(check.data.data.checkProfileOwner)
+      setPageTitle("NUSportsConnect - " + user.data.data.userProfileInfo.fName + "'s profile")
     };
 
     apiCall();

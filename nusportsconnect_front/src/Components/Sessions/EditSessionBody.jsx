@@ -14,6 +14,7 @@ import {
     editSession,
   getSessionInfo
 } from "../../GraphQLQueries/queries";
+import { setPageTitle } from "../../generalFunctions";
 
 function EditSessionBody() {
   const {id} = useParams();  
@@ -41,6 +42,7 @@ function EditSessionBody() {
       };
 
       apiCall();
+      setPageTitle("NUSportsConnect - Session Edit")
 
   }, [id]);
 

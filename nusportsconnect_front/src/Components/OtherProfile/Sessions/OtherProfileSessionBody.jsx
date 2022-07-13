@@ -23,7 +23,7 @@ function OtherProfileSessionBody(props) {
           >
             sessions
           </h2>
-        ) : null}
+        ) : null} 
         <h2
           className={historyTab}
           // onClick={() => (window.location.href = "/profile/" + id + "/history")}
