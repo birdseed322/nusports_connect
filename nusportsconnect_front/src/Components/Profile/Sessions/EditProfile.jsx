@@ -5,6 +5,7 @@ import { Loading } from "../../Loading/Loading";
 import Navbar from "../../NavBar/Navbar";
 import NotAuthenticated from "../../NotAuthenticated/NotAuthenticated";
 import EditProfileBody from "./EditProfileBody";
+import { setPageTitle } from "../../../generalFunctions"
 
 function EditProfile() {
   const { id } = useParams();
@@ -19,6 +20,8 @@ function EditProfile() {
       setOwnUser(username.data.data.userUsername);
     };
     apiCall();
+    setPageTitle("NUSportsConnect - Edit profile")
+  
   }, [id]);
 
   if (ownUser === "" || user === null) {

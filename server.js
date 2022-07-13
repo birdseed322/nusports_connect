@@ -35,10 +35,12 @@ const port = process.env.PORT || 5000;
 
 //Add dependencies for app to use
 // app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
-app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost/:3000" }));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000/" }));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json({limit: '50mb'}));
+
+const server = require('http').createServer(app)
 
 //Create connection to database. Change to appropriate database URI
 const dbURI = process.env.LOCAL_DB_URI;
@@ -47,12 +49,38 @@ mongoose.connect(dbURI, { useNewURLParser: true });
 
 const connection = mongoose.connection;
 
+const io = require("socket.io")(server, {
+    transports : ["websocket", "polling"]
+})
+
 connection.once('open', () => {
     console.log('Connection with DB successful!');
 })
 
-app.listen(port, () => {
-    console.log('Server is running on port: ' + port);
+server.listen(port, () => {
+    console.log('Server is running on port:' + port);
+})
+
+//Websocket Responses
+io.on("connection", client => {
+    console.log("connected!")
+
+    client.on("username", username => {
+        console.log(username + " connected")
+        const user = {
+            name : username,
+            id : client.id 
+        }
+        io.emit("connected", user)
+    })
+
+    client.on("send", message => {
+        io.emit("message", {
+            text : message.message,
+            date: new Date().toISOString(),
+            user: message.user
+        })
+    })
 })
 
 
@@ -97,6 +125,7 @@ const SessionType = new GraphQLObjectType({
         fullStartTime: { type: GraphQLNonNull(GraphQLString) },
         fullEndTime: { type: GraphQLNonNull(GraphQLString) },
         participants: { type: GraphQLList(UserType) },
+        participantsId: {type: GraphQLList(GraphQLString)},
         host: { type: UserType },
         currentParticipants: { type: GraphQLNonNull(GraphQLInt) },
         maxParticipants: { type: GraphQLNonNull(GraphQLInt) }
@@ -333,6 +362,7 @@ const RootQueryType = new GraphQLObjectType({
                         host,
                         fullStartTime: sesh.startTime,
                         fullEndTime: sesh.endTime,
+                        participantsId: sesh.participants,
                         currentParticipants: sesh.participants.length,
                         maxParticipants: sesh.maxParticipant,
                     };

@@ -14,9 +14,20 @@ import {
 } from "../../GraphQLQueries/queries";
 import { useParams } from "react-router-dom";
 import { Loading } from "../Loading/Loading";
+import { setPageTitle } from "../../generalFunctions";
+import io from "socket.io-client"
+
+const socket = io("http://localhost:5000/", {
+  transports : ["websocket", "polling"]
+})
 
 function SessionsPageBody(props) {
+  //props used to retrieve user information.
+  //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
+  const user = props.user;
   const { id } = useParams();
+  const [messages, setMessages] = React.useState([{}])
+  const [message, setMessage] = React.useState("")
   const [friendOverlay, setFriendOverlay] = React.useState(false);
   const [sessionInfo, setSessionInfo] = React.useState({
     sport: "",
@@ -39,12 +50,27 @@ function SessionsPageBody(props) {
   });
 
   React.useEffect(() => {
+
     const apiCall = async () => {
       const session = await getSessionInfo(id);
       setSessionInfo(session.data.data.getSessionInfo);
+      setPageTitle("NUSportsConnect - " + session.data.data.getSessionInfo.sport + " session")
     };
 
     apiCall();
+
+    socket.on("connect", () => {
+      socket.emit("username", props.user)
+    })
+    
+    socket.on("connected", user => {
+      console.log(user)
+    })
+    
+  socket.on("message", message => {
+    setMessages(prev => [...prev, message]);
+  })
+
   }, [id]);
 
   if (sessionInfo.sport === "") {
@@ -59,11 +85,15 @@ function SessionsPageBody(props) {
 
   function handleLeave(e){
     leaveSession(id)
-    window.location.reload()
+    window.location.href = "/sessions"
   }
-  //props used to retrieve user information.
-  //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
-  const user = props.user;
+
+  function handleSendMessage(){
+    socket.emit("send", {message, user})
+    setMessage("")
+  }
+
+
 
   const host = sessionInfo.host.username === user;
   let participant = false;
@@ -171,7 +201,7 @@ function SessionsPageBody(props) {
           </div>
         </div>
         {host || participant ? (
-          <ChatBox />
+          <ChatBox setMessage={setMessage} handleSendMessage={handleSendMessage} message={message} messages={messages}/>
         ) : sessionInfo.participants.length < sessionInfo.maxParticipants ? (
           <button className="join-btn" onClick={handleSessionJoin}>
             I want to go!

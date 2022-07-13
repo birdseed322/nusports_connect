@@ -39,7 +39,6 @@ function ProfileSessionHeader(props) {
           Playing since: {user.accountCreationDate} <br /> <br />
           Interested in: {user.interests}
         </p>
-
         {owner ? (
           <img
             src={edit}
