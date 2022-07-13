@@ -9,6 +9,7 @@ import {
 } from "../../GraphQLQueries/queries";
 import defaultPic from "../../pics/defaultProfilePic.png";
 import Alert from "../Alert/Alert";
+import Dropdown from "./Dropdown";
 
 function Navbar() {
   const [username, setUsername] = useState("");
@@ -22,13 +23,9 @@ function Navbar() {
       const userUsername = await getUserUsername();
       setUsername(userUsername.data.data.userUsername);
       const userDetails = await findUser(username);
-      console.log(userDetails);
       try {
         setUserImage(userDetails.data.data.userProfileInfo.image);
-      } catch (err) {
-
-      }
-
+      } catch (err) {}
     };
     apiCall();
   });
@@ -44,8 +41,9 @@ function Navbar() {
         let allUsers = await getAllUsernames();
         allUsers = allUsers.data.data.allUsernames;
         const searchInputLower = searchInput.toLowerCase();
-        allUsers = allUsers.filter((user) =>
-          user.username.includes(searchInputLower)
+        allUsers = allUsers.filter(
+          (user) => user.username.startsWith(searchInputLower)
+          //just returns first user found with this input. No dropdown menu to select preferred result.
         );
         if (allUsers.length === 0) {
           setAlert(true);
@@ -53,9 +51,7 @@ function Navbar() {
           window.location.href = "/profile/" + allUsers[0].username;
         }
       }
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   }
   return (
     <div>
@@ -76,13 +72,14 @@ function Navbar() {
               />
               {alert ? (
                 <Alert
-                  message="No user found!"
+                  message="No user found"
                   handleCloseAlert={handleCloseAlert}
                 />
               ) : null}
               <button className="search-button" type="submit">
                 search
               </button>
+              {/* <Dropdown /> */}
             </form>
             {/* <div className="dropdown">
               {allUsers !== "" ? (
