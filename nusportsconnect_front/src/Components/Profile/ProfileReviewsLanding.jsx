@@ -7,7 +7,7 @@ import NotAuthenticated from '../NotAuthenticated/NotAuthenticated';
 import OtherPersonalProfileReviews from '../OtherProfile/Reviews/OtherPersonalProfileReviews';
 import PersonalProfileReview from './Reviews/PersonalProfileReviews';
 
-//Landing page for profile. Checks the info given in the browser cookie (Generated during login) to see if the profile you are viewing is yours
+// //Landing page for profile. Checks the info given in the browser cookie (Generated during login) to see if the profile you are viewing is yours
 
 function ProfileReviewsLanding(){
   const [data, setData] = React.useState("")
@@ -23,17 +23,17 @@ function ProfileReviewsLanding(){
       setPageTitle("NUSportsConnect - " + user.data.data.userProfileInfo.fName + "'s profile")
     };
 
-    apiCall()
-  },[id])
+//     apiCall()
+//   },[id])
 
-  if (data === "Not authenticated" || data === null) {
-    return <NotAuthenticated />;
-  } else if (data === "") {
-    return <Loading />;
-  }
+//   if (data === "Not authenticated" || data === null) {
+//     return <NotAuthenticated />;
+//   } else if (data === "") {
+//     return <Loading />;
+//   }
 
-    return owner ? <PersonalProfileReview user={data}/> : <OtherPersonalProfileReviews user={data}/>
+//     return owner ? <PersonalProfileReview user={data}/> : <OtherPersonalProfileReviews user={data}/>
 
-}
+// }
 
-export default ProfileReviewsLanding;
+// export default ProfileReviewsLanding;

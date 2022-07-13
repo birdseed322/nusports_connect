@@ -39,15 +39,6 @@ function ProfileSessionHeader(props) {
           Playing since: {user.accountCreationDate} <br /> <br />
           Interested in: {user.interests}
         </p>
-        {/* <img
-          src={edit}
-          alt="edit button"
-          className="edit-btn"
-          onClick={() =>
-            (window.location.href =
-              "/profile/" + user.username + "/editprofile")
-          }
-        /> */}
         {owner ? (
           <img
             src={edit}

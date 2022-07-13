@@ -32,7 +32,6 @@ function ProfileSessionLanding() {
   } else if (data === "") {
     return <Loading />;
   }
-
   return owner ? (
     <PersonalProfileSession user={data} />
   ) : (
