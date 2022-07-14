@@ -7,9 +7,17 @@ function ParticipantBubble(props) {
     <div className="participant-bubble">
       <a className="profile-link" href={"/profile/" + props.username}>
         {props.image === "" ? (
-          <img className="participant-prof-pic" src={defaultProfilePic} />
+          <img
+            className="participant-prof-pic"
+            src={defaultProfilePic}
+            alt="profile-pic"
+          />
         ) : (
-          <img className="participant-prof-pic" src={props.image} />
+          <img
+            className="participant-prof-pic"
+            src={props.image}
+            alt="profile-pic"
+          />
         )}
       </a>
 

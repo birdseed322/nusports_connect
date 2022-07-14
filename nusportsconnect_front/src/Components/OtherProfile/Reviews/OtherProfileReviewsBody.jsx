@@ -6,7 +6,7 @@ function OtherProfileReviewsBody(props) {
   var historyTab = "profile-tab profile-tab-text";
   var friendsTab = "profile-tab profile-tab-text";
   var reviewsTab = "profile-tab-text highlight";
-
+  const otherUser = props.user;
   return (
     <div className="profile-body">
       <div className="profile-tabs">
@@ -42,7 +42,7 @@ function OtherProfileReviewsBody(props) {
         </h2>
       </div>
       <hr />
-      <OtherProfileReviewsTab />
+      <OtherProfileReviewsTab user={otherUser} />
     </div>
   );
 }

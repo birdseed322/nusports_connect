@@ -9,33 +9,39 @@ import Alert from "../Alert/Alert";
 function SignInForm(props) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [alert, setAlert] = React.useState(false)
+  const [alert, setAlert] = React.useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       let response = await loginUser(username, password);
+      console.log(response);
       if (response.status === 200 && response.data.data.login) {
         const jwt = response.data.data.login.accessToken;
         setAccessToken(jwt);
         const username = jwt_decode(jwt).username;
         navigate("/profile/" + username);
       } else {
-        setAlert(true)
+        setAlert(true);
       }
     } catch (err) {
       console.log(err);
     }
   }
 
-  function handleCloseAlert(){
-    setAlert(false)
+  function handleCloseAlert() {
+    setAlert(false);
   }
 
   return (
     <div className="container">
-    {alert ? <Alert message="Wrong username or password" handleCloseAlert={handleCloseAlert}/> : null}
+      {alert ? (
+        <Alert
+          message="Wrong username or password"
+          handleCloseAlert={handleCloseAlert}
+        />
+      ) : null}
       <div className="sign-form-box">
         <form action="/#" onSubmit={handleSubmit}>
           <div className="center">

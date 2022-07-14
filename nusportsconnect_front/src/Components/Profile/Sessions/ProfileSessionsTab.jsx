@@ -9,12 +9,12 @@ function ProfileSessionsTab(props) {
   React.useEffect(() => {
     const apiCall = async () => {
       const sessions = await getUserCurrentSessions(id);
+      console.log(sessions);
       setData(sessions.data.data.getUserCurrentSessions);
     };
 
     apiCall();
   }, [id]);
-
   const upcomingSessions = data.filter((session) => {
     return new Date() < new Date(parseInt(session.fullEndTime));
   });

@@ -10,8 +10,9 @@ const userSchema = new Schema({
     lName : {type : String, required : true},
     interests : {type: String, default: ""},
     image: { type: String, default:"" },
-    ratings : {type : Number, required : true, default: 5},
-    currentSessions : {type : [ObjectId], default: [], required : true},
+    ratings : {type : [Number], required : true, default: [5]},
+    reviews: { type: [ObjectId], default: [], required : true },
+    currentSessions : {type : [ObjectId], default: [], required : true}
 }, {
     timestamps : true
 })

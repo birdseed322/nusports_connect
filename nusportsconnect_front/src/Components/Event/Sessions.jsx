@@ -40,7 +40,7 @@ function Sessions() {
     };
 
     fetchUser();
-    setPageTitle("NUSportsConnect - All Events")
+    setPageTitle("NUSportsConnect - All Events");
 
     if (filterSessions[0] === "placeholder") {
       const apiCall = async () => {

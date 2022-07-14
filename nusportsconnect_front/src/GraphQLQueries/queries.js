@@ -110,6 +110,38 @@ export function updateUser(username, email, fName, lName, interests, image) {
      return postQuery(query);
 }
 
+export function addReview(reviewerUsername, revieweeUsername, rating, comment) {
+  const query = `
+  mutation {
+    addReview(
+      reviewerUsername: "${reviewerUsername}"
+      revieweeUsername: "${revieweeUsername}"
+      rating: ${rating}
+      comment: "${comment}"
+    )
+  }
+  `
+  return postQuery(query);
+}
+
+export function getReviews(username) {
+  const query = `
+    query{
+      userReviews(username: "${username}") {
+        reviewer {
+          username
+          fName
+          lName
+          image
+        }
+        rating
+        comment        
+      }
+    }
+  `
+  return postQuery(query);
+}
+
 export function getUserCurrentSessionsId(username) {
     const query = `
   query{
@@ -165,7 +197,7 @@ export function testAuth() {
 }
 
 export function findUser(username) {
-    const query = `
+const query = `
     query{
         userProfileInfo(username:"${username}"){
           username

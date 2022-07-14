@@ -16,13 +16,14 @@ const express = require('express');
 const expressGraphQL = require('express-graphql').graphqlHTTP;
 const mongoose = require('mongoose');
 let User = require('./models/User');
+let Review = require('./models/Review');
+const Session = require('./models/Session');
 const { hash, compare } = require('bcryptjs');
 const cors = require('cors');
 const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth');
 const cookieParser = require('cookie-parser');
 const { verify } = require('jsonwebtoken');
 var { getAccountCreationDate, formatAMPM } = require('./helperFunctions');
-const Session = require('./models/Session');
 const { ObjectId } = require('mongodb');
 const path = require('path');
 
@@ -91,16 +92,29 @@ const UserType = new GraphQLObjectType({
     description: "This represents a user",
     fields: () => ({
         username: { type: GraphQLNonNull(GraphQLString) },
-        ratings: { type: GraphQLNonNull(GraphQLFloat) },
+        ratings: { type: GraphQLList(GraphQLFloat) },
         email: { type: GraphQLNonNull(GraphQLString) },
         fName: { type: GraphQLNonNull(GraphQLString) },
         lName: { type: GraphQLNonNull(GraphQLString) },
         interests: { type: GraphQLString },
         image: {type : GraphQLString},
+        reviews: { type: GraphQLList(ReviewType)}, 
         currentSessions: { type: GraphQLList(SessionType)},
         accountCreationDate: { type: GraphQLString }
     })
 });
+
+const ReviewType = new GraphQLObjectType({
+    name: "Review",
+    description: "This represents a review",
+    fields: () => ({
+        reviewer: { type: GraphQLNonNull(UserType) },
+        reviewee: { type: UserType },
+        rating: { type: GraphQLNonNull(GraphQLInt) },
+        comment: { type: GraphQLNonNull(GraphQLString) },
+    })
+});
+
 
 const LoginResponse = new GraphQLObjectType({
     name: "LoginResponse",
@@ -131,6 +145,7 @@ const SessionType = new GraphQLObjectType({
         maxParticipants: { type: GraphQLNonNull(GraphQLInt) }
     })
 });
+
 
 //Defining GraphQL scalar types
 
@@ -255,14 +270,16 @@ const RootQueryType = new GraphQLObjectType({
                 const cDate = result.createdAt;
                 const accountCreationDate = getAccountCreationDate(cDate)
                 const currentSessions = await Session.find({ _id: { $in: result.currentSessions } }).exec()
+                const reviews = await Review.find({ _id: { $in: result.reviews  } }).exec()
                 return {
                     username: result.username,
                     email: result.email,
                     fName: result.fName,
                     lName: result.lName,
                     interests: result.interests,
-                    image: result.image,
                     ratings: result.ratings,
+                    image: result.image,
+                    reviews,
                     currentSessions,
                     accountCreationDate
                 };
@@ -281,7 +298,7 @@ const RootQueryType = new GraphQLObjectType({
         },
         userUsername: {
             type: GraphQLString,
-            description: "Get user Username",
+            description: "Get user username",
             resolve: (_, args, { req, res, user }) => {
                 if (!user) {
                     console.log("Not Logged in");
@@ -289,6 +306,26 @@ const RootQueryType = new GraphQLObjectType({
                 } else {
                     return user.username;
                 }
+            }
+        },
+        userReviews: {
+            type: GraphQLList(ReviewType),
+            description: "Get list of user reviews",
+            args: {
+                username: { type: GraphQLString }
+            },
+            resolve: async (_, args) => {
+                let reviewee = await User.findOne({ username: args.username }).exec()
+                let revieweeReviews = await Review.find({ _id: { $in: reviewee.reviews } }).exec()
+                revieweeReviews = revieweeReviews.map(async(review) => {
+                    const reviewer = await User.findById(review.reviewer).exec()
+                    return {
+                        reviewer,
+                        rating: review.rating,
+                        comment: review.comment
+                    };
+                });
+                return revieweeReviews;
             }
         },
         testAuth: {
@@ -475,6 +512,40 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
+
+        addReview: {
+            type: GraphQLBoolean,
+            description: "Add a review for a user",
+            args: {
+                reviewerUsername: { type: GraphQLString },
+                revieweeUsername: { type: GraphQLString },
+                rating: { type: GraphQLInt },
+                comment: { type: GraphQLString }
+            },
+            resolve: async (_, args) => {
+                try {
+                        const reviewer = await User.findOne({ username: args.reviewerUsername }).exec()
+                        const reviewee = await User.findOne({ username: args.revieweeUsername }).exec()
+                        const newReview = new Review({
+                            reviewer: reviewer,
+                            reviewee: reviewee,
+                            rating: args.rating,
+                            comment: args.comment
+                        });
+                        newReview.save();
+
+                        reviewee.ratings.push(args.rating);
+                        reviewee.reviews.push(newReview);
+                        reviewee.save();
+
+                    } catch (err) {
+                    console.log(err);
+                    return false;
+                }
+                return true;
+            }
+        },
+
         createSession: {
             type: GraphQLString,
             description: "create a session",
