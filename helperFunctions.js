@@ -1,7 +1,9 @@
-function getAccountCreationDate(cDate){
+//Converts a date to a string 
+function getCreationDate(cDate){
     return cDate.getDate() + "/" + (cDate.getMonth() + 1) + "/" + cDate.getFullYear();
 };
 
+//Formats a date to AM / PM
 function formatAMPM(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -14,6 +16,6 @@ function formatAMPM(date) {
   };
 
 module.exports = {
-    getAccountCreationDate,
+    getCreationDate,
     formatAMPM,
 }

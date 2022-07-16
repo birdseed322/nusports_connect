@@ -12,10 +12,9 @@ function OtherProfileReviewsTab(props) {
     };
     apiCall();
   }, []);
-
   return (
     <div className="profile-tab-info">
-      {otherUserReviews.map((review) => {
+      {otherUserReviews.reverse().map((review) => {
         return (
           <ReviewsPill
             reviewerUsername={review.reviewer.username}
@@ -23,6 +22,7 @@ function OtherProfileReviewsTab(props) {
             reviewerDesc={review.comment}
             reviewerRating={review.rating}
             reviewerPicSrc={review.reviewer.image}
+            reviewCreationDate={review.reviewCreationDate}
           />
         );
       })}

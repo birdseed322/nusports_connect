@@ -17,7 +17,7 @@ function ProfileReviewTab(props) {
 
   return (
     <div className="profile-tab-info">
-      {userReviews.map((review) => {
+      {userReviews.reverse().map((review) => {
         return (
           <ReviewsPill
             reviewerUsername={review.reviewer.username}
@@ -25,6 +25,7 @@ function ProfileReviewTab(props) {
             reviewerDesc={review.comment}
             reviewerRating={review.rating}
             reviewerPicSrc={review.reviewer.image}
+            reviewCreationDate={review.reviewCreationDate}
           />
         );
       })}

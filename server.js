@@ -23,7 +23,7 @@ const cors = require('cors');
 const { createAccessToken, createRefreshToken, isAuth } = require('./auth/auth');
 const cookieParser = require('cookie-parser');
 const { verify } = require('jsonwebtoken');
-var { getAccountCreationDate, formatAMPM } = require('./helperFunctions');
+var { getCreationDate, formatAMPM } = require('./helperFunctions');
 const { ObjectId } = require('mongodb');
 const path = require('path');
 
@@ -34,7 +34,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-//Add dependencies for app to use
+//Add dependencies for app to be functional
 // app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
 app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000/" }));
 app.use(cookieParser());
@@ -108,10 +108,12 @@ const ReviewType = new GraphQLObjectType({
     name: "Review",
     description: "This represents a review",
     fields: () => ({
-        reviewer: { type: GraphQLNonNull(UserType) },
+        reviewer: { type: UserType },
         reviewee: { type: UserType },
-        rating: { type: GraphQLNonNull(GraphQLInt) },
-        comment: { type: GraphQLNonNull(GraphQLString) },
+        rating: { type: GraphQLInt },
+        comment: { type: GraphQLString },
+        reviewCreationDate: { type: GraphQLString },
+        sessionId: { type: GraphQLString }
     })
 });
 
@@ -142,13 +144,12 @@ const SessionType = new GraphQLObjectType({
         participantsId: {type: GraphQLList(GraphQLString)},
         host: { type: UserType },
         currentParticipants: { type: GraphQLNonNull(GraphQLInt) },
-        maxParticipants: { type: GraphQLNonNull(GraphQLInt) }
+        maxParticipants: { type: GraphQLNonNull(GraphQLInt) },
     })
 });
 
 
 //Defining GraphQL scalar types
-
 const dateTime = new GraphQLScalarType({
     name: 'DateTime',
     description: 'Date time scalar type',
@@ -187,7 +188,7 @@ const RootQueryType = new GraphQLObjectType({
             resolve: async() => {
                 let users = await User.find().exec()
                 users.map((user) => {
-                    const cDate = getAccountCreationDate(user.createdAt)
+                    const cDate = getCreationDate(user.createdAt)
                     user.accountCreationDate = cDate;
                 })
                 return users;
@@ -219,7 +220,7 @@ const RootQueryType = new GraphQLObjectType({
         },
         getSessionInfo: {
             type: SessionType,
-            description: "Retrieve info about session",
+            description: "Retrieve information about a session",
             args: {
                 id: { type: GraphQLString }
             },
@@ -227,6 +228,17 @@ const RootQueryType = new GraphQLObjectType({
                 let session = await Session.findById(args.id).exec().then(async(sesh) => {
                     let host = await User.findById(sesh.host).exec();
                     let users = await User.find({ _id: { $in: sesh.participants } }).exec();
+                    users = users.map(async (user) => { 
+                        let reviews = await Review.find( {_id: {$in: user.reviews}}).exec()
+                        return {
+                            fName: user.fName,
+                            lName: user.lName,
+                            username: user.username,
+                            ratings: user.ratings,
+                            image: user.image,
+                            reviews
+                        }
+                    });
                     return {
                         sport: sesh.sport,
                         location: sesh.location,
@@ -240,7 +252,7 @@ const RootQueryType = new GraphQLObjectType({
                         host,
                         participants: users,
                         currentParticipants: sesh.participants.length,
-                        maxParticipants: sesh.maxParticipant
+                        maxParticipants: sesh.maxParticipant,
                     }
                 })
                 return session
@@ -257,7 +269,7 @@ const RootQueryType = new GraphQLObjectType({
     }, 
         userProfileInfo: {
             type: UserType,
-            description: "Retrieve a user profile information",
+            description: "Retrieve a user's profile information",
             args: {
                 username: { type: GraphQLString }
             },
@@ -268,7 +280,7 @@ const RootQueryType = new GraphQLObjectType({
 
                 const result = await User.findOne({ username: args.username }).exec()
                 const cDate = result.createdAt;
-                const accountCreationDate = getAccountCreationDate(cDate)
+                const accountCreationDate = getCreationDate(cDate)
                 const currentSessions = await Session.find({ _id: { $in: result.currentSessions } }).exec()
                 const reviews = await Review.find({ _id: { $in: result.reviews  } }).exec()
                 return {
@@ -287,7 +299,7 @@ const RootQueryType = new GraphQLObjectType({
         },
         userIdentity: {
             type: GraphQLString,
-            description: "Get user identity",
+            description: "Get the id of a user",
             resolve: (_, args, { req, res, user }) => {
                 if (!user) {
                     return "Not authenticated";
@@ -298,7 +310,7 @@ const RootQueryType = new GraphQLObjectType({
         },
         userUsername: {
             type: GraphQLString,
-            description: "Get user username",
+            description: "Get the username of a user",
             resolve: (_, args, { req, res, user }) => {
                 if (!user) {
                     console.log("Not Logged in");
@@ -310,7 +322,7 @@ const RootQueryType = new GraphQLObjectType({
         },
         userReviews: {
             type: GraphQLList(ReviewType),
-            description: "Get list of user reviews",
+            description: "Get a list of a user's reviews",
             args: {
                 username: { type: GraphQLString }
             },
@@ -318,11 +330,13 @@ const RootQueryType = new GraphQLObjectType({
                 let reviewee = await User.findOne({ username: args.username }).exec()
                 let revieweeReviews = await Review.find({ _id: { $in: reviewee.reviews } }).exec()
                 revieweeReviews = revieweeReviews.map(async(review) => {
+                    const cDate = getCreationDate(review.createdAt)
                     const reviewer = await User.findById(review.reviewer).exec()
                     return {
                         reviewer,
                         rating: review.rating,
-                        comment: review.comment
+                        comment: review.comment,
+                        reviewCreationDate: cDate
                     };
                 });
                 return revieweeReviews;
@@ -330,7 +344,7 @@ const RootQueryType = new GraphQLObjectType({
         },
         testAuth: {
             type: GraphQLString,
-            description: "Test auth",
+            description: "Test authentication of user",
             resolve: (_, args, { req, res, user }) => {
                 if (!user) {
                     console.log("Not Logged in");
@@ -418,7 +432,7 @@ const RootMutationType = new GraphQLObjectType({
     fields: () => ({
         login: {
             type: LoginResponse,
-            description: "log a user",
+            description: "log a user in",
             args: {
                 username: { type: GraphQLNonNull(GraphQLString) },
                 password: { type: GraphQLNonNull(GraphQLString) }
@@ -447,6 +461,7 @@ const RootMutationType = new GraphQLObjectType({
         },
         logout: {
             type: GraphQLBoolean,
+            description: "log a user out",
             resolve: (_, args, { req, res }) => {
                 res.cookie('jid', "", { httpOnly: true });
                 return true;
@@ -454,7 +469,7 @@ const RootMutationType = new GraphQLObjectType({
         },
         addUser: {
             type: GraphQLBoolean,
-            description: "add a user",
+            description: "Create a new user",
             args: {
                 username: { type: GraphQLNonNull(GraphQLString) },
                 password: { type: GraphQLNonNull(GraphQLString) },
@@ -483,7 +498,7 @@ const RootMutationType = new GraphQLObjectType({
         },
         updateUser: {
             type: GraphQLBoolean,
-            description: "Update a user info",
+            description: "Update a user's personal information",
             args: {
                 username: { type: GraphQLString },
                 email: { type: GraphQLString },
@@ -520,7 +535,8 @@ const RootMutationType = new GraphQLObjectType({
                 reviewerUsername: { type: GraphQLString },
                 revieweeUsername: { type: GraphQLString },
                 rating: { type: GraphQLInt },
-                comment: { type: GraphQLString }
+                comment: { type: GraphQLString },
+                sessionId: { type: GraphQLString }
             },
             resolve: async (_, args) => {
                 try {
@@ -530,7 +546,8 @@ const RootMutationType = new GraphQLObjectType({
                             reviewer: reviewer,
                             reviewee: reviewee,
                             rating: args.rating,
-                            comment: args.comment
+                            comment: args.comment,
+                            sessionId: args.sessionId
                         });
                         newReview.save();
 
@@ -548,7 +565,7 @@ const RootMutationType = new GraphQLObjectType({
 
         createSession: {
             type: GraphQLString,
-            description: "create a session",
+            description: "Create a session",
             args: {
                 sport: { type: GraphQLNonNull(GraphQLString) },
                 location: { type: GraphQLNonNull(GraphQLString) },
@@ -584,7 +601,7 @@ const RootMutationType = new GraphQLObjectType({
         },
         joinSession: {
             type: GraphQLBoolean,
-            description: "join a session",
+            description: "Join a session",
             args: {
                 userId: { type: GraphQLNonNull(GraphQLString) },
                 sessionId: { type: GraphQLNonNull(GraphQLString) }
@@ -612,7 +629,7 @@ const RootMutationType = new GraphQLObjectType({
         },
         leaveSession: {
             type: GraphQLBoolean,
-            description: "Remove user from session",
+            description: "Leave a session",
             args: {
                 sessionId: {type : GraphQLNonNull(GraphQLString)}
             },
@@ -637,7 +654,7 @@ const RootMutationType = new GraphQLObjectType({
         },
         editSession: {
             type: GraphQLBoolean,
-            description: "Update fields of session",
+            description: "Edit details of session",
             args: {
                 id: { type: GraphQLNonNull(GraphQLString) },
                 location: { type: GraphQLNonNull(GraphQLString) },

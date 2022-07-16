@@ -27,7 +27,11 @@ function ReviewsPill(props) {
         <a className="profile-link" href={"/profile/" + props.reviewerUsername}>
           <h1 className="reviews-pill-header">{props.reviewerName}</h1>
         </a>
-
+        <br />
+        <br />
+        <div className="reviews-pill-date">
+          Written on: {props.reviewCreationDate}
+        </div>
         <p className="reviews-pill-desc">{props.reviewerDesc}</p>
       </div>
       <div className="reviewer-rating-grp">

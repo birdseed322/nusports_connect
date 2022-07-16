@@ -9,13 +9,25 @@ function Review(props) {
   const [hover, setHover] = useState(0);
   let allParticipants = props.participants;
   let reviewerUsername = props.reviewer;
-  console.log(allParticipants);
-  console.log(revieweeUsername);
+  let sessionId = props.sessionId;
+
+  function isUserRevieweed(reviewArray) {
+    const filterReviewArray = reviewArray.filter(
+      (review) => review.sessionId === sessionId
+    );
+    return filterReviewArray.length === 0 ? true : false;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await addReview(reviewerUsername, revieweeUsername, rating, comment);
+      await addReview(
+        reviewerUsername,
+        revieweeUsername,
+        rating,
+        comment,
+        sessionId
+      );
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -35,7 +47,11 @@ function Review(props) {
             Select a participant
           </option>
           {allParticipants
-            .filter((participant) => participant.username !== reviewerUsername)
+            .filter(
+              (participant) =>
+                participant.username !== reviewerUsername &&
+                isUserRevieweed(participant.reviews)
+            )
             .map((participant) => {
               return (
                 <option value={participant.username}>
@@ -44,7 +60,7 @@ function Review(props) {
               );
             })}
         </select>
-        {/* <h2>Rate your interaction with this particpant</h2> */}
+
         <div>&nbsp;Rate your interaction with this particpant</div>
 
         {[...Array(5)].map((star, index) => {

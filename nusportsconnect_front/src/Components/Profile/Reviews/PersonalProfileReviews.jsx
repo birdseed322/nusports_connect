@@ -4,8 +4,6 @@ import Navbar from "../../NavBar/Navbar";
 import ProfileSessionHeader from "../Sessions/ProfileSessionHeader";
 import ProfileReviewsBody from "./ProfileReviewsBody";
 
-//Assume loads to profile sessions by default
-
 function PersonalProfileReview(props) {
   const user = props.user;
 

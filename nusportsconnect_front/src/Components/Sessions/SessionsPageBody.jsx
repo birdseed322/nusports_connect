@@ -125,7 +125,6 @@ function SessionsPageBody(props) {
   for (var i = 0; i < sessionInfo.minStar; i++) {
     minStars.push("star");
   }
-
   return (
     <div className="session-page-body">
       <div className="session-left">
@@ -219,7 +218,11 @@ function SessionsPageBody(props) {
 
         {host || participant ? (
           currentDate > sessionInfo.fullEndTime ? (
-            <Review participants={sessionInfo.participants} />
+            <Review
+              participants={sessionInfo.participants}
+              reviewer={props.user}
+              sessionId={id}
+            />
           ) : (
             <ChatBox
               setMessage={setMessage}
