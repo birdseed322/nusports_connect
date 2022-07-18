@@ -30,6 +30,10 @@ const socket = io("/", {
 // import DatePicker from "react-datepicker";
 
 
+// const socket = io("/", {
+//   transports: ["websocket", "polling"],
+//   reconnection: false,
+// });
 function SessionsPageBody(props) {
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.

@@ -9,7 +9,6 @@ function ProfileSessionsTab(props) {
   React.useEffect(() => {
     const apiCall = async () => {
       const sessions = await getUserCurrentSessions(id);
-      console.log(sessions);
       setData(sessions.data.data.getUserCurrentSessions);
     };
 

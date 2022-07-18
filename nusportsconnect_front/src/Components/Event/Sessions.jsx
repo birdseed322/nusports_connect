@@ -86,8 +86,6 @@ function Sessions() {
     );
   }
 
-  console.log(user);
-  console.log(data);
   return (
     <div className="sessions-container">
       <Navbar />

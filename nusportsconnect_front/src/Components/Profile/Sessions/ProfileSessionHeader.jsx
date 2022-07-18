@@ -18,6 +18,8 @@ function ProfileSessionHeader(props) {
   //Friend
   const friend = props.friend;
 
+  console.log(pending);
+  console.log(friend);
   return (
     <div className="profile-header">
       {user.image === "" ? (
