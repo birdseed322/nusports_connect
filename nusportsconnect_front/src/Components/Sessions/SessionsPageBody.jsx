@@ -29,9 +29,6 @@ const socket = io("http://localhost:5000/", {
 
 // import DatePicker from "react-datepicker";
 
-const socket = io("http://localhost:5000/", {
-  transports: ["websocket", "polling"],
-});
 
 function SessionsPageBody(props) {
   //props used to retrieve user information.
@@ -118,7 +115,7 @@ function SessionsPageBody(props) {
   }, [id, user]);
 
   setPageTitle("NUSportsConnect - " + sessionInfo.sport + " session")
-  }, [id, props.user]);
+
 
   if (sessionInfo.sport === "") {
     return <Loading />;
@@ -268,7 +265,6 @@ function SessionsPageBody(props) {
         </div>
 
         {host || participant ? (
-          <ChatBox setMessage={setMessage} handleSendMessage={handleSendMessage} message={message} messages={messages} owner={user} usersOnlineOverlay={() => setUsersOnlineOverlay(true)}/>
           currentDate > sessionInfo.fullEndTime ? (
             <Review
               participants={sessionInfo.participants}
@@ -277,10 +273,12 @@ function SessionsPageBody(props) {
             />
           ) : (
             <ChatBox
-              setMessage={setMessage}
-              handleSendMessage={handleSendMessage}
-              message={message}
-              messages={messages}
+            setMessage={setMessage} 
+            handleSendMessage={handleSendMessage} 
+            message={message} 
+            messages={messages} 
+            owner={user} 
+            usersOnlineOverlay={() => setUsersOnlineOverlay(true)}
             />
           )
         ) : sessionInfo.participants.length < sessionInfo.maxParticipants ? (
