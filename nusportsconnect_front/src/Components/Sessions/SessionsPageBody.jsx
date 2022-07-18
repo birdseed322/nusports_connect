@@ -22,7 +22,7 @@ import Announcement from "./Announcement"
 import { getRating, setPageTitle } from "../../generalFunctions";
 import Review from "./Review";
 
-const socket = io("http://localhost:5000/", {
+const socket = io("/", {
   transports : ["websocket", "polling"],
   reconnection: false
 })
