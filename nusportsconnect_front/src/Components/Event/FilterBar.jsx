@@ -24,7 +24,6 @@ function FilterBar({ setFilterSessions }) {
         );
       }
 
-      console.log(startDate);
       if (startDate !== "") {
         if (endDate === "") {
           filterSessions = filterSessions.filter((session) => {
@@ -33,8 +32,10 @@ function FilterBar({ setFilterSessions }) {
         } else {
           filterSessions = filterSessions.filter((session) => {
             return (
-              startDate <= session.fullStartTime &&
-              session.fullStartTime <= endDate
+              startDate === endDate ||
+              (startDate <= session.fullStartTime &&
+                session.fullEndTime <=
+                  new Date(endDate).setHours(23, 59, 59, 999))
             );
           });
         }

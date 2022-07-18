@@ -2,6 +2,7 @@ import axios from "axios";
 import { getAccessToken } from "../accessToken";
 import { graphqlURI } from "../Routes/routes";
 
+//Posts a query from React app 
 function postQuery(query) {
     let result = axios({
             url: '/graphql',
@@ -18,6 +19,8 @@ function postQuery(query) {
 
     return result;
 }
+
+//Creates a new user
 export function addUser(username, password, email, fName, lName) {
     const query = `
     mutation {
@@ -42,28 +45,40 @@ export function addUser(username, password, email, fName, lName) {
 
 }
 
+//Logins a user
 export async function loginUser(username, password) {
-    const query = `
-    mutation{
+  const query = `
+  mutation{
         login(username: "${username}" password:"${password}"){
-            accessToken
+          accessToken
         }
       }
-    `
-
-    let result = await axios({
-            url: '/graphql',
-            method: "post",
-            withCredentials: true,
-            data: {
-                query
-            }
-        })
-        .catch(err => console.log(err));
-
-    return result;
+      `
+      
+      let result = await axios({
+        url: '/graphql',
+        method: "post",
+        withCredentials: true,
+        data: {
+          query
+        }
+      })
+      .catch(err => console.log(err));
+      
+      return result;
+    }
+    
+//Logs a user out
+export function logout() {
+  const query = `
+  mutation{
+      logout
+  }
+  `
+  return postQuery(query);
 }
 
+//Gets the id of a user 
 export function getUserIdentity() {
     const query = `
     query{
@@ -73,6 +88,7 @@ export function getUserIdentity() {
     return postQuery(query);
 }
 
+//Retrieves the username of a user
 export function getUserUsername() {
     const query = `
     query{
@@ -82,6 +98,7 @@ export function getUserUsername() {
     return postQuery(query);
 }
 
+//Retrieves the usernames from all users in the database
 export function getAllUsernames() {
     const query = `
     query{
@@ -93,6 +110,7 @@ export function getAllUsernames() {
     return postQuery(query);
 }
 
+//Updates a user's personal information
 export function updateUser(username, email, fName, lName, interests, image) {
 
     const query = `
@@ -110,6 +128,44 @@ export function updateUser(username, email, fName, lName, interests, image) {
      return postQuery(query);
 }
 
+//Adds a review to a user
+export function addReview(reviewerUsername, revieweeUsername, rating, comment, sessionId) {
+  const query = `
+  mutation {
+    addReview(
+      reviewerUsername: "${reviewerUsername}"
+      revieweeUsername: "${revieweeUsername}"
+      rating: ${rating}
+      comment: "${comment}"
+      sessionId: "${sessionId}"
+    )
+  }
+  `
+  return postQuery(query);
+}
+
+//Retrieves the list of reviews of a user
+export function getReviews(username) {
+  const query = `
+    query{
+      userReviews(username: "${username}") {
+        reviewer {
+          username
+          fName
+          lName
+          image
+        }
+        sessionId
+        rating
+        comment
+        reviewCreationDate        
+      }
+    }
+  `
+  return postQuery(query);
+}
+
+//Retrieves the id of all current sessions of a user
 export function getUserCurrentSessionsId(username) {
     const query = `
   query{
@@ -123,15 +179,7 @@ export function getUserCurrentSessionsId(username) {
     return postQuery(query);
 }
 
-export function logout() {
-    const query = `
-    mutation{
-        logout
-      }
-    `
-    return postQuery(query);
-}
-
+//Retrieves the information of all sessions in the database
 export function getAllSessions() {
     const query = `
     query{
@@ -142,8 +190,9 @@ export function getAllSessions() {
         date
         startTime
         fullStartTime
+        fullEndTime
         endTime
-        host{
+        host {
           username
         }
         currentParticipants
@@ -154,6 +203,7 @@ export function getAllSessions() {
     return postQuery(query)
 }
 
+//Tests the authentication of a user
 export function testAuth() {
     const query = `
     query{
@@ -164,8 +214,9 @@ export function testAuth() {
     return postQuery(query)
 }
 
+//Finds a user based on their username
 export function findUser(username) {
-    const query = `
+const query = `
     query{
         userProfileInfo(username:"${username}"){
           username
@@ -182,6 +233,7 @@ export function findUser(username) {
     return postQuery(query);
 }
 
+//Checks if a request is made by the profile owner (When viewing personal profile or other profile)
 export function checkProfileOwner(username) {
     const query = `
     query{
@@ -191,6 +243,8 @@ export function checkProfileOwner(username) {
     return postQuery(query);
 }
 
+
+//Creates a new session
 export function createSession(sport, location, description, startDate, endDate, maxParticipant, minStar, host) {
     const query = `
     mutation {
@@ -209,6 +263,8 @@ export function createSession(sport, location, description, startDate, endDate, 
     `
     return postQuery(query);
 }
+
+//Edits a session's information
 export function editSession(id, location, description, startTime, endTime, maxParticipant, minStar) {
     const query = `
   mutation{
@@ -218,6 +274,7 @@ export function editSession(id, location, description, startTime, endTime, maxPa
     return postQuery(query);
 }
 
+//Retrieves the information of a session
 export function getSessionInfo(sessionId) {
     const query = `
     query{
@@ -244,6 +301,9 @@ export function getSessionInfo(sessionId) {
             username
             ratings
             image
+            reviews {
+              sessionId
+            }
           }
           currentParticipants
           maxParticipants
@@ -253,6 +313,7 @@ export function getSessionInfo(sessionId) {
     return postQuery(query);
 }
 
+//Joins a session
 export function joinSession(userId, sessionId) {
     const query = `
     mutation {
@@ -262,6 +323,7 @@ export function joinSession(userId, sessionId) {
     return postQuery(query);
 }
 
+//Leaves a session
 export function leaveSession(sessionId) {
   const query = `
   mutation{
@@ -271,6 +333,7 @@ export function leaveSession(sessionId) {
   return postQuery(query);
 }
 
+//Retrieves all current sessions of a user
 export function getUserCurrentSessions(username) {
     const query = `
     query{

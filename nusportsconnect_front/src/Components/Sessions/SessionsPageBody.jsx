@@ -14,20 +14,22 @@ import {
 } from "../../GraphQLQueries/queries";
 import { useParams } from "react-router-dom";
 import { Loading } from "../Loading/Loading";
-import { setPageTitle } from "../../generalFunctions";
-import io from "socket.io-client"
+import { getRating, setPageTitle } from "../../generalFunctions";
+import io from "socket.io-client";
+import Review from "./Review";
+// import DatePicker from "react-datepicker";
 
 const socket = io("http://localhost:5000/", {
-  transports : ["websocket", "polling"]
-})
+  transports: ["websocket", "polling"],
+});
 
 function SessionsPageBody(props) {
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
   const user = props.user;
   const { id } = useParams();
-  const [messages, setMessages] = React.useState([{}])
-  const [message, setMessage] = React.useState("")
+  const [messages, setMessages] = React.useState([{}]);
+  const [message, setMessage] = React.useState("");
   const [friendOverlay, setFriendOverlay] = React.useState(false);
   const [sessionInfo, setSessionInfo] = React.useState({
     sport: "",
@@ -49,32 +51,36 @@ function SessionsPageBody(props) {
     maxParticipants: 0,
   });
 
-  React.useEffect(() => {
+  const currentDate = new Date();
 
+  React.useEffect(() => {
     const apiCall = async () => {
       const session = await getSessionInfo(id);
       setSessionInfo(session.data.data.getSessionInfo);
-      setPageTitle("NUSportsConnect - " + session.data.data.getSessionInfo.sport + " session")
+      setPageTitle(
+        "NUSportsConnect - " +
+          session.data.data.getSessionInfo.sport +
+          " session"
+      );
     };
 
     apiCall();
 
     socket.on("connect", () => {
-      socket.emit("username", props.user)
-    })
-    
-    socket.on("connected", user => {
-      console.log(user)
-    })
-    
-  socket.on("message", message => {
-    setMessages(prev => [...prev, message]);
-  })
+      socket.emit("username", props.user);
+    });
 
-  }, [id]);
+    socket.on("connected", (user) => {
+      console.log(user);
+    });
+
+    socket.on("message", (message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+  }, [id, props.user]);
 
   if (sessionInfo.sport === "") {
-    return <Loading />
+    return <Loading />;
   }
 
   async function handleSessionJoin(e) {
@@ -83,17 +89,15 @@ function SessionsPageBody(props) {
     window.location.reload();
   }
 
-  function handleLeave(e){
-    leaveSession(id)
-    window.location.href = "/sessions"
+  function handleLeave(e) {
+    leaveSession(id);
+    window.location.href = "/sessions";
   }
 
-  function handleSendMessage(){
-    socket.emit("send", {message, user})
-    setMessage("")
+  function handleSendMessage() {
+    socket.emit("send", { message, user });
+    setMessage("");
   }
-
-
 
   const host = sessionInfo.host.username === user;
   let participant = false;
@@ -121,7 +125,6 @@ function SessionsPageBody(props) {
   for (var i = 0; i < sessionInfo.minStar; i++) {
     minStars.push("star");
   }
-
   return (
     <div className="session-page-body">
       <div className="session-left">
@@ -155,22 +158,34 @@ function SessionsPageBody(props) {
               )}
             </a>
 
-            <p className="event-host-rating">{hostRating}</p>
+            <p className="event-host-rating">{getRating(hostRating)}</p>
             <img
               className="event-host-star-icon"
               alt="event host star icon"
               src={star}
             />
           </div>
-          {host ? 
+          {host ? (
             <div className="session-action-btns">
-            <button className="session-btn edit" onClick={() => window.location.href = "/sessions/" + id + "/edit"}>Edit</button>
-            <button className="session-btn leave" onClick={handleLeave}>Leave</button>
-          </div> : participant ? 
-          <div className="session-action-btns">
-            <button className="session-btn leave" onClick={handleLeave}>Leave</button>
-          </div> : null
-          }
+              <button
+                className="session-btn edit"
+                onClick={() =>
+                  (window.location.href = "/sessions/" + id + "/edit")
+                }
+              >
+                Edit
+              </button>
+              <button className="session-btn leave" onClick={handleLeave}>
+                Leave
+              </button>
+            </div>
+          ) : participant ? (
+            <div className="session-action-btns">
+              <button className="session-btn leave" onClick={handleLeave}>
+                Leave
+              </button>
+            </div>
+          ) : null}
         </div>
         <div className="event-description-box">
           <div className="event-description">
@@ -200,8 +215,22 @@ function SessionsPageBody(props) {
             </div>
           </div>
         </div>
+
         {host || participant ? (
-          <ChatBox setMessage={setMessage} handleSendMessage={handleSendMessage} message={message} messages={messages}/>
+          currentDate > sessionInfo.fullEndTime ? (
+            <Review
+              participants={sessionInfo.participants}
+              reviewer={props.user}
+              sessionId={id}
+            />
+          ) : (
+            <ChatBox
+              setMessage={setMessage}
+              handleSendMessage={handleSendMessage}
+              message={message}
+              messages={messages}
+            />
+          )
         ) : sessionInfo.participants.length < sessionInfo.maxParticipants ? (
           <button className="join-btn" onClick={handleSessionJoin}>
             I want to go!

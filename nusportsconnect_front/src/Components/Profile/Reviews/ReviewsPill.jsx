@@ -1,24 +1,45 @@
-import React from 'react';
-import star from '../../../pics/star.png'
-import './ReviewsPillStyles.css';
+import React from "react";
+import star from "../../../pics/star.png";
+import "./ReviewsPillStyles.css";
+import defaultProfilePic from "../../../pics/defaultProfilePic.png";
 
+function ReviewsPill(props) {
+  const image = props.reviewerPicSrc;
+  return (
+    <div className="reviews-pill">
+      <a href={"/profile/" + props.reviewerUsername}>
+        {image === "" ? (
+          <img
+            className="reviewer-pic"
+            alt="profile-pic"
+            src={defaultProfilePic}
+          />
+        ) : (
+          <img
+            alt="reviewer-pic"
+            src={props.reviewerPicSrc}
+            className="reviewer-pic"
+          />
+        )}
+      </a>
 
-function ReviewsPill(props){
-
-    return (
-        <div className='reviews-pill'>
-            <img alt='reviewer-pic' src={props.reviewerPicSrc} className='reviewer-pic' />
-            <div className='pill-info'>
-                <h1 className='reviews-pill-header'>{props.reviewerName}</h1>
-                <p className='reviews-pill-desc-sport'>Sports played together: {props.reviewerSport}</p>
-                <p className='reviews-pill-desc'>{props.reviewerDesc}</p>
-            </div>
-            <div className='reviewer-rating-grp'>
-                <p className='reviewer-rating'>{props.reviewerRating}/5</p>
-                <img alt='star' src={star} className='reviewer-rating-star'/>
-            </div>
+      <div className="pill-info">
+        <a className="profile-link" href={"/profile/" + props.reviewerUsername}>
+          <h1 className="reviews-pill-header">{props.reviewerName}</h1>
+        </a>
+        <br />
+        <br />
+        <div className="reviews-pill-date">
+          Written on: {props.reviewCreationDate}
         </div>
-    )
+        <p className="reviews-pill-desc">{props.reviewerDesc}</p>
+      </div>
+      <div className="reviewer-rating-grp">
+        <p className="reviewer-rating">{props.reviewerRating}/5</p>
+        <img alt="star" src={star} className="reviewer-rating-star" />
+      </div>
+    </div>
+  );
 }
 
 export default ReviewsPill;

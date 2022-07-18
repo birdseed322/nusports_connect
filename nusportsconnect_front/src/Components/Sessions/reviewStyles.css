@@ -1,0 +1,76 @@
+* {
+  box-sizing: border-box;
+}
+.review-container {
+
+  height: 50vh;
+  width: 50vw;
+  padding: 0 1em;
+  border: 2px solid black;
+  border-radius: 30px;
+  margin-top: 2em;
+}
+
+.review-form {
+  height: 80%;
+
+}
+
+.review-input {
+  display: inline;
+  height: 5vh;
+   width: 20vw;
+  border-radius: .5em;
+  cursor: pointer;
+  margin: .5vh;
+  font-size: 16px;
+  border: 1px solid black;
+  padding-left: 1vw;
+  padding-top: 0;
+}
+
+.review-input.comment {
+  height: 50%;
+  width: 90%;
+  border-radius: 20px;
+  font-family: arial;
+  font-size: 18px;
+  padding: 2%;
+  cursor: text;
+}
+
+.star {
+  font-size: 20pt;
+}
+.on {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #000;
+}
+
+.off {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.review-button {
+      width: 100px;
+      background-color: #3DAD49;
+      color: white;
+      padding: .5em .8em;
+      font-size: 20px;
+      border: none;
+      border-radius: 12px;
+      transition: 5ms ease-in;
+      cursor: pointer;
+      float: right;
+}
+
+.review-button:hover {
+  background-color: #328f3b;
+}

@@ -17,16 +17,17 @@ function ProfileSessionLanding() {
   React.useEffect(() => {
     const apiCall = async () => {
       const user = await findUser(id);
-      console.log(user);
       setData(user.data.data.userProfileInfo);
       const check = await checkProfileOwner(id);
       setOwner(check.data.data.checkProfileOwner);
-      setPageTitle("NUSportsConnect - " + user.data.data.userProfileInfo.fName + "'s profile")
+      setPageTitle(
+        "NUSportsConnect - " +
+          user.data.data.userProfileInfo.fName +
+          "'s profile"
+      );
     };
     apiCall();
-
   }, [id]);
-
   if (data === "Not authenticated" || data === null) {
     return <NotAuthenticated />;
   } else if (data === "") {

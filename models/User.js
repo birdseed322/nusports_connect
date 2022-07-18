@@ -1,6 +1,8 @@
 const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
+
+//Information to be stored in a session datatype.
 const userSchema = new Schema({
     username : { type : String, required : true},
     password : {type : String, required : true},
@@ -10,8 +12,9 @@ const userSchema = new Schema({
     lName : {type : String, required : true},
     interests : {type: String, default: ""},
     image: { type: String, default:"" },
-    ratings : {type : Number, required : true, default: 5},
-    currentSessions : {type : [ObjectId], default: [], required : true},
+    ratings : {type : [Number], required : true, default: [5]},
+    reviews: { type: [ObjectId], default: [], required : true },
+    currentSessions : {type : [ObjectId], default: [], required : true}
 }, {
     timestamps : true
 })
