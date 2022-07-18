@@ -26,6 +26,9 @@ const { verify } = require('jsonwebtoken');
 var { getCreationDate, formatAMPM } = require('./helperFunctions');
 const { ObjectId } = require('mongodb');
 const path = require('path');
+const { CallTracker } = require('assert');
+let Chat = require('./models/Chat');
+const Announcement = require('./models/Announcement');
 
 require('dotenv').config();
 
@@ -51,7 +54,8 @@ mongoose.connect(dbURI, { useNewURLParser: true });
 const connection = mongoose.connection;
 
 const io = require("socket.io")(server, {
-    transports : ["websocket", "polling"]
+    transports : ["websocket", "polling"],
+    reconnection: false
 })
 
 connection.once('open', () => {
@@ -63,24 +67,78 @@ server.listen(port, () => {
 })
 
 //Websocket Responses
-io.on("connection", client => {
-    console.log("connected!")
 
-    client.on("username", username => {
-        console.log(username + " connected")
+let rooms = {}
+
+io.on("connection", client => {
+    var currentRoomId;
+    var currentUser;
+    client.on("username", ({username, room}) => {
+        console.log(username + " connected to room " + room)
         const user = {
             name : username,
             id : client.id 
         }
-        io.emit("connected", user)
+        client.join(room)
+        currentRoomId = room;
+        currentUser = username
+        if (rooms[room] === undefined) {
+            rooms[room] = new Set()
+            rooms[room].add(username)
+        } else {
+            rooms[room].add(username)   
+        }
+        
+        io.to(room).emit("connected", Array.from(rooms[room]))
     })
 
-    client.on("send", message => {
-        io.emit("message", {
-            text : message.message,
-            date: new Date().toISOString(),
-            user: message.user
+    client.on("send", ({message, room}) => {
+        const newChat = new Chat({
+            room,
+            author : message.user,
+            message : message.message
         })
+
+        newChat.save().then(() => {
+            io.to(room).emit("message", {
+                message : message.message,
+                time: new Date().getTime(),
+                author: message.user
+            })
+        }).catch(err => console.log(err))
+    })
+
+    client.on("disconnect", () => {
+        try {
+            rooms[currentRoomId].delete(currentUser)
+            io.to(currentRoomId).emit("user disconnected", Array.from(rooms[currentRoomId]))
+        } catch(err){
+
+        }
+        io.emit("disconnected", client.id)
+    })
+
+    client.on("send announcement", message => {
+        const newAnnouncement = new Announcement({
+            room: currentRoomId,
+            message
+        })
+
+        newAnnouncement.save().then(() => {
+            io.to(currentRoomId).emit("announcement", {
+                message,
+                time: new Date().getTime()
+            })
+        }).catch(err => console.log(err))
+    })
+
+    client.on("delete announcement", message => {
+
+        Announcement.find({message}).deleteMany({}).then(() => {
+            io.to(currentRoomId).emit("deleted announcement", {
+                message
+            })
+        }).catch(err => console.log(err))
     })
 })
 
@@ -148,6 +206,16 @@ const SessionType = new GraphQLObjectType({
     })
 });
 
+const ChatType = new GraphQLObjectType({
+    name: "Chat",
+    desctiption : "This represents a chat message",
+    fields: () => ({
+        room : {type : GraphQLNonNull(GraphQLString)},
+        author : {type : GraphQLNonNull(GraphQLString)},
+        message : {type : GraphQLNonNull(GraphQLString)},
+        time : {type : GraphQLNonNull(GraphQLString)}
+    })
+})
 
 //Defining GraphQL scalar types
 const dateTime = new GraphQLScalarType({
@@ -390,6 +458,39 @@ const RootQueryType = new GraphQLObjectType({
                 }
 
                 return sessions();
+            }
+        },
+        getRoomChat : {
+            type: GraphQLList(ChatType),
+            description: "Retrieve previous chat from room",
+            args: {
+                roomId : {type: GraphQLString}
+            },
+            resolve: async (_, args) => {
+                let messages = await Chat.find({room : args.roomId}).exec()
+                messages = messages.map(message => ({
+                    author : message.author,
+                    message : message.message,
+                    time : message.createdAt
+                }))
+
+                return messages
+            }
+        },
+        getRoomAnnouncement : {
+            type: GraphQLList(ChatType),
+            description: "Retrieve previous announcements from room",
+            args: {
+                roomId : {type: GraphQLString}
+            },
+            resolve: async (_, args) => {
+                let messages = await Announcement.find({room : args.roomId}).exec()
+                messages = messages.map(message => ({
+                    message : message.message,
+                    time : message.createdAt
+                }))
+
+                return messages
             }
         },
         getUserCurrentSessions: {
