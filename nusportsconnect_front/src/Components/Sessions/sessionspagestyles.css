@@ -3,7 +3,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center; 
-    height: 910px;
+    height: 870px;
     display: flex;
     margin: 0;
     padding: 0;
@@ -111,22 +111,32 @@
     background-color: #48B9DC;
 }
 
-.chat-box {
+.chat-box-grp {
     flex: 5;
     width: 900px;
+}
+
+.chat-box {
     border-style: solid;
+    width: 900px;
     border-width: 2px;
-    margin: 20px 0;
+    height: 360px;
+    margin: 20px 0 0 0;
     background-color: #8BE0E5;
+    position: relative;
+    overflow-y: auto;
+}
+
+.chat-input-grp {
+    flex: 2;
     position: relative;
 }
 
 .chat-input {
     width: 850px;
     position: absolute;
-    bottom: 0;
+    bottom: -15px;
     left: 0;
-    margin: 0;
     border-style: hidden;
     height: 40px;
     overflow-y: auto;
@@ -135,11 +145,12 @@
     font-size: 12pt;
     outline: 0;
     background-color: #FDE49C;
+
 }
 
 .send-icon {
     position: absolute;
-    bottom: 0;
+    bottom: -15px;
     right: 0;
     width: 50px;
     height: 40px;
@@ -225,7 +236,7 @@
     position: relative;
     flex: 4;
     background-color:#8BE0E5;
-    margin: 0 0 30px 0;
+    margin: 0 0 60px 0;
     border-radius: 45px;
     padding: 10px 40px;
     width: 550px;
@@ -234,13 +245,46 @@
 .announcement-box {
     position: relative;
     overflow-x:hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
+    height: 550px;
 }
 
 .announcement-header {
     text-decoration: underline;
     font-size: 15pt;
     font-weight: bold;
+    text-align: center;
+}
+
+.announcement-list {
+    overflow-x:hidden;
+    overflow-y: auto;
+    height: 450px;
+}
+
+.announcement {
+    display: flex;
+    align-items: center;
+}
+
+.announcement-time {
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0;
+}
+
+.announcement-message {
+    margin: 5px 0;
+    word-wrap: break-word;
+    width: 400px;
+    display: inline-block;
+}
+
+.announcement-del {
+    height: fit-content;
+    width: fit-content;
+    display: inline-block;
+    margin: auto 0;
 }
 
 .announcement-input {
@@ -272,6 +316,7 @@
     z-index: 1000;
 }
 
+
 .friend-modal {
     position: fixed;
     display: flex;
@@ -280,6 +325,24 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 1000px;
+    height: 530px;
+    background-color: white;
+    padding: 50px;
+    z-index: 1000;
+    border-radius: 45px;
+    background-color: #8BE0E5;
+    border-style: solid;
+    border-color: white;
+}
+
+.users-online-modal {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
     height: 530px;
     background-color: white;
     padding: 50px;
@@ -307,6 +370,20 @@
     flex: 7;
     display: flex;
     width: 900px;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+}
+
+.users-online-overlay-participant-list {
+    flex: 7;
+    display: flex;
+    width: 500px;
     flex-wrap: wrap;
     justify-content:space-evenly;
     overflow-y: auto;

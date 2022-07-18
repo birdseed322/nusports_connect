@@ -294,3 +294,30 @@ export function getUserCurrentSessions(username) {
   `
     return postQuery(query);
 }
+
+export function getRoomChat(room) {
+  const query = `
+  query{
+    getRoomChat(roomId : "${room}"){
+      author
+      message
+      time
+    }
+  }
+  `
+
+  return postQuery(query)
+}
+
+export function getRoomAnnouncement(room) {
+  const query = `
+  query{
+    getRoomAnnouncement(roomId : "${room}"){
+      message
+      time
+    }
+  }
+  `
+
+  return postQuery(query)
+}
