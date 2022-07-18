@@ -35,6 +35,10 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+.reviews-pill-date {
+    font-weight: bold;
+}
+
 .reviews-pill-desc-sport {
     position: absolute;
     top: 25px;

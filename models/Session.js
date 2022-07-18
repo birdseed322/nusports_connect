@@ -2,6 +2,7 @@ const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+//Information to be stored in a session datatype.
 const sessionSchema = new Schema({
     sport : { type : String, required : true},
     location : { type : String, required : true},

@@ -6,6 +6,7 @@ import friends from "../../../pics/friend.png";
 import { logout } from "../../../GraphQLQueries/queries";
 import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../../../accessToken";
+import { getRating } from "../../../generalFunctions";
 
 function ProfileSessionHeader(props) {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ function ProfileSessionHeader(props) {
 
       <div className="profile-rating">
         <img alt="star" src={star} className="star" />
-        <h1 className="profile-rating-score">{user.ratings}</h1>
+        <h1 className="profile-rating-score"> {getRating(user.ratings)}</h1>
       </div>
       {owner ? null : friend ? (
         <img src={friends} alt="friend icon" className="friended-icon" />

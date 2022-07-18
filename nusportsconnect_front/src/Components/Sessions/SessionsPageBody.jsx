@@ -16,15 +16,22 @@ import {
 } from "../../GraphQLQueries/queries";
 import { useParams } from "react-router-dom";
 import { Loading } from "../Loading/Loading";
-import { setPageTitle } from "../../generalFunctions";
 import io from "socket.io-client"
 import UsersOnlineOverlay from "./UsersOnlineOverlay";
 import Announcement from "./Announcement"
+import { getRating, setPageTitle } from "../../generalFunctions";
+import Review from "./Review";
 
 const socket = io("http://localhost:5000/", {
   transports : ["websocket", "polling"],
   reconnection: false
 })
+
+// import DatePicker from "react-datepicker";
+
+const socket = io("http://localhost:5000/", {
+  transports: ["websocket", "polling"],
+});
 
 function SessionsPageBody(props) {
   //props used to retrieve user information.
@@ -58,8 +65,9 @@ function SessionsPageBody(props) {
     maxParticipants: 0,
   });
 
-  React.useEffect(() => {
+  const currentDate = new Date();
 
+  React.useEffect(() => {
     const apiCall = async () => {
       const session = await getSessionInfo(id);
       let oldMessages = await getRoomChat(id);
@@ -73,7 +81,6 @@ function SessionsPageBody(props) {
       })
       setMessages(oldMessages)
       setAnnouncements(oldAnnouncements)
-
     };
     
     apiCall();
@@ -111,9 +118,10 @@ function SessionsPageBody(props) {
   }, [id, user]);
 
   setPageTitle("NUSportsConnect - " + sessionInfo.sport + " session")
+  }, [id, props.user]);
 
   if (sessionInfo.sport === "") {
-    return <Loading />
+    return <Loading />;
   }
 
   async function handleSessionJoin(e) {
@@ -122,9 +130,9 @@ function SessionsPageBody(props) {
     window.location.reload();
   }
 
-  function handleLeave(e){
-    leaveSession(id)
-    window.location.href = "/sessions"
+  function handleLeave(e) {
+    leaveSession(id);
+    window.location.href = "/sessions";
   }
 
   function handleSendMessage(){
@@ -168,7 +176,6 @@ function SessionsPageBody(props) {
   for (var i = 0; i < sessionInfo.minStar; i++) {
     minStars.push("star");
   }
-
   return (
     <div className="session-page-body">
       <div className="session-left">
@@ -202,22 +209,34 @@ function SessionsPageBody(props) {
               )}
             </a>
 
-            <p className="event-host-rating">{hostRating}</p>
+            <p className="event-host-rating">{getRating(hostRating)}</p>
             <img
               className="event-host-star-icon"
               alt="event host star icon"
               src={star}
             />
           </div>
-          {host ? 
+          {host ? (
             <div className="session-action-btns">
-            <button className="session-btn edit" onClick={() => window.location.href = "/sessions/" + id + "/edit"}>Edit</button>
-            <button className="session-btn leave" onClick={handleLeave}>Leave</button>
-          </div> : participant ? 
-          <div className="session-action-btns">
-            <button className="session-btn leave" onClick={handleLeave}>Leave</button>
-          </div> : null
-          }
+              <button
+                className="session-btn edit"
+                onClick={() =>
+                  (window.location.href = "/sessions/" + id + "/edit")
+                }
+              >
+                Edit
+              </button>
+              <button className="session-btn leave" onClick={handleLeave}>
+                Leave
+              </button>
+            </div>
+          ) : participant ? (
+            <div className="session-action-btns">
+              <button className="session-btn leave" onClick={handleLeave}>
+                Leave
+              </button>
+            </div>
+          ) : null}
         </div>
         <div className="event-description-box">
           <div className="event-description">
@@ -247,8 +266,23 @@ function SessionsPageBody(props) {
             </div>
           </div>
         </div>
+
         {host || participant ? (
           <ChatBox setMessage={setMessage} handleSendMessage={handleSendMessage} message={message} messages={messages} owner={user} usersOnlineOverlay={() => setUsersOnlineOverlay(true)}/>
+          currentDate > sessionInfo.fullEndTime ? (
+            <Review
+              participants={sessionInfo.participants}
+              reviewer={props.user}
+              sessionId={id}
+            />
+          ) : (
+            <ChatBox
+              setMessage={setMessage}
+              handleSendMessage={handleSendMessage}
+              message={message}
+              messages={messages}
+            />
+          )
         ) : sessionInfo.participants.length < sessionInfo.maxParticipants ? (
           <button className="join-btn" onClick={handleSessionJoin}>
             I want to go!
