@@ -98,17 +98,35 @@ export function getUserUsername() {
     return postQuery(query);
 }
 
-//Retrieves the usernames from all users in the database
-export function getAllUsernames() {
+//Retrieves the names from all users in the database
+export function getSearches() {
     const query = `
     query{
-        allUsernames {
+        users {
           username
+          fName
+          lName
+          ratings
+          image
         }
       }
     `
     return postQuery(query);
 }
+
+//Retrieves the first and last names from all users in the database
+export function getAllUserFLnames() {
+    const query = `
+    query{
+        allUsernames {
+          fName
+          lName
+        }
+      }
+    `
+    return postQuery(query);
+}
+
 
 //Updates a user's personal information
 export function updateUser(username, email, fName, lName, interests, image) {

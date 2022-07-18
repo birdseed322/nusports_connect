@@ -4,19 +4,20 @@ import Logo from "../../pics/Logo.png";
 import Notif from "../../pics/Notification.png";
 import {
   findUser,
-  getAllUsernames,
+  getSearches,
   getUserUsername,
 } from "../../GraphQLQueries/queries";
 import defaultPic from "../../pics/defaultProfilePic.png";
 import Alert from "../Alert/Alert";
-import Dropdown from "./Dropdown";
+import SearchOverlay from "./SearchOverlay";
 
 function Navbar() {
   const [username, setUsername] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [userImage, setUserImage] = useState("");
   const [alert, setAlert] = useState(false);
-  // const [allUsers, setAllUsers] = useState("");
+  const [searchOverlay, setSearchOverlay] = useState(false);
+  const [allSearches, setAllSearches] = useState([]);
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -37,21 +38,19 @@ function Navbar() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      if (searchInput !== "") {
-        let allUsers = await getAllUsernames();
-        allUsers = allUsers.data.data.allUsernames;
-        const searchInputLower = searchInput.toLowerCase();
-        allUsers = allUsers.filter(
-          (user) => user.username.startsWith(searchInputLower)
-          //just returns first user found with this input. No dropdown menu to select preferred result.
-        );
-        if (allUsers.length === 0) {
-          setAlert(true);
-        } else {
-          window.location.href = "/profile/" + allUsers[0].username;
-        }
+      const editedSearchInput = searchInput.toLowerCase().replace(/ /g, "");
+      setSearchInput(editedSearchInput);
+      if (editedSearchInput !== "") {
+        let allNames = await getSearches();
+        allNames = allNames.data.data.users;
+        setAllSearches(allNames);
+        setSearchOverlay(true);
+      } else {
+        setSearchOverlay(false);
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   }
   return (
     <div>
@@ -67,7 +66,7 @@ function Navbar() {
                 type="text"
                 name="search"
                 id="search"
-                placeholder="Find username"
+                placeholder="Find a user"
                 onChange={(e) => setSearchInput(e.target.value)}
               />
               {alert ? (
@@ -113,6 +112,13 @@ function Navbar() {
           </li>
         </ul>
       </nav>
+
+      <SearchOverlay
+        open={searchOverlay}
+        closeOverlay={() => setSearchOverlay(false)}
+        searchInput={searchInput}
+        allSearches={allSearches}
+      />
     </div>
   );
 }

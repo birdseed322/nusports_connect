@@ -259,14 +259,6 @@ const RootQueryType = new GraphQLObjectType({
             }
 
         },
-        allUsernames: {
-            type: GraphQLList(UserType),
-            description: "Retrive all users",
-            resolve: async() => {
-                let all = await User.find().exec();
-                return all;
-        }
-    }, 
         userProfileInfo: {
             type: UserType,
             description: "Retrieve a user's profile information",

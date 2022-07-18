@@ -285,8 +285,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 1000px;
-    height: 530px;
+    width: 900px;
+    height: 500px;
     background-color: white;
     padding: 50px;
     z-index: 1000;
@@ -307,12 +307,19 @@
     border-style: hidden;
     color: black;
     text-align: center;
+    width: 30px;
+    height: 30px;
+    font-size: 20pt;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .friend-overlay-participant-list{
     flex: 7;
     display: flex;
-    width: 900px;
+    width: 800px;
     flex-wrap: wrap;
     justify-content:space-evenly;
     overflow-y: auto;
@@ -366,3 +373,4 @@
     font-weight: bold;
     margin: 0;
 }
+

@@ -1,0 +1,74 @@
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .7);
+  z-index: 1000;
+}
+
+.search-modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 500px;
+  background-color: white;
+  padding: 50px;
+  z-index: 1000;
+  border-radius: 45px;
+  background-color: #8BE0E5;
+  border-style: solid;
+  border-color: white;
+}
+
+.close-search-overlay-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  border-style: hidden;
+  color: black;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  font-size: 20pt;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-overlay-list {
+  flex: 7;
+  display: flex;
+  width: 800px;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+}
+
+.find-user-btn {
+  position: absolute;
+  right: 50px;
+  top: 130px;
+  padding: 1em;
+  border: none;
+  border-radius: 20px;
+  font-size: 12pt;
+  background-color: #3DAD49;
+  color: white;
+  cursor: pointer;
+}
+
+.find-user-btn:hover{
+  background-color: #328f3b;
+}
