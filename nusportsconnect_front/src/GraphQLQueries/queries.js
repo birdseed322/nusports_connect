@@ -114,20 +114,6 @@ export function getSearches() {
     return postQuery(query);
 }
 
-//Retrieves the first and last names from all users in the database
-export function getAllUserFLnames() {
-    const query = `
-    query{
-        allUsernames {
-          fName
-          lName
-        }
-      }
-    `
-    return postQuery(query);
-}
-
-
 //Updates a user's personal information
 export function updateUser(username, email, fName, lName, interests, image) {
 
@@ -173,7 +159,6 @@ export function getReviews(username) {
           lName
           image
         }
-        sessionId
         rating
         comment
         reviewCreationDate        
@@ -183,6 +168,72 @@ export function getReviews(username) {
   return postQuery(query);
 }
 
+//Gets a list of a user's friends
+export function getAllFriends(username) {
+    const query = `
+    query{
+      userFriends(username: "${username}") {
+        username
+        fName
+        lName
+        image
+      }
+    }
+    `
+    return postQuery(query);
+}
+
+//Gets a list of a user's friendRequests
+export function getAllFriendRequests(username) {
+    const query = `
+    query{
+      userFriendRequests(username: "${username}") {
+        username
+        fName
+        lName
+        image
+      }
+    }
+    `
+    return postQuery(query);
+}
+
+
+export function addFriend(frienderId, friendeeUsername) {
+  const query = `
+  mutation{
+    addFriend(
+      frienderId: "${frienderId}"
+      friendeeUsername: "${friendeeUsername}"
+      )
+  }
+  `
+    return postQuery(query);
+}
+
+export function acceptFriend(frienderUsername, friendeeUsername) {
+  const query = `
+  mutation{
+    acceptFriend(
+      frienderUsername: "${frienderUsername}"
+      friendeeUsername: "${friendeeUsername}"
+      )
+  }
+  `
+    return postQuery(query);
+}
+
+export function rejectFriend(frienderUsername, friendeeUsername) {
+  const query = `
+  mutation{
+    rejectFriend(
+      frienderUsername: "${frienderUsername}"
+      friendeeUsername: "${friendeeUsername}"
+      )
+  }
+  `
+    return postQuery(query);
+}
 //Retrieves the id of all current sessions of a user
 export function getUserCurrentSessionsId(username) {
     const query = `

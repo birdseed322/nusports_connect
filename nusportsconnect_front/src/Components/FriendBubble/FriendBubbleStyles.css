@@ -50,3 +50,32 @@
     color: black;
     font-size: 14pt;
 }
+.friend-accept-btn {
+    background-color: #3DAD49;
+    color: white;
+    font-size: 12pt;
+    font-weight: 700;
+    border: none;
+    border-radius:10px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.friend-accept-btn:hover {
+    background-color: #389c42;
+}
+.friend-reject-btn {
+    background-color:#DC4848;
+    color: white;
+    font-size: 12pt;
+    font-weight: 700;
+    border: none;
+    border-radius:10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.friend-reject-btn:hover {
+    background-color: #c14040;
+}
+

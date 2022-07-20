@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import defaultProfilePic from "../../../pics/defaultProfilePic.png";
 import star from "../../../pics/star.png";
 import edit from "../../../pics/editbtn.png";
 import friends from "../../../pics/friend.png";
-import { logout } from "../../../GraphQLQueries/queries";
+import {
+  acceptFriend,
+  addFriend,
+  getAllFriendRequests,
+  getAllFriends,
+  getUserIdentity,
+  getUserUsername,
+  logout,
+  rejectFriend,
+} from "../../../GraphQLQueries/queries";
 import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../../../accessToken";
 import { getRating } from "../../../generalFunctions";
@@ -11,15 +20,72 @@ import { getRating } from "../../../generalFunctions";
 function ProfileSessionHeader(props) {
   const navigate = useNavigate();
   const user = props.user;
+  const [ownUsername, setOwnUsername] = useState("");
   //Owner of account
   const owner = props.owner;
-  //Request sent
-  const pending = props.pending;
-  //Friend
-  const friend = props.friend;
 
-  console.log(pending);
-  console.log(friend);
+  const [isPending, setPending] = useState(false);
+  //Friend
+
+  const [isFriend, setFriend] = useState(false);
+  const [isStranger, setStranger] = useState(false);
+  const [isAccepting, setAccepting] = useState(false);
+
+  console.log(user);
+
+  React.useEffect(() => {
+    if (!owner) {
+      const apiCall = async () => {
+        let ownUsername = await getUserUsername();
+        ownUsername = ownUsername.data.data.userUsername;
+        setOwnUsername(ownUsername);
+        let ownFriendRequests = await getAllFriendRequests(ownUsername);
+        ownFriendRequests = ownFriendRequests.data.data.userFriendRequests;
+        let otherUserFriends = await getAllFriends(user.username);
+        otherUserFriends = otherUserFriends.data.data.userFriends;
+        let otherUserFriendRequests = await getAllFriendRequests(user.username);
+        otherUserFriendRequests =
+          otherUserFriendRequests.data.data.userFriendRequests;
+
+        ownFriendRequests = ownFriendRequests.filter(
+          (friend) => friend.username === user.username
+        );
+        otherUserFriends = otherUserFriends.filter(
+          (friend) => friend.username === ownUsername
+        );
+        otherUserFriendRequests = otherUserFriendRequests.filter(
+          (friend) => friend.username === ownUsername
+        );
+
+        return otherUserFriends.length === 1
+          ? setFriend(true)
+          : otherUserFriendRequests.length === 1
+          ? setPending(true)
+          : ownFriendRequests.length === 1
+          ? setAccepting(true)
+          : setStranger(true);
+      };
+      apiCall();
+    }
+  }, []);
+
+  async function sendFriendRequest() {
+    let ownId = await getUserIdentity();
+    ownId = ownId.data.data.userIdentity;
+    await addFriend(ownId, user.username);
+    setPending(true);
+  }
+
+  async function accept() {
+    await acceptFriend(user.username, ownUsername);
+    window.location.reload();
+  }
+
+  async function reject() {
+    await rejectFriend(user.username, ownUsername);
+    window.location.reload();
+  }
+
   return (
     <div className="profile-header">
       {user.image === "" ? (
@@ -37,11 +103,14 @@ function ProfileSessionHeader(props) {
       )}
 
       <span className="profile-info">
+        {/* Displays Name, account creation date and interests */}
         <h1 className="profile-name">{user.fName + " " + user.lName}</h1>
         <p>
           Playing since: {user.accountCreationDate} <br /> <br />
           Interested in: {user.interests}
         </p>
+
+        {/* Checks if owner of profile to render edit profile button. */}
         {owner ? (
           <img
             src={edit}
@@ -55,17 +124,33 @@ function ProfileSessionHeader(props) {
         ) : null}
       </span>
 
+      {/* Displays rating of user. */}
       <div className="profile-rating">
         <img alt="star" src={star} className="star" />
         <h1 className="profile-rating-score"> {getRating(user.ratings)}</h1>
       </div>
-      {owner ? null : friend ? (
+
+      {/* Checks if owner of profile. If not, checks whether it is a friend, pending friend, or not a friend. */}
+      {owner ? null : isFriend ? (
         <img src={friends} alt="friend icon" className="friended-icon" />
-      ) : pending ? (
+      ) : isPending ? (
         <button className="friend-btn pending">pending</button>
-      ) : (
-        <button className="friend-btn">+ add friend</button>
-      )}
+      ) : isAccepting ? (
+        <div>
+          <button className="header-accept-btn" onClick={accept}>
+            Accept
+          </button>
+          <button className="header-reject-btn" onClick={reject}>
+            Reject
+          </button>
+        </div>
+      ) : isStranger ? (
+        <button className="friend-btn" onClick={sendFriendRequest}>
+          + add friend
+        </button>
+      ) : null}
+
+      {/* Checks if owner of profile to render logout button */}
       {owner ? (
         <button
           className="logout"

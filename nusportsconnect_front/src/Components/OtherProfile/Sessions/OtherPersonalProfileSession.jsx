@@ -6,18 +6,32 @@ import OtherProfileSessionBody from "./OtherProfileSessionBody";
 import OtherProfileHistoryBody from "../History/OtherProfileHistoryBody";
 import OtherProfileFriendsBody from "../Friends/OtherProfileFriendsBody";
 import OtherProfileReviewsBody from "../Reviews/OtherProfileReviewsBody";
+import {
+  getAllFriends,
+  getUserUsername,
+} from "../../../GraphQLQueries/queries";
 
 function OtherPersonalProfileSession(props) {
+  const user = props.user;
   const [view, setView] = useState("sessions");
-
+  const [friend, setFriend] = useState(false);
   const handleClick = (viewState) => {
     setView(viewState);
   };
 
-  const user = props.user;
-
-  //Based on user info and the API call to backend retrieving this profile's info
-  const friend = true;
+  React.useEffect(() => {
+    const apiCall = async () => {
+      let friends = await getAllFriends(user.username);
+      let ownUsername = await getUserUsername();
+      ownUsername = ownUsername.data.data.userUsername;
+      friends = friends.data.data.userFriends;
+      friends = friends
+        .map((friend) => friend.username)
+        .filter((username) => username === ownUsername);
+      return friends.length === 1 ? setFriend(true) : null;
+    };
+    apiCall();
+  }, []);
 
   return (
     <div className="profile-container">
@@ -61,7 +75,6 @@ function OtherPersonalProfileSession(props) {
             return null;
         }
       })()}
-      {/* <OtherProfileSessionBody user={user} friend={friend} /> */}
     </div>
   );
 }
