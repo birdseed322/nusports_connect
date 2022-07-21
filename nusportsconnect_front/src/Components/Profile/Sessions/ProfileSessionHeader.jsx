@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../../../accessToken";
 import { getRating } from "../../../generalFunctions";
+import ReactTooltip from "react-tooltip";
 
 function ProfileSessionHeader(props) {
   const navigate = useNavigate();
@@ -31,15 +32,12 @@ function ProfileSessionHeader(props) {
   const [isAccepting, setAccepting] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState(false);
 
-  console.log("user username is " + user.username);
-
   React.useEffect(() => {
     if (!owner) {
       const apiCall = async () => {
         let ownUsername = await getUserUsername();
         ownUsername = ownUsername.data.data.userUsername;
         setOwnUsername(ownUsername);
-        console.log("Personal username is " + ownUsername);
         let ownFriendRequests = await getAllFriendRequests(ownUsername);
         ownFriendRequests = ownFriendRequests.data.data.userFriendRequests;
         let otherUserFriends = await getAllFriends(user.username);
@@ -126,15 +124,19 @@ function ProfileSessionHeader(props) {
 
         {/* Checks if owner of profile to render edit profile button. */}
         {owner ? (
-          <img
-            src={edit}
-            alt="edit button"
-            className="edit-btn"
-            onClick={() =>
-              (window.location.href =
-                "/profile/" + user.username + "/editprofile")
-            }
-          />
+          <div>
+            <img
+              src={edit}
+              alt="edit button"
+              className="edit-btn"
+              onClick={() =>
+                (window.location.href =
+                  "/profile/" + user.username + "/editprofile")
+              }
+              data-tip="Edit profile"
+            />
+            <ReactTooltip place="bottom" type="dark" effect="solid" />
+          </div>
         ) : null}
       </span>
 
@@ -178,6 +180,7 @@ function ProfileSessionHeader(props) {
         </button>
       ) : confirmRemove ? (
         <div>
+          <div className="remove-warning">Remove this friend?</div>
           <button className="confirm-remove-btn" onClick={handleRemove}>
             Confirm{" "}
           </button>

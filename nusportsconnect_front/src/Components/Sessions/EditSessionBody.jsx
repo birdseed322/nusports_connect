@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useParams} from 'react-router-dom'
+import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./createBodyStyles.css";
@@ -10,14 +10,12 @@ import star from "../../pics/star.png";
 import date from "../../pics/frame.png";
 import start from "../../pics/start.png";
 import end from "../../pics/end.png";
-import {
-    editSession,
-  getSessionInfo
-} from "../../GraphQLQueries/queries";
+import { editSession, getSessionInfo } from "../../GraphQLQueries/queries";
 import { setPageTitle } from "../../generalFunctions";
+import ReactTooltip from "react-tooltip";
 
 function EditSessionBody() {
-  const {id} = useParams();  
+  const { id } = useParams();
   const [sport, setSport] = useState("Badminton");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
@@ -29,21 +27,20 @@ function EditSessionBody() {
 
   React.useEffect(() => {
     const apiCall = async () => {
-        let session = await getSessionInfo(id);
-        session = session.data.data.getSessionInfo; 
-        setSport(session.sport);
-        setLocation(session.location);
-        setDescription(session.description);
-        setStartDate(new Date(parseInt(session.fullStartTime)));
-        setEndDate(new Date(parseInt(session.fullEndTime)));
-        setMaxParticipant(session.maxParticipants);
-        setCurrentParticipants(session.currentParticipants);
-        setMinStar(session.minStar);
-      };
+      let session = await getSessionInfo(id);
+      session = session.data.data.getSessionInfo;
+      setSport(session.sport);
+      setLocation(session.location);
+      setDescription(session.description);
+      setStartDate(new Date(parseInt(session.fullStartTime)));
+      setEndDate(new Date(parseInt(session.fullEndTime)));
+      setMaxParticipant(session.maxParticipants);
+      setCurrentParticipants(session.currentParticipants);
+      setMinStar(session.minStar);
+    };
 
-      apiCall();
-      setPageTitle("NUSportsConnect - Session Edit")
-
+    apiCall();
+    setPageTitle("NUSportsConnect - Session Edit");
   }, [id]);
 
   const filterPassedTime = (time) => {
@@ -54,23 +51,30 @@ function EditSessionBody() {
     return currentDate.getTime() < selectedDate.getTime();
   };
 
-  if (startDate < new Date()){
+  if (startDate < new Date()) {
     let currentDate = new Date();
     currentDate = currentDate.setHours(currentDate.getHours() + 2);
     currentDate = new Date(currentDate);
     setStartDate(currentDate);
   }
 
-  if (endDate < startDate){
+  if (endDate < startDate) {
     setEndDate(startDate);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-        editSession(id, location, description, startDate, endDate, maxParticipant, minStar);
-        window.location.href="/sessions/" + id;
-      
+      editSession(
+        id,
+        location,
+        description,
+        startDate,
+        endDate,
+        maxParticipant,
+        minStar
+      );
+      window.location.href = "/sessions/" + id;
     } catch (err) {
       console.log(err);
     }
@@ -90,7 +94,13 @@ function EditSessionBody() {
         <form className="create-form" onSubmit={handleSubmit}>
           <div className="create-item">
             <label htmlFor="sport">
-              <img className="input-icon" src={sportIcon} alt="" />
+              <img
+                className="input-icon"
+                src={sportIcon}
+                alt=""
+                data-tip="Sport cannot be changed"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <select
               disabled
@@ -110,7 +120,13 @@ function EditSessionBody() {
 
           <div className="create-item">
             <label htmlFor="location">
-              <img className="input-icon" src={locationIcon} alt="" />
+              <img
+                className="input-icon"
+                src={locationIcon}
+                alt=""
+                data-tip="Enter a location"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <input
               className="create-input"
@@ -125,26 +141,38 @@ function EditSessionBody() {
 
           <div className="create-item create-date">
             <label htmlFor="date">
-              <img className="input-icon" src={date} alt="" />
+              <img
+                className="input-icon"
+                src={date}
+                alt=""
+                data-tip="Select date"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
-            className="create-input"
-            placeholderText="Date"
-            selected={startDate}
-            onChange={(date) => {
-              setStartDate(date);
-              setEndDate(date);
-            }}
-            minDate={new Date()}
-            filterTime={filterPassedTime}
-            dateFormat="dd/MM/yyyy"
-            required
-          ></DatePicker>
+              className="create-input"
+              placeholderText="Date"
+              selected={startDate}
+              onChange={(date) => {
+                setStartDate(date);
+                setEndDate(date);
+              }}
+              minDate={new Date()}
+              filterTime={filterPassedTime}
+              dateFormat="dd/MM/yyyy"
+              required
+            ></DatePicker>
           </div>
 
           <div className="create-item create-date">
             <label htmlFor="date">
-              <img className="input-icon" src={start} alt="" />
+              <img
+                className="input-icon"
+                src={start}
+                alt=""
+                data-tip="Select start time"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
               className="create-input"
@@ -164,7 +192,13 @@ function EditSessionBody() {
 
           <div className="create-item create-date">
             <label htmlFor="date">
-              <img className="input-icon" src={end} alt="" />
+              <img
+                className="input-icon"
+                src={end}
+                alt=""
+                data-tip="Select end time"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
               className="create-input"
@@ -184,7 +218,13 @@ function EditSessionBody() {
 
           <div className="create-item">
             <label htmlFor="participant">
-              <img className="input-icon" src={participant} alt="" />
+              <img
+                className="input-icon"
+                src={participant}
+                alt=""
+                data-tip="Select number of participants"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <input
               className="create-input"
@@ -200,9 +240,14 @@ function EditSessionBody() {
           </div>
 
           <div className="create-item">
-            {" "}
             <label htmlFor="stars">
-              <img className="input-icon" src={star} alt="" />
+              <img
+                className="input-icon"
+                src={star}
+                alt=""
+                data-tip="Select minimum number of stars out of 5"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <input
               className="create-input"
