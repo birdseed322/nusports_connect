@@ -14,7 +14,9 @@ const userSchema = new Schema({
     image: { type: String, default:"" },
     ratings : {type : [Number], required : true, default: [5]},
     reviews: { type: [ObjectId], default: [], required : true },
-    currentSessions : {type : [ObjectId], default: [], required : true}
+    currentSessions : {type : [ObjectId], default: [], required : true},
+    friends: {type : [ObjectId], default: [], required : true},
+    friendRequests: {type : [ObjectId], default: [], required : true},
 }, {
     timestamps : true
 })
