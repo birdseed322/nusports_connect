@@ -8,10 +8,11 @@ import {
 
 function ProfileFriendsTab(props) {
   const user = props.user;
-  console.log(user);
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [friendsLength, setFriendsLengths] = useState("");
+  const [searchFriendsInput, setSearchFriendsInput] = useState("");
+  const [filteredFriends, setFilteredFriends] = useState("");
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -26,6 +27,24 @@ function ProfileFriendsTab(props) {
     apiCall();
   }, []);
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const editedSearchFriendsInput = searchFriendsInput
+        .toLowerCase()
+        .replace(/ /g, "");
+      console.log(editedSearchFriendsInput);
+      const filteredFriends = friends.filter((friend) => {
+        const fName = friend.fName.toLowerCase();
+        const lName = friend.lName.toLowerCase();
+        const name = fName + lName;
+        return name.startsWith(editedSearchFriendsInput);
+      });
+      setFilteredFriends(filteredFriends);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   console.log(friends);
   console.log(friendRequests);
   return (
@@ -36,19 +55,36 @@ function ProfileFriendsTab(props) {
             ? friendsLength + " Friend"
             : friendsLength + " Friends"}
         </h2>
-        {/* <form action="">
+        <form action="" onSubmit={handleSubmit}>
           <img src={magnifyingGlass} alt="search" className="search-icon" />
-          <input placeholder="Find friend" className="search-input" />
-          <button>search</button>
-        </form> */}
+          <input
+            placeholder="Find friend"
+            className="search-input"
+            onChange={(e) => setSearchFriendsInput(e.target.value)}
+          />
+          <button className="search-friend-btn">search</button>
+        </form>
       </div>
       <div className="friends-tab">
-        {friendRequests.map((friend) => (
-          <FriendBubble friend={friend} user={user} pending={true} />
-        ))}
-        {friends.map((friend) => (
-          <FriendBubble friend={friend} user={user} pending={false} />
-        ))}
+        {friends.length === 0 && friendRequests.length === 0 ? (
+          <h1>No friends 😔 </h1>
+        ) : (
+          friendRequests.map((friend) => (
+            <FriendBubble friend={friend} user={user} pending={true} />
+          ))
+        )}
+
+        {filteredFriends === "" ? (
+          friends.map((friend) => (
+            <FriendBubble friend={friend} user={user} pending={false} />
+          ))
+        ) : filteredFriends.length === 0 ? (
+          <h1>No friends found!</h1>
+        ) : (
+          filteredFriends.map((friend) => (
+            <FriendBubble friend={friend} user={user} pending={false} />
+          ))
+        )}
       </div>
     </div>
   );

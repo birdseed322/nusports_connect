@@ -823,7 +823,7 @@ const RootMutationType = new GraphQLObjectType({
             },
             resolve: async (_, args) => {
                 try {
-                    const friender = await User.findById(args.frienderId);
+                    const friender = await User.findById(args.frienderId).exec();
                     const friendee = await User.findOne({ username: args.friendeeUsername }).exec()
                     friendee.friendRequests.push(friender);
                     friendee.save();
@@ -843,9 +843,11 @@ const RootMutationType = new GraphQLObjectType({
             },
             resolve: async (_, args) => {
                 try {
-                    const friender = await User.findOne({ username: args.frienderUsername });
-                    const friendee = await User.findOne({ username: args.friendeeUsername }).exec()
-                    friendee.friendRequests = friender.friendRequests.filter(friend => friend !== friender);
+                    const friender = await User.findOne({ username: args.frienderUsername }).exec();
+                    const friendee = await User.findOne({ username: args.friendeeUsername }).exec();
+                    let friendeeFriends = await User.find({_id: { $in: friendee.friendRequests}}).exec()
+                    friendeeFriends = friendeeFriends.filter(friend => friend.username !== friender.username);
+                    friendee.friendRequests = friendeeFriends;
                     friendee.friends.push(friender);
                     friender.friends.push(friendee);
                     friendee.save();
@@ -866,10 +868,38 @@ const RootMutationType = new GraphQLObjectType({
             },
             resolve: async (_, args) => {
                 try {
-                    const friender = await User.findOne({ username: args.frienderUsername });
-                    const friendee = await User.findOne({ username: args.friendeeUsername }).exec()
-                    friendee.friendRequests = friender.friendRequests.filter(friend => friend !== friender);
+                    const friender = await User.findOne({ username: args.frienderUsername }).exec();
+                    const friendee = await User.findOne({ username: args.friendeeUsername }).exec();
+                    let friendeeFriends = await User.find({_id: { $in: friendee.friendRequests}}).exec()
+                    friendeeFriends = friendeeFriends.filter(friend => friend.username !== friender.username);
+                    friendee.friendRequests = friendeeFriends;
                     friendee.save();
+                } catch (err) {
+                    console.log(err);
+                    return false;
+                }
+                return true;
+            }
+        },
+        removeFriend: {
+            type: GraphQLBoolean,
+            description: "Removes a friend",
+            args: {
+                friendOne: { type: GraphQLString },
+                friendTwo: { type: GraphQLString }
+            },
+            resolve: async (_, args) => {
+                try {
+                    const friendOne = await User.findOne({ username: args.friendOne }).exec();
+                    const friendTwo = await User.findOne({ username: args.friendTwo }).exec();
+                    let friendOneFriends = await User.find({_id: { $in: friendOne.friends}}).exec()
+                    friendOneFriends = friendOneFriends.filter(friend => friend.username !== friendTwo.username);
+                    friendOne.friends = friendOneFriends;
+                    let friendTwoFriends = await User.find({_id: { $in: friendTwo.friends}}).exec()
+                    friendTwoFriends = friendTwoFriends.filter(friend => friend.username !== friendOne.username);
+                    friendTwo.friends = friendTwoFriends;
+                    friendOne.save();
+                    friendTwo.save();
                 } catch (err) {
                     console.log(err);
                     return false;

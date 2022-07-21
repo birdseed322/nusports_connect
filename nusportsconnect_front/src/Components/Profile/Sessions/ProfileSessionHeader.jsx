@@ -12,6 +12,7 @@ import {
   getUserUsername,
   logout,
   rejectFriend,
+  removeFriend,
 } from "../../../GraphQLQueries/queries";
 import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../../../accessToken";
@@ -25,13 +26,12 @@ function ProfileSessionHeader(props) {
   const owner = props.owner;
 
   const [isPending, setPending] = useState(false);
-  //Friend
-
   const [isFriend, setFriend] = useState(false);
   const [isStranger, setStranger] = useState(false);
   const [isAccepting, setAccepting] = useState(false);
+  const [confirmRemove, setConfirmRemove] = useState(false);
 
-  console.log(user);
+  console.log("user username is " + user.username);
 
   React.useEffect(() => {
     if (!owner) {
@@ -39,6 +39,7 @@ function ProfileSessionHeader(props) {
         let ownUsername = await getUserUsername();
         ownUsername = ownUsername.data.data.userUsername;
         setOwnUsername(ownUsername);
+        console.log("Personal username is " + ownUsername);
         let ownFriendRequests = await getAllFriendRequests(ownUsername);
         ownFriendRequests = ownFriendRequests.data.data.userFriendRequests;
         let otherUserFriends = await getAllFriends(user.username);
@@ -83,6 +84,19 @@ function ProfileSessionHeader(props) {
 
   async function reject() {
     await rejectFriend(user.username, ownUsername);
+    window.location.reload();
+  }
+
+  function remove() {
+    setConfirmRemove(true);
+  }
+
+  function cancelRemove() {
+    setConfirmRemove(false);
+  }
+
+  async function handleRemove() {
+    await removeFriend(user.username, ownUsername);
     window.location.reload();
   }
 
@@ -150,7 +164,7 @@ function ProfileSessionHeader(props) {
         </button>
       ) : null}
 
-      {/* Checks if owner of profile to render logout button */}
+      {/* Checks if owner of profile/friend to render logout button/remove friend button accordingly  */}
       {owner ? (
         <button
           className="logout"
@@ -161,6 +175,19 @@ function ProfileSessionHeader(props) {
           }}
         >
           logout
+        </button>
+      ) : confirmRemove ? (
+        <div>
+          <button className="confirm-remove-btn" onClick={handleRemove}>
+            Confirm{" "}
+          </button>
+          <button className="cancel-remove-btn" onClick={cancelRemove}>
+            Cancel
+          </button>
+        </div>
+      ) : isFriend ? (
+        <button className="remove-friend-btn" onClick={remove}>
+          Remove friend
         </button>
       ) : null}
     </div>
