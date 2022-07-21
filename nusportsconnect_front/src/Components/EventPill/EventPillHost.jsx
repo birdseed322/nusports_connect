@@ -8,12 +8,16 @@ import "./EventPillStyles.css";
 import HistoryButtons from "./Buttons/HistoryButtons";
 import NonParticipantButtons from "./Buttons/NonParticipantButtons";
 import { leaveSession } from "../../GraphQLQueries/queries";
+import { reqOriginRoute } from "../../Routes/routes";
 
 function EventPillHost(props) {
   const event = props.event;
+  const socket = props.socket
+  console.log(event)
 
   function handleLeave(e) {
     leaveSession(event.id);
+    socket.emit("leave session", {username:props.username, hostUsername:event.host.username, link: reqOriginRoute + "/sessions/" + event.id})
     window.location.reload();
   }
 

@@ -1,12 +1,13 @@
 import "./signInStyles.css";
 import React from "react";
-import { loginUser } from "../../GraphQLQueries/queries";
+import { checkSessionEnded, checkUpcomingSessions, loginUser } from "../../GraphQLQueries/queries";
 import { setAccessToken } from "../../accessToken";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Alert from "../Alert/Alert";
 
 function SignInForm(props) {
+  const socket = props.socket
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [alert, setAlert] = React.useState(false);
@@ -21,6 +22,9 @@ function SignInForm(props) {
         const jwt = response.data.data.login.accessToken;
         setAccessToken(jwt);
         const username = jwt_decode(jwt).username;
+        socket.emit("login", username);
+        checkUpcomingSessions(username);
+        checkSessionEnded(username)
         navigate("/profile/" + username);
       } else {
         setAlert(true);

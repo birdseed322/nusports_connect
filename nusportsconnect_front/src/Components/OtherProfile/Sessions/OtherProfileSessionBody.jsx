@@ -11,7 +11,7 @@ function OtherProfileSessionBody(props) {
     : "profile-tab-text highlight";
   var friendsTab = "profile-tab profile-tab-text";
   var reviewsTab = "profile-tab profile-tab-text";
-
+  const socket = props.socket
   return (
     <div className="profile-body">
       <div className="profile-tabs">
@@ -48,7 +48,7 @@ function OtherProfileSessionBody(props) {
       </div>
       <hr />
       {props.friend ? (
-        <OtherProfileSessionsTab user={props.user} />
+        <OtherProfileSessionsTab user={props.user} socket={socket}/>
       ) : (
         <OtherProfileHistoryTab user={props.user} />
       )}

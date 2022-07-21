@@ -7,10 +7,11 @@ import NotAuthenticated from "../../NotAuthenticated/NotAuthenticated";
 import EditProfileBody from "./EditProfileBody";
 import { setPageTitle } from "../../../generalFunctions"
 
-function EditProfile() {
+function EditProfile(props) {
   const { id } = useParams();
   const [user, setUser] = useState("");
   const [ownUser, setOwnUser] = useState("");
+  const socket = props.socket
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -32,7 +33,7 @@ function EditProfile() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar socket={socket}/>
       <EditProfileBody user={user} />
     </div>
   );

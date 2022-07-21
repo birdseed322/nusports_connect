@@ -12,13 +12,13 @@ import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import { Loading } from "../Loading/Loading";
 import { setPageTitle } from "../../generalFunctions";
 
-function Sessions() {
+function Sessions(props) {
   const [data, setData] = React.useState([]);
   const [user, setUser] = React.useState({
     username: "",
     userSessions: [],
   });
-
+  const socket = props.socket
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
 
   React.useEffect(() => {
@@ -88,7 +88,7 @@ function Sessions() {
 
   return (
     <div className="sessions-container">
-      <Navbar />
+      <Navbar socket = {socket}/>
       <FilterBar setFilterSessions={setFilterSessions} />
       <div className="session">
         {uniqDates.map((date) => {
@@ -116,6 +116,8 @@ function Sessions() {
 
                 return (
                   <EventPillHost
+                    socket={socket}
+                    username={user.username}
                     history={false}
                     participant={participant}
                     host={user.username === session.host.username}

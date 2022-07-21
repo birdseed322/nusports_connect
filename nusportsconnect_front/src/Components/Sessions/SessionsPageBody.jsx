@@ -22,6 +22,8 @@ import Announcement from "./Announcement";
 import { getRating, setPageTitle } from "../../generalFunctions";
 import Review from "./Review";
 
+
+// import DatePicker from "react-datepicker";
 // const socket = io("/", {
 //   transports : ["websocket", "polling"],
 //   reconnection: false
@@ -36,6 +38,7 @@ function SessionsPageBody(props) {
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
   const user = props.user;
+  const socket = props.socket
   const { id } = useParams();
   const [messages, setMessages] = React.useState([]);
   const [currentUsers, setCurrentUsers] = React.useState([]);
@@ -111,11 +114,10 @@ function SessionsPageBody(props) {
         prev.filter((x) => x.message !== announcement.message)
       );
     });
-
     socket.on("user disconnected", (updatedUsers) => {
       setCurrentUsers(updatedUsers);
     });
-  }, [id, user]);
+  }, [id, user, socket]);
 
   setPageTitle("NUSportsConnect - " + sessionInfo.sport + " session");
 
@@ -126,11 +128,13 @@ function SessionsPageBody(props) {
   async function handleSessionJoin(e) {
     const userId = await getUserIdentity();
     joinSession(userId.data.data.userIdentity, id);
+    socket.emit("join session", {username:user, hostUsername:sessionInfo.host.username, link: window.location.href})
     window.location.reload();
   }
 
   function handleLeave(e) {
     leaveSession(id);
+    socket.emit("leave session", {username:user, hostUsername:sessionInfo.host.username, link: window.location.href})
     window.location.href = "/sessions";
   }
 

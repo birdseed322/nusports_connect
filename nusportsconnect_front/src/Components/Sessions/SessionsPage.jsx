@@ -6,6 +6,7 @@ import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import SessionsPageBody from "./SessionsPageBody";
 
 function SessionsPage(props) {
+  const socket = props.socket
   const [user, setUser] = React.useState("");
     React.useEffect(() => {
         const apiCall = async () => {
@@ -23,8 +24,8 @@ function SessionsPage(props) {
 
   return (
     <div>
-      <Navbar />
-      <SessionsPageBody user={user} />
+      <Navbar socket={socket}/>
+      <SessionsPageBody user={user} socket={socket}/>
     </div>
   );
 }
