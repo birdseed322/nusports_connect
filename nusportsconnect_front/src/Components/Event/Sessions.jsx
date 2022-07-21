@@ -76,7 +76,7 @@ function Sessions(props) {
     return new Date(a) - new Date(b);
   });
 
-  if (filterSessions.length === 0) {
+  if (filterSessions.length === 0 || data.length === 0) {
     return (
       <div className="sessions-container">
         <Navbar />

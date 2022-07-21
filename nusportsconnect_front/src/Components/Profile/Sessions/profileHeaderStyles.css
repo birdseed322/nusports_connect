@@ -145,3 +145,46 @@ body{
     background-color: #328f3b;
 
 }
+
+.remove-friend-btn {
+    background-color: #DC4848;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    margin-right: 1vw;
+    margin-left: 0;
+    cursor: pointer;
+    border-radius: 12px;
+    position: absolute;
+    right: 2vw;
+    bottom: 3vh;
+}
+
+.cancel-remove-btn {
+    background-color: #DC4848;
+    color: white;
+    border: none;
+    padding: 8px;
+    font-size: 20px;
+    margin-right: 1vw;
+    cursor: pointer;
+    border-radius: 12px;
+    position: absolute;
+    right: 1vw;
+    bottom: 3vh;
+}
+
+.confirm-remove-btn {
+    background-color: #3DAD49;
+    color: white;
+    border: none;
+    padding: 8px;
+    font-size: 20px;
+    margin-right: 1vw;
+    cursor: pointer;
+    border-radius: 12px;
+    position: absolute;
+    right: 8vw;
+    bottom: 3vh;
+}

@@ -159,7 +159,7 @@ function Navbar(props) {
     <div>
       <nav className="navbar">
         <a href="/sessions">
-          <img className="logo" src={Logo} alt="" />
+          <img title="View all sessions" className="logo" src={Logo} alt="" />
         </a>
         <ul>
           <li>

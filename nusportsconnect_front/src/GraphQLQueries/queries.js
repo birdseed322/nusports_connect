@@ -197,7 +197,7 @@ export function getAllFriendRequests(username) {
     return postQuery(query);
 }
 
-
+//Sends a friend request to another user
 export function addFriend(frienderId, friendeeUsername) {
   const query = `
   mutation{
@@ -210,6 +210,7 @@ export function addFriend(frienderId, friendeeUsername) {
     return postQuery(query);
 }
 
+//Accepts a friend request from a user
 export function acceptFriend(frienderUsername, friendeeUsername) {
   const query = `
   mutation{
@@ -222,12 +223,26 @@ export function acceptFriend(frienderUsername, friendeeUsername) {
     return postQuery(query);
 }
 
+//Rejects a friend request from a user
 export function rejectFriend(frienderUsername, friendeeUsername) {
   const query = `
   mutation{
     rejectFriend(
       frienderUsername: "${frienderUsername}"
       friendeeUsername: "${friendeeUsername}"
+      )
+  }
+  `
+    return postQuery(query);
+}
+
+//Removes a friend 
+export function removeFriend(friendOne, friendTwo) {
+  const query = `
+  mutation{
+    removeFriend(
+      friendOne: "${friendOne}"
+      friendTwo: "${friendTwo}"
       )
   }
   `

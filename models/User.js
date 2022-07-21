@@ -17,7 +17,7 @@ const userSchema = new Schema({
     reviews: { type: [ObjectId], default: [], required : true },
     currentSessions : {type : [ObjectId], default: [], required : true},
     notifications : {type: [notificationSchema], default: [], required : true},
-    lastLoggedIn : {type: Date, default: new Date()}
+    lastLoggedIn : {type: Date, default: new Date()},
     friends: {type : [ObjectId], default: [], required : true},
     friendRequests: {type : [ObjectId], default: [], required : true},
 }, {
