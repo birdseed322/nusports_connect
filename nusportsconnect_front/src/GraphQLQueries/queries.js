@@ -1,8 +1,7 @@
 import axios from "axios";
 import { getAccessToken } from "../accessToken";
-import { graphqlURI } from "../Routes/routes";
 
-//Posts a query from React app 
+//Posts a query from React app to GraphQL backend server
 function postQuery(query) {
     let result = axios({
             url: '/graphql',
@@ -427,6 +426,7 @@ export function getUserCurrentSessions(username) {
     return postQuery(query);
 }
 
+//Retrieves all the chat releated to a room
 export function getRoomChat(room) {
   const query = `
   query{
@@ -441,6 +441,7 @@ export function getRoomChat(room) {
   return postQuery(query)
 }
 
+//Retrieves all the announcements related to a room
 export function getRoomAnnouncement(room) {
   const query = `
   query{
@@ -448,6 +449,65 @@ export function getRoomAnnouncement(room) {
       message
       time
     }
+  }
+  `
+
+  return postQuery(query)
+}
+
+//Retrieves user notifications
+export function getUserNotifications(username) {
+  const query = `
+  query{
+    getUserNotifications(username:"${username}") {
+      message
+      link
+      createdAt
+    }
+  }
+  `
+
+  return postQuery(query)
+}
+
+//Clear all users notifications
+export function clearAllNotifications(username){
+  const query = `
+  mutation {
+    clearAllNotifications(username:"${username}")
+  }
+  `
+
+  return postQuery(query)
+}
+
+//Clear a single notification
+export function clearNotification(username, time, link){
+  const query = `
+  mutation {
+    clearNotification(username:"${username}" createdAt:"${time}" link:"${link}")
+  }
+  `
+
+  return postQuery(query)
+}
+
+//Create notifications for upcoming sessions
+export function checkUpcomingSessions(username){
+  const query = `
+  mutation{
+    checkUpcomingSessions(username:"${username}")
+  }
+  `
+
+  return postQuery(query)
+}
+
+//Create notifications to review sessions
+export function checkSessionEnded(username){
+  const query = `
+  mutation{
+    checkSessionEnded(username:"${username}")
   }
   `
 

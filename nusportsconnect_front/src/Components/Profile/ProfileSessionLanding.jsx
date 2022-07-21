@@ -8,12 +8,12 @@ import OtherPersonalProfileSession from "../OtherProfile/Sessions/OtherPersonalP
 import PersonalProfileSession from "./Sessions/PersonalProfileSession";
 //Landing page for profile. Checks the info given in the browser cookie (Generated during login) to see if the profile you are viewing is yours
 
-function ProfileSessionLanding() {
+function ProfileSessionLanding(props) {
   const [data, setData] = React.useState("");
   const [owner, setOwner] = React.useState(false);
   const { id } = useParams();
+  const socket = props.socket
   //Upon mounting component, data retrieved and sent down to profile component.
-
   React.useEffect(() => {
     const apiCall = async () => {
       const user = await findUser(id);
@@ -34,9 +34,9 @@ function ProfileSessionLanding() {
     return <Loading />;
   }
   return owner ? (
-    <PersonalProfileSession user={data} />
+    <PersonalProfileSession user={data} socket={socket}/>
   ) : (
-    <OtherPersonalProfileSession user={data} />
+    <OtherPersonalProfileSession user={data} socket={socket}/>
   );
 }
 

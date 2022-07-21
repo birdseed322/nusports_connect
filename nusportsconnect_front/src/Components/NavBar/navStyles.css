@@ -102,3 +102,90 @@ body {
 .profile:hover {
   background-color: #b9b9b9;
 }
+
+.notifications {
+  background-color: white;
+  padding: 10px;
+  color: black;
+  position: absolute;
+  top: 62px;
+  right: 100px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  width: 400px;
+  height: fit-content;
+  max-width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2), 2px 4px 0 rgba(0, 0, 0, 0.1),inset 0 0 0 1px rgba(255, 255, 255, 0.5);;
+  border-radius: 45px;
+}
+
+.notification-header {
+  margin: 3px 10px;
+}
+
+.notification-clear-btn {
+  text-decoration: underline;
+  text-align: right ;
+  margin: 0;
+  cursor: pointer;
+  color: blue;
+}
+
+.notif-icon-grp {
+  position: relative;
+}
+
+.notification-counter {
+  border-radius: 50%;
+  background-color: red;
+  font-size: 10pt;
+  color: white;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: -10px;
+  right: 10px;
+}
+
+.notification-cancel {
+  background-color: transparent;
+  position: absolute;
+  right: 5%;
+  top: 35%;
+  border-style: hidden;
+  font-size: 15pt;
+  color: #EB4747;
+  cursor:pointer;
+}
+
+.notification {
+  padding: 15px;
+  font-size: 14px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.notification:hover {
+  background-color:#b9b9b9 ;
+}
+
+.notification-message {
+  margin: 3px 0;
+  cursor:pointer;
+}
+
+.notification-time {
+  margin: 8px 0 0 0;
+  color: #444444;
+}
+
+.notification-empty {
+  color: #444444;
+  text-align: center;
+}

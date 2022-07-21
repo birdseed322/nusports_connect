@@ -6,8 +6,9 @@ import Navbar from "../NavBar/Navbar";
 import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import CreateSessionBody from "./CreateSessionBody";
 
-function CreateSession() {
+function CreateSession(props) {
   const [data, setData] = React.useState("")
+  const socket = props.socket
   React.useEffect(() => {
     const apiCall = async () => {
       const res = await testAuth();
@@ -25,7 +26,7 @@ function CreateSession() {
   
   return (
     <div>
-      <Navbar />
+      <Navbar socket={socket}/>
       <CreateSessionBody />
     </div>
   );
