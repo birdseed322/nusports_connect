@@ -1,4 +1,5 @@
 import React from "react";
+import { getRating } from "../../generalFunctions";
 import defaultProfilePic from "../../pics/defaultProfilePic.png";
 import star from "../../pics/star.png";
 
@@ -26,7 +27,7 @@ function ParticipantBubble(props) {
           <p className="participant-name">{props.name}</p>
         </a>
         <img className="participant-rating-star" alt="star" src={star} />
-        <p className="participant-rating">{props.rating}/5</p>
+        <p className="participant-rating">{getRating(props.rating)}/5</p>
       </div>
     </div>
   );

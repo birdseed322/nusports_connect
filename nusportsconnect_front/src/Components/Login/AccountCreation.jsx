@@ -2,6 +2,7 @@ import "./accountCreationStyles.css";
 import { addUser } from "../../GraphQLQueries/queries";
 import { reqOriginRoute } from "../../Routes/routes";
 import React from "react";
+import Alert from "../Alert/Alert";
 
 function AccountCreationForm(props) {
   const [email, setEmail] = React.useState("");
@@ -9,14 +10,24 @@ function AccountCreationForm(props) {
   const [lName, setLName] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [alert, setAlert] = React.useState(false);
+
+  function handleCloseAlert() {
+    setAlert(false);
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
-    const status = addUser(username, password, email, fName, lName);
-    if (status === 200) {
-      window.location.href = reqOriginRoute;
+    if (password === confirmPassword) {
+      const status = addUser(username, password, email, fName, lName);
+      if (status === 200) {
+        window.location.href = reqOriginRoute;
+      } else {
+        window.location.reload();
+      }
     } else {
-      window.location.reload();
+      setAlert(true);
     }
   }
 
@@ -41,12 +52,22 @@ function AccountCreationForm(props) {
   }
 
   function handlePasswordChange(e) {
-    const updatedPassword = e.target.value;
-    setPassword(updatedPassword);
+    const password = e.target.value;
+    setPassword(password);
+  }
+  function handleConfirmPasswordChange(e) {
+    const confirmPassword = e.target.value;
+    setConfirmPassword(confirmPassword);
   }
 
   return (
     <div className="container">
+      {alert ? (
+        <Alert
+          message="Passwords do not match"
+          handleCloseAlert={handleCloseAlert}
+        />
+      ) : null}
       <div className="create-form-box">
         <form onSubmit={handleSubmit}>
           <div className="center">
@@ -104,10 +125,21 @@ function AccountCreationForm(props) {
               title="At least one number and one uppercase and lowercase letter, and at least 8 or more characters"
               required
             />
+            <input
+              className="sign-input"
+              type="password"
+              placeholder="Confirm password"
+              name="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="At least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+              required
+            />
           </div>
 
           <div className="sign-e">
-            <button className="sign-login-btn">Sign Up</button>
+            <button className="sign-up-btn">Sign Up</button>
           </div>
         </form>
 

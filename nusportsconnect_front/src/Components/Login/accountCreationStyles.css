@@ -33,13 +33,13 @@
 }
 
 .sign-header {
-  margin: 0 auto 0 auto;
+  margin: 0 auto;
   font-family: 'Montserrat', sans-serif;
   font-weight: 100;
 }
 
 .sign-input {
-  margin: 10px auto 10px 0;
+  margin: 10px auto 0 0;
   padding: 7px;
   height: 30px;
   width: 210px;
@@ -55,10 +55,9 @@
 }
 
 .sign-e {
-  width: fit-content;
-  height: fit-content;
-  margin: auto;
+  margin: 0 auto;
   text-align: center;
+  /* border: 2px solid red; */
 }
 
 .name-inputs {
@@ -78,16 +77,17 @@
 }
 
 
-.sign-login-btn {
-  margin: 20px auto;
-  background: #DDDDDD;
-  border-style: none;
+.sign-up-btn {
+  margin: 0 auto;
+  background-color: #DDDDDD;
   border-radius: 45px;
+  border: none;
   width: 80px;
   height: 30px;
   font-size: 11pt;
   font-family: 'Roboto', sans-serif;
-  cursor: "pointer";
+  cursor: pointer;
+  margin: 10px;
 }
 
 .sign-sign-in {

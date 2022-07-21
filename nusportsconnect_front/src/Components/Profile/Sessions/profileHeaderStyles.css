@@ -81,9 +81,49 @@ body{
     right: 2vw;
     bottom: 3vh;
     text-align: center;
+    cursor: pointer;
 }
 .pending {
     background-color: #808080;
+    cursor: default;
+}
+
+.header-accept-btn {
+    border: none;
+    border-radius: 45px;
+    background-color: #3DAD49;
+    color: white;
+    font-weight: bold;
+    font-size: 13pt;
+    padding: 10px;
+    position: absolute;
+    right: 8vw;
+    bottom: 3vh;
+    text-align: center;
+    cursor: pointer;    
+}
+
+.header-accept-btn:hover {
+    background-color: #389c42;
+}
+
+.header-reject-btn {
+    border: none;
+    border-radius: 45px;
+    background-color: #DC4848;
+    color: white;
+    font-weight: bold;
+    font-size: 13pt;
+    padding: 10px;
+    position: absolute;
+    right: 1vw;
+    bottom: 3vh;
+    text-align: center;
+    cursor: pointer;    
+}
+
+.header-reject-btn:hover {
+    background-color: #c14040;
 }
 
 .logout {

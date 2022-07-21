@@ -86,8 +86,6 @@ function Sessions(props) {
     );
   }
 
-  console.log(user);
-  console.log(data);
   return (
     <div className="sessions-container">
       <Navbar socket = {socket}/>

@@ -226,10 +226,12 @@ const UserType = new GraphQLObjectType({
         fName: { type: GraphQLNonNull(GraphQLString) },
         lName: { type: GraphQLNonNull(GraphQLString) },
         interests: { type: GraphQLString },
-        image: {type : GraphQLString},
-        reviews: { type: GraphQLList(ReviewType)}, 
+        image: { type : GraphQLString },
+        reviews: { type: GraphQLList(ReviewType) }, 
         currentSessions: { type: GraphQLList(SessionType)},
-        accountCreationDate: { type: GraphQLString }
+        accountCreationDate: { type: GraphQLString },
+        friends: { type: GraphQLList(UserType) },
+        friendRequests: { type: GraphQLList(UserType) },
     })
 });
 
@@ -408,14 +410,6 @@ const RootQueryType = new GraphQLObjectType({
             }
 
         },
-        allUsernames: {
-            type: GraphQLList(UserType),
-            description: "Retrive all users",
-            resolve: async() => {
-                let all = await User.find().exec();
-                return all;
-        }
-    }, 
         userProfileInfo: {
             type: UserType,
             description: "Retrieve a user's profile information",
@@ -432,6 +426,7 @@ const RootQueryType = new GraphQLObjectType({
                 const accountCreationDate = getCreationDate(cDate)
                 const currentSessions = await Session.find({ _id: { $in: result.currentSessions } }).exec()
                 const reviews = await Review.find({ _id: { $in: result.reviews  } }).exec()
+               
                 return {
                     username: result.username,
                     email: result.email,
@@ -491,6 +486,31 @@ const RootQueryType = new GraphQLObjectType({
                 return revieweeReviews;
             }
         },
+        userFriends: {
+            type: GraphQLList(UserType),
+            description: "Get a list of a user's friends",
+            args: {
+                username: { type: GraphQLString }
+            },
+            resolve: async (_, args) => {
+                let user = await User.findOne({ username: args.username }).exec()
+                let allFriends = await User.find({_id: {$in: user.friends}}).exec()
+                return allFriends;
+            }
+        },        
+        userFriendRequests: {
+            type: GraphQLList(UserType),
+            description: "Get a list of a user's friend requests",
+            args: {
+                username: { type: GraphQLString }
+            },
+            resolve: async (_, args) => {
+                let user = await User.findOne({ username: args.username }).exec()
+                let allFriendRequests = await User.find({_id: {$in: user.friendRequests}}).exec()
+
+                return allFriendRequests;
+            }
+        },        
         testAuth: {
             type: GraphQLString,
             description: "Test authentication of user",
@@ -788,6 +808,69 @@ const RootMutationType = new GraphQLObjectType({
                         reviewee.save();
 
                     } catch (err) {
+                    console.log(err);
+                    return false;
+                }
+                return true;
+            }
+        },
+        addFriend: {
+            type: GraphQLBoolean,
+            description: "Sends a friend request to a user",
+            args: {
+                frienderId: { type: GraphQLString },
+                friendeeUsername: { type: GraphQLString }
+            },
+            resolve: async (_, args) => {
+                try {
+                    const friender = await User.findById(args.frienderId);
+                    const friendee = await User.findOne({ username: args.friendeeUsername }).exec()
+                    friendee.friendRequests.push(friender);
+                    friendee.save();
+                } catch (err) {
+                    console.log(err);
+                    return false;
+                }
+                return true;
+            }
+        },
+        acceptFriend: {
+            type: GraphQLBoolean,
+            description: "Accept a friend request from a user",
+            args: {
+                frienderUsername: { type: GraphQLString },
+                friendeeUsername: { type: GraphQLString }
+            },
+            resolve: async (_, args) => {
+                try {
+                    const friender = await User.findOne({ username: args.frienderUsername });
+                    const friendee = await User.findOne({ username: args.friendeeUsername }).exec()
+                    friendee.friendRequests = friender.friendRequests.filter(friend => friend !== friender);
+                    friendee.friends.push(friender);
+                    friender.friends.push(friendee);
+                    friendee.save();
+                    friender.save();
+                } catch (err) {
+                    console.log(err);
+                    return false;
+                }
+                return true;
+            }
+        },
+        rejectFriend: {
+            type: GraphQLBoolean,
+            description: "Reject a friend request from a user",
+            args: {
+                frienderUsername: { type: GraphQLString },
+                friendeeUsername: { type: GraphQLString }
+            },
+            resolve: async (_, args) => {
+                try {
+                    const friender = await User.findOne({ username: args.frienderUsername });
+                    const friendee = await User.findOne({ username: args.friendeeUsername }).exec()
+                    friendee.friendRequests = friender.friendRequests.filter(friend => friend !== friender);
+                    friendee.save();
+                } catch (err) {
                     console.log(err);
                     return false;
                 }

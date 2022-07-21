@@ -15,7 +15,6 @@ function PersonalProfileSession(props) {
   };
 
   const user = props.user;
-  console.log(user);
   return (
     <div className="profile-container">
       <Navbar socket={socket}/>

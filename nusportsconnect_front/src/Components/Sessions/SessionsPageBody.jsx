@@ -16,14 +16,23 @@ import {
 } from "../../GraphQLQueries/queries";
 import { useParams } from "react-router-dom";
 import { Loading } from "../Loading/Loading";
+import io from "socket.io-client";
 import UsersOnlineOverlay from "./UsersOnlineOverlay";
-import Announcement from "./Announcement"
+import Announcement from "./Announcement";
 import { getRating, setPageTitle } from "../../generalFunctions";
 import Review from "./Review";
 
 
 // import DatePicker from "react-datepicker";
+// const socket = io("/", {
+//   transports : ["websocket", "polling"],
+//   reconnection: false
+// })
 
+const socket = io("http://localhost:5000/", {
+  transports: ["websocket", "polling"],
+  reconnection: false,
+});
 
 function SessionsPageBody(props) {
   //props used to retrieve user information.
@@ -31,11 +40,11 @@ function SessionsPageBody(props) {
   const user = props.user;
   const socket = props.socket
   const { id } = useParams();
-  const [messages, setMessages] = React.useState([])
-  const [currentUsers, setCurrentUsers] = React.useState([])
-  const [message, setMessage] = React.useState("")
-  const [announcement, setAnnouncement] = React.useState("")
-  const [announcements, setAnnouncements] = React.useState([])
+  const [messages, setMessages] = React.useState([]);
+  const [currentUsers, setCurrentUsers] = React.useState([]);
+  const [message, setMessage] = React.useState("");
+  const [announcement, setAnnouncement] = React.useState("");
+  const [announcements, setAnnouncements] = React.useState([]);
   const [friendOverlay, setFriendOverlay] = React.useState(false);
   const [usersOnlineOverlay, setUsersOnlineOverlay] = React.useState(false);
   const [sessionInfo, setSessionInfo] = React.useState({
@@ -64,54 +73,53 @@ function SessionsPageBody(props) {
     const apiCall = async () => {
       const session = await getSessionInfo(id);
       let oldMessages = await getRoomChat(id);
-      let oldAnnouncements = await getRoomAnnouncement(id)
+      let oldAnnouncements = await getRoomAnnouncement(id);
       setSessionInfo(session.data.data.getSessionInfo);
       oldMessages = oldMessages.data.data.getRoomChat.sort((a, b) => {
-        return new Date(a) - new Date(b)
-      })
-      oldAnnouncements = oldAnnouncements.data.data.getRoomAnnouncement.sort((a, b) => {
-        return new Date(a) - new Date(b)
-      })
-      setMessages(oldMessages)
-      setAnnouncements(oldAnnouncements)
+        return new Date(a) - new Date(b);
+      });
+      oldAnnouncements = oldAnnouncements.data.data.getRoomAnnouncement.sort(
+        (a, b) => {
+          return new Date(a) - new Date(b);
+        }
+      );
+      setMessages(oldMessages);
+      setAnnouncements(oldAnnouncements);
     };
-    
+
     apiCall();
 
     // socket.off("connect").on("connect", () => {
     //   socket.emit("username", {user, room:id})
     // })
 
-    socket.emit("username", {username: user, room:id})
-    
-    socket.on("connected", users => {
-      console.log(users)
-      setCurrentUsers(users)
-    })
+    socket.emit("username", { username: user, room: id });
 
-  socket.on("message", message => {
-    console.log(message)
-    setMessages(prev => [...prev, message]);
-  })
+    socket.on("connected", (users) => {
+      console.log(users);
+      setCurrentUsers(users);
+    });
 
-  socket.on("announcement", announcement => {
-    setAnnouncements(prev => [...prev, announcement]);
-  })
+    socket.on("message", (message) => {
+      console.log(message);
+      setMessages((prev) => [...prev, message]);
+    });
 
-  socket.on("deleted announcement", announcement => {
-    setAnnouncements(prev => prev.filter(x => x.message !== announcement.message));
-  })
+    socket.on("announcement", (announcement) => {
+      setAnnouncements((prev) => [...prev, announcement]);
+    });
 
-
-  socket.on("user disconnected", updatedUsers => {
-    setCurrentUsers(updatedUsers)
-  })
-
-
+    socket.on("deleted announcement", (announcement) => {
+      setAnnouncements((prev) =>
+        prev.filter((x) => x.message !== announcement.message)
+      );
+    });
+    socket.on("user disconnected", (updatedUsers) => {
+      setCurrentUsers(updatedUsers);
+    });
   }, [id, user, socket]);
 
-  setPageTitle("NUSportsConnect - " + sessionInfo.sport + " session")
-
+  setPageTitle("NUSportsConnect - " + sessionInfo.sport + " session");
 
   if (sessionInfo.sport === "") {
     return <Loading />;
@@ -130,20 +138,19 @@ function SessionsPageBody(props) {
     window.location.href = "/sessions";
   }
 
-  function handleSendMessage(){
-    socket.emit("send", {message: {message, user}, room:id})
-    setMessage("")
+  function handleSendMessage() {
+    socket.emit("send", { message: { message, user }, room: id });
+    setMessage("");
   }
 
-  function handleSendAnnouncement(){
-    socket.emit("send announcement", announcement)
-    setAnnouncement("")
+  function handleSendAnnouncement() {
+    socket.emit("send announcement", announcement);
+    setAnnouncement("");
   }
 
-  function handleDeleteAnnouncement(a){
-    socket.emit("delete announcement", a)
+  function handleDeleteAnnouncement(a) {
+    socket.emit("delete announcement", a);
   }
-
 
   const host = sessionInfo.host.username === user;
   let participant = false;
@@ -271,12 +278,12 @@ function SessionsPageBody(props) {
             />
           ) : (
             <ChatBox
-            setMessage={setMessage} 
-            handleSendMessage={handleSendMessage} 
-            message={message} 
-            messages={messages} 
-            owner={user} 
-            usersOnlineOverlay={() => setUsersOnlineOverlay(true)}
+              setMessage={setMessage}
+              handleSendMessage={handleSendMessage}
+              message={message}
+              messages={messages}
+              owner={user}
+              usersOnlineOverlay={() => setUsersOnlineOverlay(true)}
             />
           )
         ) : sessionInfo.participants.length < sessionInfo.maxParticipants ? (
@@ -319,16 +326,29 @@ function SessionsPageBody(props) {
           <div className="announcement-box">
             <h2 className="announcement-header">Announcements</h2>
             <ul className="announcement-list">
-            {announcements.map(x => <Announcement message={x.message} time={x.time} handleDeleteAnnouncement={handleDeleteAnnouncement} host={host}/>)}
+              {announcements.map((x) => (
+                <Announcement
+                  message={x.message}
+                  time={x.time}
+                  handleDeleteAnnouncement={handleDeleteAnnouncement}
+                  host={host}
+                />
+              ))}
             </ul>
           </div>
-          {host ? <AnnouncementInput handleSendAnnouncement={handleSendAnnouncement} setAnnouncement={setAnnouncement} announcement={announcement}/> : null}
+          {host ? (
+            <AnnouncementInput
+              handleSendAnnouncement={handleSendAnnouncement}
+              setAnnouncement={setAnnouncement}
+              announcement={announcement}
+            />
+          ) : null}
           <FriendOverlay
             open={friendOverlay}
             closeOverlay={() => setFriendOverlay(false)}
             participants={sessionInfo.participants}
           />
-          <UsersOnlineOverlay 
+          <UsersOnlineOverlay
             open={usersOnlineOverlay}
             closeOverlay={() => setUsersOnlineOverlay(false)}
             participants={currentUsers}
