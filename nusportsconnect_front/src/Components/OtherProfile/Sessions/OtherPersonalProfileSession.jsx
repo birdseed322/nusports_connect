@@ -9,7 +9,7 @@ import OtherProfileReviewsBody from "../Reviews/OtherProfileReviewsBody";
 
 function OtherPersonalProfileSession(props) {
   const [view, setView] = useState("sessions");
-
+  const socket = props.socket
   const handleClick = (viewState) => {
     setView(viewState);
   };
@@ -21,7 +21,7 @@ function OtherPersonalProfileSession(props) {
 
   return (
     <div className="profile-container">
-      <Navbar />
+      <Navbar socket={socket}/>
       <ProfileSessionHeader user={user} owner={false} friend={friend} />
       {(() => {
         switch (view) {
@@ -31,6 +31,7 @@ function OtherPersonalProfileSession(props) {
                 handleClick={handleClick}
                 user={user}
                 friend={friend}
+                socket={socket}
               />
             );
           case "history":

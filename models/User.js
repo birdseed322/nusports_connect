@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose')
+const notificationSchema = require('./Notification')
 const Schema = mongoose.Schema;
 
 //Information to be stored in a session datatype.
@@ -14,7 +15,9 @@ const userSchema = new Schema({
     image: { type: String, default:"" },
     ratings : {type : [Number], required : true, default: [5]},
     reviews: { type: [ObjectId], default: [], required : true },
-    currentSessions : {type : [ObjectId], default: [], required : true}
+    currentSessions : {type : [ObjectId], default: [], required : true},
+    notifications : {type: [notificationSchema], default: [], required : true},
+    lastLoggedIn : {type: Date, default: new Date()}
 }, {
     timestamps : true
 })

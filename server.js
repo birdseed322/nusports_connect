@@ -29,6 +29,7 @@ const path = require('path');
 const { CallTracker } = require('assert');
 let Chat = require('./models/Chat');
 const Announcement = require('./models/Announcement');
+const { reqOriginRoute } = require('./routes');
 
 require('dotenv').config();
 
@@ -38,8 +39,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //Add dependencies for app to be functional
-app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
-// app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000/" }));
+// app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000/" }));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json({limit: '50mb'}));
@@ -69,10 +70,19 @@ server.listen(port, () => {
 //Websocket Responses
 
 let rooms = {}
+let activeUsers = []
 
 io.on("connection", client => {
     var currentRoomId;
     var currentUser;
+    client.on("login", (username) => {
+        currentUser = username
+        activeUsers.push({
+            username,
+            socketId: client.id
+        })
+    })
+
     client.on("username", ({username, room}) => {
         console.log(username + " connected to room " + room)
         const user = {
@@ -115,6 +125,7 @@ io.on("connection", client => {
         } catch(err){
 
         }
+        activeUsers = activeUsers.filter(x => x.username !== currentUser)
         io.emit("disconnected", client.id)
     })
 
@@ -130,6 +141,66 @@ io.on("connection", client => {
                 time: new Date().getTime()
             })
         }).catch(err => console.log(err))
+
+        Session.findById(currentRoomId).exec().then(async (room) => {
+            let hostUsername = await User.findById(room.host).exec()
+            hostUsername = hostUsername.username
+            let users = await User.find({_id : {$in : room.participants}}).exec()
+            users = users.filter(x => x.username !== hostUsername)
+            const newNotif = {
+                message : "A new announcement has been posted!",
+                link : reqOriginRoute + "/sessions/" + currentRoomId
+            }
+            users.map(user => {
+                user.notifications.push(newNotif)
+                user.save()
+                if (activeUsers.find(x => x.username === user.username)) {
+                    const activeUser = activeUsers.find(x => x.username === user.username)
+                    io.to(activeUser.socketId).emit("new notification", newNotif)
+                } else {
+                    console.log(user.username + " not online")
+                }
+            })
+            
+        })
+    })
+
+    client.on("join session", async ({username, hostUsername, link}) => {
+        let newNotif = {
+            message: username + " has joined your session!",
+            link
+        }
+        
+        User.findOne({username : hostUsername}).exec().then(host => {
+            host.notifications.push(newNotif)
+            host.save()
+        })
+
+        if (activeUsers.find(x => x.username === hostUsername)) {
+            const host = activeUsers.find(x => x.username === hostUsername)
+            io.to(host.socketId).emit("new notification", newNotif)
+        } else {
+            console.log(hostUsername + " not online")
+        }
+    })
+
+    client.on("leave session", async ({username, hostUsername, link}) => {
+        let newNotif = {
+            message: username + " has left your session!",
+            link
+        }
+        
+        User.findOne({username : hostUsername}).exec().then(host => {
+            host.notifications.push(newNotif)
+            host.save()
+        })
+
+        if (activeUsers.find(x => x.username === hostUsername)) {
+            const host = activeUsers.find(x => x.username === hostUsername)
+            io.to(host.socketId).emit("new notification", newNotif)
+        } else {
+            console.log(hostUsername + " not online")
+        }
     })
 
     client.on("delete announcement", message => {
@@ -181,6 +252,16 @@ const LoginResponse = new GraphQLObjectType({
     description: "This represents a login response",
     fields: () => ({
         accessToken: { type: GraphQLString }
+    })
+});
+
+const NotificationType = new GraphQLObjectType({
+    name: "Notification",
+    description: "This represents a notification",
+    fields: () => ({
+        message : {type : GraphQLString},
+        link : {type : GraphQLString},
+        createdAt : {type : GraphQLString}
     })
 });
 
@@ -493,6 +574,18 @@ const RootQueryType = new GraphQLObjectType({
                 return messages
             }
         },
+        getUserNotifications: {
+            type : GraphQLList(NotificationType),
+            description: "Retrieve notifications of user",
+            args:  {
+                username : {type: GraphQLString}
+            },
+            resolve: async (_, args) => {
+                let user = await User.findOne({username : args.username}).exec()
+                return user.notifications
+            }
+
+        },
         getUserCurrentSessions: {
             type: GraphQLList(SessionType),
             description: "Retrieve list of user's current sessions",
@@ -628,7 +721,45 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
-
+        clearNotification : {
+            type : GraphQLBoolean,
+            description: "Clear a single notification",
+            args : {
+                username: {type : GraphQLString},
+                createdAt: {type : GraphQLString},
+                link: {type : GraphQLString}
+            },
+            resolve: async (_, args) => {
+                try {
+                    const user = await User.findOne({ username: args.username }).exec()
+                    const creationDate = new Date(parseInt(args.createdAt))
+                    user.notifications = user.notifications.filter(x => x.createdAt.getTime() !== creationDate.getTime() && x.link !== args.link)
+                    user.save()
+                    return true
+                } catch (err) {
+                    console.log(err)
+                    return false
+                }
+            }
+        },
+        clearAllNotifications : {
+            type : GraphQLBoolean,
+            description: "Clears all user's notification",
+            args : {
+                username: {type : GraphQLString}
+            },
+            resolve: async (_, args) => {
+                try {
+                    const user = await User.findOne({ username: args.username }).exec()
+                    user.notifications = []
+                    user.save()
+                    return true
+                } catch (err) {
+                    console.log(err)
+                    return false
+                }
+            }
+        },
         addReview: {
             type: GraphQLBoolean,
             description: "Add a review for a user",
@@ -663,7 +794,6 @@ const RootMutationType = new GraphQLObjectType({
                 return true;
             }
         },
-
         createSession: {
             type: GraphQLString,
             description: "Create a session",
@@ -740,6 +870,20 @@ const RootMutationType = new GraphQLObjectType({
                     session.participants = session.participants.filter((participant) => participant.toString() !== user.userId)
                     if (session.host.toString() === user.userId && session.participants.length !== 0){
                         session.host = session.participants[0];
+                        let newNotif = {
+                            message: "You have became the new host of a session!",
+                            link: reqOriginRoute + "/sessions/" + args.sessionId
+                        }
+                        await User.findById(session.host).exec().then(host => {
+                            host.notifications.push(newNotif)
+                            host.save()
+                            if (activeUsers.find(x => x.username === host.username)) {
+                                const hostObj = activeUsers.find(x => x.username === host.username)
+                                io.to(hostObj.socketId).emit("new notification", newNotif)
+                            } else {
+                                console.log(host.username + " not online")
+                            }
+                        })
                     }
                     session.save()
                     const participant = await User.findById(user.userId).exec()
@@ -799,7 +943,54 @@ const RootMutationType = new GraphQLObjectType({
                 });
                 return true;
             }
-
+        },
+        checkSessionEnded: {
+            type: GraphQLBoolean,
+            description: "Create notification to review users",
+            args: { username : {type : GraphQLString} },
+            resolve: async(_, args) => {
+                const now = new Date()
+                const user = await User.findOne({username : args.username}).exec()
+                const sessions = await Session.find({_id : {$in : user.currentSessions}}).exec()
+                sessions.forEach(session => {
+                    if (user.lastLoggedIn.getTime() < session.endTime.getTime() && now.getTime() > session.endTime.getTime()) {
+                        let newNotif = {
+                            message : "Hope you enjoyed your session! Click here to start reviewing other participants!",
+                            link : reqOriginRoute + "/sessions/" + session.id 
+                        }
+                        user.notifications.push(newNotif)
+                    }
+                })
+                user.lastLoggedIn = now;
+                user.save()
+            }
+        },
+        checkUpcomingSessions: {
+            type: GraphQLBoolean,
+            description:"Checks upcoming games and informs user",
+            args: {username : {type : GraphQLString}},
+            resolve: async (_, args) => {
+                const now = new Date()
+                const user = await User.findOne({username : args.username}).exec()
+                const sessions = await Session.find({_id : {$in : user.currentSessions}}).exec()
+                sessions.forEach(session => {
+                    const diff = Math.floor((session.startTime.getTime() - now.getTime()) / 60000)
+                    if (diff <= 30 && diff > 0) {
+                        let newNotif = {
+                            message : "You have a session starting soon! (" + diff + " mins)",
+                            link : reqOriginRoute + "/sessions/" + session.id 
+                        }
+                        user.notifications.push(newNotif)
+                    } else if (diff > 30 && diff <= 60) {
+                        let newNotif = {
+                            message : "You have a session starting in " + diff + " mins!",
+                            link : reqOriginRoute + "/sessions/" + session.id 
+                        }
+                        user.notifications.push(newNotif)
+                    }
+                })
+                user.save()
+            }
         }
     })
 })

@@ -7,6 +7,7 @@ function ProfileSessionBody(props) {
   var historyTab = "profile-tab profile-tab-text";
   var friendsTab = "profile-tab profile-tab-text";
   var reviewsTab = "profile-tab profile-tab-text";
+  const socket = props.socket
 
   return (
     <div className="profile-body">
@@ -41,7 +42,7 @@ function ProfileSessionBody(props) {
         </h2>
       </div>
       <hr />
-      <ProfileSessionsTab user={props.user} />
+      <ProfileSessionsTab user={props.user} socket={socket}/>
     </div>
   );
 }

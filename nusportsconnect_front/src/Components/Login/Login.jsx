@@ -4,7 +4,8 @@ import AccountCreation from "./AccountCreation";
 import PasswordReset from "./PasswordReset";
 import Sessions from "../Event/Sessions";
 
-function Login() {
+function Login(props) {
+  const socket = props.socket
   const [view, setView] = useState("signIn");
 
   const handleClick = (viewState) => {
@@ -16,7 +17,7 @@ function Login() {
       {(() => {
         switch (view) {
           case "signIn":
-            return <SignIn handleClick={handleClick} />;
+            return <SignIn handleClick={handleClick} socket={socket}/>;
           case "signUp":
             return <AccountCreation handleClick={handleClick} />;
           case "pwReset":

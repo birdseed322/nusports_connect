@@ -10,6 +10,7 @@ function OtherProfileSessionsTab(props) {
         id:"",
         username : ""
     })
+    const socket = props.socket
     React.useEffect(() => {
       const apiCall = async () => {
         const sessions = await getUserCurrentSessions(id);
@@ -62,6 +63,8 @@ function OtherProfileSessionsTab(props) {
                   host={host}
                   participant={participant}
                   event={session}
+                  username={personalInfo.username}
+                  socket={socket}
                 />
               );
             })}

@@ -6,6 +6,7 @@ import EventPillHost from "../../EventPill/EventPillHost";
 function ProfileSessionsTab(props) {
   const { id } = useParams();
   const [data, setData] = React.useState([]);
+  const socket = props.socket
   React.useEffect(() => {
     const apiCall = async () => {
       const sessions = await getUserCurrentSessions(id);
@@ -50,6 +51,8 @@ function ProfileSessionsTab(props) {
                   host={host}
                   participant={true}
                   event={session}
+                  username={id}
+                  socket={socket}
                 />
               );
             })}

@@ -5,8 +5,9 @@ import Navbar from "../NavBar/Navbar";
 import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import EditSessionBody from "./EditSessionBody";
 
-function EditSession() {
+function EditSession(props) {
   const [data, setData] = React.useState("");
+  const socket = props.socket
   React.useEffect(() => {
     const apiCall = async () => {
       const res = await testAuth();
@@ -23,7 +24,7 @@ function EditSession() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar socket={socket}/>
       <EditSessionBody />
     </div>
   );
