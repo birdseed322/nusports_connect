@@ -3,6 +3,7 @@ import { addUser } from "../../GraphQLQueries/queries";
 import { reqOriginRoute } from "../../Routes/routes";
 import React from "react";
 import Alert from "../Alert/Alert";
+import ReactTooltip from "react-tooltip";
 
 function AccountCreationForm(props) {
   const [email, setEmail] = React.useState("");
@@ -122,9 +123,11 @@ function AccountCreationForm(props) {
               value={password}
               onChange={handlePasswordChange}
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-              title="At least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+              data-tip="Ensure that your password has at least one number and one uppercase letter, with at least 8 or more characters"
               required
             />
+            <ReactTooltip place="right" type="dark" effect="solid" />
+
             <input
               className="sign-input"
               type="password"

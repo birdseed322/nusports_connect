@@ -161,11 +161,20 @@ body{
     bottom: 3vh;
 }
 
+.remove-warning {
+    color: red;
+    font-size: 14pt;
+    width: 200px;
+    text-align: center;
+    position: absolute;
+    right: 2vw;
+    bottom: 10vh;
+}
 .cancel-remove-btn {
     background-color: #DC4848;
     color: white;
     border: none;
-    padding: 8px;
+    padding: 10px;
     font-size: 20px;
     margin-right: 1vw;
     cursor: pointer;
@@ -179,12 +188,12 @@ body{
     background-color: #3DAD49;
     color: white;
     border: none;
-    padding: 8px;
+    padding: 10px;
     font-size: 20px;
     margin-right: 1vw;
     cursor: pointer;
     border-radius: 12px;
     position: absolute;
-    right: 8vw;
+    right: 9vw;
     bottom: 3vh;
 }

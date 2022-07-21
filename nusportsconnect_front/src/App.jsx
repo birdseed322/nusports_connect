@@ -3,13 +3,13 @@ import { setAccessToken } from "./accessToken";
 import { Loading } from "./Components/Loading/Loading";
 import EndPoints from "./Routes/EndPoints";
 import { refreshTokenRoute } from "./Routes/routes";
-import io from "socket.io-client"
+import io from "socket.io-client";
 import jwt_decode from "jwt-decode";
 
 const socket = io("http://localhost:5000/", {
-  transports : ["websocket", "polling"],
-  reconnection: false
-})
+  transports: ["websocket", "polling"],
+  reconnection: false,
+});
 
 function App() {
   const [loading, setLoading] = React.useState(true);
@@ -22,7 +22,7 @@ function App() {
       setAccessToken(data.accessToken);
       setLoading(false);
       const username = jwt_decode(data.accessToken).username;
-      socket.emit("login", username)
+      socket.emit("login", username);
     });
   }, []);
 
@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div className="App">
-      <EndPoints socket={socket}/>
+      <EndPoints socket={socket} />
     </div>
   );
 }
