@@ -241,7 +241,7 @@ function Navbar(props) {
                     <p className="notification-time">{notificationCreationTime}</p>
                   </div>
                 }) : <h2 className="notification-empty">You have no notifications!</h2>}
-                </div> : null
+                </div> ): null
               }
           </li>
           <a href={"/profile/" + username} data-tip="View profile">
