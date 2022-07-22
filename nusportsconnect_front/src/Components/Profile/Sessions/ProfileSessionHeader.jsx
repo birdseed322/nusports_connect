@@ -16,10 +16,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../../../accessToken";
 import { getRating } from "../../../generalFunctions";
+import { reqOriginRoute } from "../../../Routes/routes";
 
 function ProfileSessionHeader(props) {
   const navigate = useNavigate();
   const user = props.user;
+  const socket = props.socket;
   const [ownUsername, setOwnUsername] = useState("");
   //Owner of account
   const owner = props.owner;
@@ -73,6 +75,7 @@ function ProfileSessionHeader(props) {
     let ownId = await getUserIdentity();
     ownId = ownId.data.data.userIdentity;
     await addFriend(ownId, user.username);
+    socket.emit("send friend request", {senderUsername: ownUsername, receiverUsername:user.username, link: reqOriginRoute + "/profile/" + ownUsername})
     setPending(true);
   }
 

@@ -213,7 +213,7 @@ function Navbar(props) {
                   return <div className="notification">
                     <button className="notification-cancel" onClick={() => handleClearNotification(notification.createdAt, notification.link)}>x</button>
                     <p className="notification-message" onClick={()=>{
-                      handleClearNotification(notification.createdAt).then(() => window.location.href = notification.link)
+                      handleClearNotification(notification.createdAt, notification.link).then(() => window.location.href = notification.link)
                     }}>{notification.message}</p>
                     <p className="notification-time">{notificationCreationTime}</p>
                   </div>

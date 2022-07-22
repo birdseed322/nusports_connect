@@ -18,7 +18,7 @@ function PersonalProfileSession(props) {
   return (
     <div className="profile-container">
       <Navbar socket={socket}/>
-      <ProfileSessionHeader user={user} owner={true} />
+      <ProfileSessionHeader user={user} owner={true} socket={socket}/>
       {(() => {
         switch (view) {
           case "sessions":

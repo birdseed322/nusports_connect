@@ -79,7 +79,7 @@ function Sessions(props) {
   if (filterSessions.length === 0) {
     return (
       <div className="sessions-container">
-        <Navbar />
+        <Navbar socket = {socket}/>
         <FilterBar setFilterSessions={setFilterSessions} />
         <h1 className="session">No Sessions Available</h1>
       </div>

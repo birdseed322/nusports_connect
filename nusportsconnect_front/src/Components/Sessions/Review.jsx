@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { reqOriginRoute } from "../../Routes/routes";
 import { addReview } from "../../GraphQLQueries/queries";
 import "./reviewStyles.css";
 
@@ -7,6 +8,7 @@ function Review(props) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [hover, setHover] = useState(0);
+  const socket = props.socket
   let allParticipants = props.participants;
   let reviewerUsername = props.reviewer;
   let sessionId = props.sessionId;
@@ -28,6 +30,7 @@ function Review(props) {
         comment,
         sessionId
       );
+      socket.emit("send review", {reviewerUsername, revieweeUsername, link: reqOriginRoute + "/profile/" + revieweeUsername})
       window.location.reload();
     } catch (err) {
       console.log(err);
