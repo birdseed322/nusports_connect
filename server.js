@@ -211,6 +211,41 @@ io.on("connection", client => {
             })
         }).catch(err => console.log(err))
     })
+
+    client.on("send review", ({reviewerUsername, revieweeUsername, link}) => {
+        let newNotif = {
+            message: reviewerUsername + " has left you a review!",
+            link
+        }
+        User.findOne({username : revieweeUsername}).exec().then(reviewee => {
+            reviewee.notifications.push(newNotif)
+            reviewee.save()
+        })
+        if (activeUsers.find(x => x.username === revieweeUsername)) {
+            const activeUser = activeUsers.find(x => x.username === revieweeUsername)
+            io.to(activeUser.socketId).emit("new notification", newNotif)
+        } else {
+            console.log(revieweeUsername + " not online")
+        }
+    })
+
+    client.on("send friend request", ({senderUsername, receiverUsername, link}) => {
+        let newNotif = {
+            message: senderUsername + " wants to be your friend!",
+            link
+        }
+
+        User.findOne({username : receiverUsername}).exec().then(receiver => {
+            receiver.notifications.push(newNotif)
+            receiver.save()
+        })
+        if (activeUsers.find(x => x.username === receiverUsername)) {
+            const activeUser = activeUsers.find(x => x.username === receiverUsername)
+            io.to(activeUser.socketId).emit("new notification", newNotif)
+        } else {
+            console.log(receiverUsername + " not online")
+        }
+    })
 })
 
 

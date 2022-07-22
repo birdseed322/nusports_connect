@@ -37,7 +37,7 @@ function OtherPersonalProfileSession(props) {
   return (
     <div className="profile-container">
       <Navbar socket={socket}/>
-      <ProfileSessionHeader user={user} owner={false} friend={friend} />
+      <ProfileSessionHeader user={user} owner={false} friend={friend} socket={socket}/>
       {(() => {
         switch (view) {
           case "sessions":

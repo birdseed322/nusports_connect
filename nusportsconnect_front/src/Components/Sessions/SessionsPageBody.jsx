@@ -16,22 +16,12 @@ import {
 } from "../../GraphQLQueries/queries";
 import { useParams } from "react-router-dom";
 import { Loading } from "../Loading/Loading";
-import io from "socket.io-client";
 import UsersOnlineOverlay from "./UsersOnlineOverlay";
 import Announcement from "./Announcement";
 import { getRating, setPageTitle } from "../../generalFunctions";
 import Review from "./Review";
 
 // import DatePicker from "react-datepicker";
-// const socket = io("/", {
-//   transports : ["websocket", "polling"],
-//   reconnection: false
-// })
-
-const socket = io("http://localhost:5000/", {
-  transports: ["websocket", "polling"],
-  reconnection: false,
-});
 
 function SessionsPageBody(props) {
   //props used to retrieve user information.
@@ -279,6 +269,7 @@ function SessionsPageBody(props) {
         {host || participant ? (
           currentDate > sessionInfo.fullEndTime ? (
             <Review
+              socket={socket}
               participants={sessionInfo.participants}
               reviewer={props.user}
               sessionId={id}
