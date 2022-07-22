@@ -28,13 +28,25 @@
 .search-input {
     position: absolute;
     top: 20px;
-    right: 60px;
+    right: 70px;
     height: 30px;
     border-radius: 30px;
     border-style: hidden;
     padding: 5px;
 }
 
+.search-friend-btn {
+    background-color: #6495ed;
+    border: none;
+    color: white;
+    font-size: 14px;
+    padding: .5em;
+    border-radius: 16px;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 10px;
+}
 .friend-profile-pic {
     height: 100px;
     width: 100px;

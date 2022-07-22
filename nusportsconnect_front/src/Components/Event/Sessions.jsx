@@ -18,7 +18,7 @@ function Sessions(props) {
     username: "",
     userSessions: [],
   });
-  const socket = props.socket
+  const socket = props.socket;
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
 
   React.useEffect(() => {
@@ -76,19 +76,20 @@ function Sessions(props) {
     return new Date(a) - new Date(b);
   });
 
-  if (filterSessions.length === 0) {
+  if (filterSessions.length === 0 || data.length === 0) {
     return (
       <div className="sessions-container">
-        <Navbar socket = {socket}/>
+        <Navbar socket={socket} />
         <FilterBar setFilterSessions={setFilterSessions} />
         <h1 className="session">No Sessions Available</h1>
       </div>
     );
   }
 
+  console.log(user);
   return (
     <div className="sessions-container">
-      <Navbar socket = {socket}/>
+      <Navbar socket={socket} />
       <FilterBar setFilterSessions={setFilterSessions} />
       <div className="session">
         {uniqDates.map((date) => {

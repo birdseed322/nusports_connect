@@ -29,10 +29,14 @@ body {
 }
 
 .logo {
-  /* width: 200px; */
   width: 75%;
   padding: 0 0 .5em 1em;
-  /* display: flex; */
+}
+
+.logo[title]:hover:after{
+  background-color: white;
+  color:black;
+  font-size: 30pt;
 }
 .nav-search-input {
   width: 60%;
@@ -41,6 +45,7 @@ body {
   font-size: 16px;
   margin-right: 10px;
   padding: 5px;
+  border: 1px solid black;
 }
 
 .search-button {

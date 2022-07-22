@@ -114,8 +114,16 @@
     background-color: #DC4848;
 }
 
+.leave:hover {
+    background-color: #a93838;
+}
+
 .edit {
     background-color: #48B9DC;
+}
+
+.edit:hover {
+    background-color: #3fa0bd;
 }
 
 .chat-box-grp {

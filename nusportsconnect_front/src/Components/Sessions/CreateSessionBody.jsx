@@ -14,6 +14,7 @@ import {
   getUserIdentity,
   joinSession,
 } from "../../GraphQLQueries/queries";
+import ReactTooltip from "react-tooltip";
 
 function CreateSessionBody() {
   const [sport, setSport] = useState("Badminton");
@@ -85,7 +86,13 @@ function CreateSessionBody() {
         <form className="create-form" onSubmit={handleSubmit}>
           <div className="create-item">
             <label htmlFor="sport">
-              <img className="input-icon" src={sportIcon} alt="" />
+              <img
+                className="input-icon"
+                src={sportIcon}
+                alt=""
+                data-tip="Select sport"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <select
               className="create-input create-sport"
@@ -103,8 +110,9 @@ function CreateSessionBody() {
           </div>
 
           <div className="create-item">
-            <label htmlFor="location">
+            <label htmlFor="location" data-tip="Enter location">
               <img className="input-icon loc" src={locationIcon} alt="" />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <input
               className="create-input"
@@ -122,7 +130,13 @@ function CreateSessionBody() {
           </div>
           <div className="create-item create-date">
             <label htmlFor="date">
-              <img className="input-icon" src={date} alt="" />
+              <img
+                className="input-icon"
+                src={date}
+                alt=""
+                data-tip="Select date"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
               className="create-input"
@@ -144,7 +158,13 @@ function CreateSessionBody() {
 
           <div className="create-item create-date">
             <label htmlFor="date">
-              <img className="input-icon" src={start} alt="" />
+              <img
+                className="input-icon"
+                src={start}
+                alt=""
+                data-tip="Select start time"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
               className="create-input"
@@ -167,7 +187,13 @@ function CreateSessionBody() {
 
           <div className="create-item create-date">
             <label htmlFor="date">
-              <img className="input-icon" src={end} alt="" />
+              <img
+                className="input-icon"
+                src={end}
+                alt=""
+                data-tip="Select end time"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
               className="create-input"
@@ -190,7 +216,13 @@ function CreateSessionBody() {
 
           <div className="create-item">
             <label htmlFor="participant">
-              <img className="input-icon" src={participant} alt="" />
+              <img
+                className="input-icon"
+                src={participant}
+                alt=""
+                data-tip="Select number of participants"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <input
               className="create-input"
@@ -207,7 +239,13 @@ function CreateSessionBody() {
 
           <div className="create-item">
             <label htmlFor="stars">
-              <img className="input-icon" src={star} alt="" />
+              <img
+                className="input-icon"
+                src={star}
+                alt=""
+                data-tip="Select minimum number of stars out of 5"
+              />
+              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
 
             <select

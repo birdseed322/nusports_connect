@@ -21,14 +21,13 @@ import Announcement from "./Announcement";
 import { getRating, setPageTitle } from "../../generalFunctions";
 import Review from "./Review";
 
-
 // import DatePicker from "react-datepicker";
 
 function SessionsPageBody(props) {
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.
   const user = props.user;
-  const socket = props.socket
+  const socket = props.socket;
   const { id } = useParams();
   const [messages, setMessages] = React.useState([]);
   const [currentUsers, setCurrentUsers] = React.useState([]);
@@ -118,13 +117,21 @@ function SessionsPageBody(props) {
   async function handleSessionJoin(e) {
     const userId = await getUserIdentity();
     joinSession(userId.data.data.userIdentity, id);
-    socket.emit("join session", {username:user, hostUsername:sessionInfo.host.username, link: window.location.href})
+    socket.emit("join session", {
+      username: user,
+      hostUsername: sessionInfo.host.username,
+      link: window.location.href,
+    });
     window.location.reload();
   }
 
   function handleLeave(e) {
     leaveSession(id);
-    socket.emit("leave session", {username:user, hostUsername:sessionInfo.host.username, link: window.location.href})
+    socket.emit("leave session", {
+      username: user,
+      hostUsername: sessionInfo.host.username,
+      link: window.location.href,
+    });
     window.location.href = "/sessions";
   }
 
@@ -277,6 +284,8 @@ function SessionsPageBody(props) {
               usersOnlineOverlay={() => setUsersOnlineOverlay(true)}
             />
           )
+        ) : currentDate > sessionInfo.fullEndTime ? (
+          <h1>This session has ended!</h1>
         ) : sessionInfo.participants.length < sessionInfo.maxParticipants ? (
           <button className="join-btn" onClick={handleSessionJoin}>
             I want to go!

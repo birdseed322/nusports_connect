@@ -12,11 +12,13 @@ import {
   getUserUsername,
   logout,
   rejectFriend,
+  removeFriend,
 } from "../../../GraphQLQueries/queries";
 import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../../../accessToken";
 import { getRating } from "../../../generalFunctions";
 import { reqOriginRoute } from "../../../Routes/routes";
+import ReactTooltip from "react-tooltip";
 
 function ProfileSessionHeader(props) {
   const navigate = useNavigate();
@@ -27,13 +29,10 @@ function ProfileSessionHeader(props) {
   const owner = props.owner;
 
   const [isPending, setPending] = useState(false);
-  //Friend
-
   const [isFriend, setFriend] = useState(false);
   const [isStranger, setStranger] = useState(false);
   const [isAccepting, setAccepting] = useState(false);
-
-  console.log(user);
+  const [confirmRemove, setConfirmRemove] = useState(false);
 
   React.useEffect(() => {
     if (!owner) {
@@ -89,6 +88,19 @@ function ProfileSessionHeader(props) {
     window.location.reload();
   }
 
+  function remove() {
+    setConfirmRemove(true);
+  }
+
+  function cancelRemove() {
+    setConfirmRemove(false);
+  }
+
+  async function handleRemove() {
+    await removeFriend(user.username, ownUsername);
+    window.location.reload();
+  }
+
   return (
     <div className="profile-header">
       {user.image === "" ? (
@@ -115,15 +127,19 @@ function ProfileSessionHeader(props) {
 
         {/* Checks if owner of profile to render edit profile button. */}
         {owner ? (
-          <img
-            src={edit}
-            alt="edit button"
-            className="edit-btn"
-            onClick={() =>
-              (window.location.href =
-                "/profile/" + user.username + "/editprofile")
-            }
-          />
+          <div>
+            <img
+              src={edit}
+              alt="edit button"
+              className="edit-btn"
+              onClick={() =>
+                (window.location.href =
+                  "/profile/" + user.username + "/editprofile")
+              }
+              data-tip="Edit profile"
+            />
+            <ReactTooltip place="bottom" type="dark" effect="solid" />
+          </div>
         ) : null}
       </span>
 
@@ -153,7 +169,7 @@ function ProfileSessionHeader(props) {
         </button>
       ) : null}
 
-      {/* Checks if owner of profile to render logout button */}
+      {/* Checks if owner of profile/friend to render logout button/remove friend button accordingly  */}
       {owner ? (
         <button
           className="logout"
@@ -164,6 +180,20 @@ function ProfileSessionHeader(props) {
           }}
         >
           logout
+        </button>
+      ) : confirmRemove ? (
+        <div>
+          <div className="remove-warning">Remove this friend?</div>
+          <button className="confirm-remove-btn" onClick={handleRemove}>
+            Confirm{" "}
+          </button>
+          <button className="cancel-remove-btn" onClick={cancelRemove}>
+            Cancel
+          </button>
+        </div>
+      ) : isFriend ? (
+        <button className="remove-friend-btn" onClick={remove}>
+          Remove friend
         </button>
       ) : null}
     </div>
