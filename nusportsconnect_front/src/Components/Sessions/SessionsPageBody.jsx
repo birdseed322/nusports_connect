@@ -22,7 +22,6 @@ import { getRating, setPageTitle } from "../../generalFunctions";
 import Review from "./Review";
 // import DatePicker from "react-datepicker";
 
-
 function SessionsPageBody(props) {
   //props used to retrieve user information.
   //Use React router dom (useParams) to get id from url. Use id to query necessary info abt session. API call initialised from this componenet. No props needed.

@@ -18,18 +18,23 @@ function ProfileFriendsTab(props) {
   React.useEffect(() => {
     const apiCall = async () => {
       let friends = await getAllFriends(user.username);
-      friends = friends.data.data.userFriends;
-      friends.sort((a, b) => a.fName.localeCompare(b.fName));
-      setFriends(friends);
-      setFriendsLengths(friends.length);
+      let allFriends = friends.data.data.userFriends;
+      allFriends.sort((a, b) => a.fName.localeCompare(b.fName));
+      setFriends(allFriends);
+      setFriendsLengths(allFriends.length);
       const friendRequests = await getAllFriendRequests(user.username);
       setFriendRequests(friendRequests.data.data.userFriendRequests);
-      if ((friends.length === 0) & (friendRequests.length === 0)) {
+      if (
+        friends.data.data.userFriends.length === 0 &&
+        friendRequests.data.data.userFriendRequests.length === 0
+      ) {
         setNoFriends(true);
       }
     };
     apiCall();
   }, []);
+
+  console.log(noFriends);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -48,7 +53,6 @@ function ProfileFriendsTab(props) {
       console.log(err);
     }
   }
-
   return (
     <div className="profile-tab-info">
       <div className="profile-friend-tab-header">
@@ -77,13 +81,13 @@ function ProfileFriendsTab(props) {
             <FriendBubble friend={friend} user={user} pending={false} />
           ))
         ) : filteredFriends.length === 0 ? (
-          <h1>No friends found!</h1>
+          <h1 className="not-found">No friends found!</h1>
         ) : (
           filteredFriends.map((friend) => (
             <FriendBubble friend={friend} user={user} pending={false} />
           ))
         )}
-        {noFriends ? <h1 className="not-found">No friends 😔 </h1> : null}
+        {noFriends ? <h1 className="not-found">No friends 😔</h1> : null}
       </div>
     </div>
   );
