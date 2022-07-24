@@ -33,14 +33,7 @@ export function addUser(username, password, email, fName, lName) {
     }
  
     `
-    
-    const result = axios.post('/graphql', {
-            query
-        })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-
-    return result.status;
+    return postQuery(query);
 
 }
 

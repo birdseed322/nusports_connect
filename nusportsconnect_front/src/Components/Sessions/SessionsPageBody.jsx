@@ -214,28 +214,28 @@ function SessionsPageBody(props) {
               alt="event host star icon"
               src={star}
             />
+            {host ? (
+              <div className="session-action-btns">
+                <button
+                  className="session-btn edit"
+                  onClick={() =>
+                    (window.location.href = "/sessions/" + id + "/edit")
+                  }
+                >
+                  Edit
+                </button>
+                <button className="session-btn leave" onClick={handleLeave}>
+                  Leave
+                </button>
+              </div>
+            ) : participant ? (
+              <div className="session-action-btns">
+                <button className="session-btn leave" onClick={handleLeave}>
+                  Leave
+                </button>
+              </div>
+            ) : null}
           </div>
-          {host ? (
-            <div className="session-action-btns">
-              <button
-                className="session-btn edit"
-                onClick={() =>
-                  (window.location.href = "/sessions/" + id + "/edit")
-                }
-              >
-                Edit
-              </button>
-              <button className="session-btn leave" onClick={handleLeave}>
-                Leave
-              </button>
-            </div>
-          ) : participant ? (
-            <div className="session-action-btns">
-              <button className="session-btn leave" onClick={handleLeave}>
-                Leave
-              </button>
-            </div>
-          ) : null}
         </div>
         <div className="event-description-box">
           <div className="event-description">
