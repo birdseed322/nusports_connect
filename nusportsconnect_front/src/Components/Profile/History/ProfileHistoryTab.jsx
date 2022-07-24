@@ -43,7 +43,7 @@ function ProfileHistoryTab(props) {
             }
           }
           return(
-            <div><h1>{date}</h1>
+            <div className="profile-date-grp"><h1>{date}</h1>
             {toRender.map(session => {
               const host = id === session.host.username;
               return <EventPillHost 

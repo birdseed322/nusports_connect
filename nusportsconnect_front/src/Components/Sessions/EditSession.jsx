@@ -1,22 +1,29 @@
 import React from "react";
-import { testAuth } from "../../GraphQLQueries/queries";
+import { useParams } from "react-router-dom";
+import { getSessionInfo, getUserUsername, testAuth } from "../../GraphQLQueries/queries";
 import { Loading } from "../Loading/Loading";
 import Navbar from "../NavBar/Navbar";
 import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import EditSessionBody from "./EditSessionBody";
 
 function EditSession(props) {
-  const [data, setData] = React.useState("");
+  const [sessionOwner, setSessionOwner] = React.useState("");
+  const [ownUser, setOwnUser] = React.useState("");
+  const [data, setData] = React.useState("")
+  const {id} = useParams()
   const socket = props.socket
   React.useEffect(() => {
     const apiCall = async () => {
-      const res = await testAuth();
-      setData(res.data.data.testAuth);
+      const data = await testAuth();
+      setData(data.data.data.testAuth)
+      const ownUser = await getUserUsername();
+      setOwnUser(ownUser.data.data.userUsername)
+      const sessionOwner = await getSessionInfo(id);
+      setSessionOwner(sessionOwner.data.data.getSessionInfo.host.username);
     };
     apiCall();
   }, []);
-
-  if (data === "Not authenticated" || data === null) {
+  if (data === "Not authenticated" || data === null || ownUser !== sessionOwner) {
     return <NotAuthenticated />;
   } else if (data === "") {
     return <Loading />;

@@ -6,7 +6,7 @@ import { refreshTokenRoute } from "./Routes/routes";
 import io from "socket.io-client";
 import jwt_decode from "jwt-decode";
 
-const socket = io("/", {
+const socket = io("http://localhost:5000", {
   transports: ["websocket", "polling"],
   reconnection: false,
 });

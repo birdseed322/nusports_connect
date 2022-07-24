@@ -1,10 +1,11 @@
 import "./signInStyles.css";
 import React from "react";
 import { checkSessionEnded, checkUpcomingSessions, loginUser } from "../../GraphQLQueries/queries";
-import { setAccessToken } from "../../accessToken";
+import { getAccessToken, setAccessToken } from "../../accessToken";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Alert from "../Alert/Alert";
+import { reqOriginRoute } from "../../Routes/routes";
 
 function SignInForm(props) {
   const socket = props.socket
@@ -12,6 +13,12 @@ function SignInForm(props) {
   const [password, setPassword] = React.useState("");
   const [alert, setAlert] = React.useState(false);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (getAccessToken() !== "") {
+      window.location.href = reqOriginRoute + "/sessions"
+    }
+  }, [])
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,7 +32,7 @@ function SignInForm(props) {
         socket.emit("login", username);
         checkUpcomingSessions(username);
         checkSessionEnded(username)
-        navigate("/profile/" + username);
+        navigate("/sessions");
       } else {
         setAlert(true);
       }

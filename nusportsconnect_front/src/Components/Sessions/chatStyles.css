@@ -1,10 +1,13 @@
+.chat {
+    margin: 1% 0 0 0;
+}
 .chat-case-owner {
-    width: 890px;
+    width: 100%;
     display: flex;
     justify-content: right;
 }
 .chat-case-other {
-    width: 890px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: left;
@@ -13,8 +16,8 @@
 .chat-owner {
     background-color: #3DAD48;
     width: fit-content; 
-    min-width: 100px;
-    max-width: 600px;
+    min-width: 10%;
+    max-width: 80%;
     height: fit-content;
     margin: 10px;
     border-radius: 10px;
@@ -53,4 +56,12 @@
     margin: 0 0 5px 0;
     text-align: right;
     font-size: 9pt;
+}
+
+.toggle-usersOnlineOverlay {
+    margin: 0 0 0 85%;
+    min-width: 15%;
+    background-color: whitesmoke;
+    color: black;
+    cursor: pointer;
 }

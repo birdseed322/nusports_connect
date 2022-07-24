@@ -30,7 +30,7 @@ function Review(props) {
         comment,
         sessionId
       );
-      socket.emit("send review", {reviewerUsername, revieweeUsername, link: reqOriginRoute + "/profile/" + revieweeUsername})
+      socket.emit("send review", {reviewerUsername, revieweeUsername, link: reqOriginRoute + "profile/" + revieweeUsername})
       window.location.reload();
     } catch (err) {
       console.log(err);

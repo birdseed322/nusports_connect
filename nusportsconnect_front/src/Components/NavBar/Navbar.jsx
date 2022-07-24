@@ -177,10 +177,8 @@ function Navbar(props) {
           <ReactTooltip place="bottom" type="dark" effect="solid" />
           <img className="logo" src={Logo} alt="" />
         </a>
-
         <ul>
-          <div></div>
-          <li>
+          <li className="nav-search-grp">
             <form className="nav-search-form" onSubmit={handleSubmit}>
               <input
                 className="nav-search-input"
@@ -252,13 +250,6 @@ function Navbar(props) {
             )}
             <ReactTooltip place="bottom" type="dark" effect="solid" />
           </a>
-
-          <li>
-            <a href={"/profile/" + username} data-tip="View profile">
-              <div className="profile">My Profile</div>
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
-            </a>
-          </li>
         </ul>
       </nav>
 

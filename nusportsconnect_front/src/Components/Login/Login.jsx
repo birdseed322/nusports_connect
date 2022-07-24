@@ -19,7 +19,7 @@ function Login(props) {
           case "signIn":
             return <SignIn handleClick={handleClick} socket={socket}/>;
           case "signUp":
-            return <AccountCreation handleClick={handleClick} />;
+            return <AccountCreation handleClick={handleClick} socket={socket}/>;
           case "pwReset":
             return <PasswordReset handleClick={handleClick} />;
           case "sessions":

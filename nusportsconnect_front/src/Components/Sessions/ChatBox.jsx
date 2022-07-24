@@ -7,8 +7,8 @@ function ChatBox(props){
         elem.scrollTop = elem.scrollHeight;
     })
     return (
-        <div className='chat-'>
-            <button onClick={props.usersOnlineOverlay} className="toggle-usersOnlineOverlay">See who's online</button>
+        <div className='chat'>
+            <button onClick={props.usersOnlineOverlay} className="toggle-usersOnlineOverlay">Active users</button>
             <div className='chat-box'>
             {props.messages.map(x =>{
                 return <Chat owner={props.owner === x.author} user={x.author} text={x.message} time={x.time}/>
