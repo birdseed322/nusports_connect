@@ -76,7 +76,7 @@ function Sessions(props) {
     return new Date(a) - new Date(b);
   });
 
-  if (filterSessions.length === 0 || data.length === 0) {
+  if (filterSessions.length === 0) {
     return (
       <div className="sessions-container">
         <Navbar socket={socket} />
@@ -85,8 +85,8 @@ function Sessions(props) {
       </div>
     );
   }
+  let toRender = [];
 
-  console.log(user);
   return (
     <div className="sessions-container">
       <Navbar socket={socket} />
@@ -94,7 +94,6 @@ function Sessions(props) {
       <div className="session">
         {uniqDates.map((date) => {
           const now = new Date();
-          let toRender = [];
           for (const session of data) {
             const sessionStart = new Date(parseInt(session.fullStartTime));
             if (
@@ -129,6 +128,7 @@ function Sessions(props) {
             </div>
           );
         })}
+        {toRender.length === 0 ? <h1>No Sessions Available!</h1> : null}
       </div>
     </div>
   );

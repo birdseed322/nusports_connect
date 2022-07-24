@@ -13,6 +13,7 @@ function ProfileFriendsTab(props) {
   const [friendsLength, setFriendsLengths] = useState("");
   const [searchFriendsInput, setSearchFriendsInput] = useState("");
   const [filteredFriends, setFilteredFriends] = useState("");
+  const [noFriends, setNoFriends] = useState(false);
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -23,6 +24,9 @@ function ProfileFriendsTab(props) {
       setFriendsLengths(friends.length);
       const friendRequests = await getAllFriendRequests(user.username);
       setFriendRequests(friendRequests.data.data.userFriendRequests);
+      if ((friends.length === 0) & (friendRequests.length === 0)) {
+        setNoFriends(true);
+      }
     };
     apiCall();
   }, []);
@@ -33,7 +37,6 @@ function ProfileFriendsTab(props) {
       const editedSearchFriendsInput = searchFriendsInput
         .toLowerCase()
         .replace(/ /g, "");
-      console.log(editedSearchFriendsInput);
       const filteredFriends = friends.filter((friend) => {
         const fName = friend.fName.toLowerCase();
         const lName = friend.lName.toLowerCase();
@@ -45,8 +48,7 @@ function ProfileFriendsTab(props) {
       console.log(err);
     }
   }
-  console.log(friends);
-  console.log(friendRequests);
+
   return (
     <div className="profile-tab-info">
       <div className="profile-friend-tab-header">
@@ -66,13 +68,9 @@ function ProfileFriendsTab(props) {
         </form>
       </div>
       <div className="friends-tab">
-        {friends.length === 0 && friendRequests.length === 0 ? (
-          <h1>No friends 😔 </h1>
-        ) : (
-          friendRequests.map((friend) => (
-            <FriendBubble friend={friend} user={user} pending={true} />
-          ))
-        )}
+        {friendRequests.map((friend) => (
+          <FriendBubble friend={friend} user={user} pending={true} />
+        ))}
 
         {filteredFriends === "" ? (
           friends.map((friend) => (
@@ -85,6 +83,7 @@ function ProfileFriendsTab(props) {
             <FriendBubble friend={friend} user={user} pending={false} />
           ))
         )}
+        {noFriends ? <h1 className="not-found">No friends 😔 </h1> : null}
       </div>
     </div>
   );

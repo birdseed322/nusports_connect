@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { getAllSessions } from "../../GraphQLQueries/queries";
 import "./filterStyles.css";
+import { sports } from "../SportsList/SportsList";
 
 function FilterBar({ setFilterSessions }) {
   const [startDate, setStartDate] = useState("");
@@ -68,9 +69,9 @@ function FilterBar({ setFilterSessions }) {
             onChange={(e) => setSport(e.target.value)}
           >
             <option value=""> All Sports </option>
-            <option value="Badminton"> Badminton </option>
-            <option value="Basketball"> Basketball </option>
-            <option value="Ultimate Frisbee"> Ultimate Frisbee </option>
+            {sports.map((sport) => (
+              <option value={sport}>{sport}</option>
+            ))}
           </select>
         </div>
 

@@ -17,7 +17,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../../../accessToken";
 import { getRating } from "../../../generalFunctions";
-import ReactTooltip from "react-tooltip";
 
 function ProfileSessionHeader(props) {
   const navigate = useNavigate();
@@ -135,7 +134,6 @@ function ProfileSessionHeader(props) {
               }
               data-tip="Edit profile"
             />
-            <ReactTooltip place="bottom" type="dark" effect="solid" />
           </div>
         ) : null}
       </span>

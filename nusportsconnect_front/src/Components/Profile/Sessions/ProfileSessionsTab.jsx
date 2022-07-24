@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { getUserCurrentSessions } from "../../../GraphQLQueries/queries";
 import EventPillHost from "../../EventPill/EventPillHost";
 
 function ProfileSessionsTab(props) {
   const { id } = useParams();
-  const [data, setData] = React.useState([]);
-  const socket = props.socket
+  const [data, setData] = useState([]);
+  const [noSessions, setNoSessions] = useState(false);
+  const socket = props.socket;
   React.useEffect(() => {
     const apiCall = async () => {
       const sessions = await getUserCurrentSessions(id);
       setData(sessions.data.data.getUserCurrentSessions);
+      if (data.length === 0) {
+        setNoSessions(true);
+      }
     };
 
     apiCall();
@@ -27,11 +31,11 @@ function ProfileSessionsTab(props) {
   uniqDates = uniqDates.sort((a, b) => {
     return new Date(a) - new Date(b);
   });
+  let toRender = [];
 
   return (
     <div className="profile-tab-info">
       {uniqDates.map((date) => {
-        let toRender = [];
         const now = new Date();
         for (const session of data) {
           const endTime = new Date(parseInt(session.fullEndTime));
@@ -58,6 +62,9 @@ function ProfileSessionsTab(props) {
           </div>
         );
       })}
+      {noSessions === 0 ? (
+        <h1 className="not-found">No Upcoming Sessions!</h1>
+      ) : null}
     </div>
   );
 }

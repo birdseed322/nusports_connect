@@ -12,11 +12,11 @@ import start from "../../pics/start.png";
 import end from "../../pics/end.png";
 import { editSession, getSessionInfo } from "../../GraphQLQueries/queries";
 import { setPageTitle } from "../../generalFunctions";
-import ReactTooltip from "react-tooltip";
+import { sports } from "../SportsList/SportsList";
 
 function EditSessionBody() {
   const { id } = useParams();
-  const [sport, setSport] = useState("Badminton");
+  const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -100,7 +100,6 @@ function EditSessionBody() {
                 alt=""
                 data-tip="Sport cannot be changed"
               />
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <select
               disabled
@@ -112,9 +111,9 @@ function EditSessionBody() {
               placeholder="Sport"
               required
             >
-              <option value="Badminton"> Badminton </option>
-              <option value="Basketball"> Basketball </option>
-              <option value="Ultimate Frisbee">Ultimate Frisbee</option>
+              {sports.map((sport) => (
+                <option value={sport}>{sport}</option>
+              ))}
             </select>
           </div>
 
@@ -126,7 +125,6 @@ function EditSessionBody() {
                 alt=""
                 data-tip="Enter a location"
               />
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <input
               className="create-input"
@@ -147,7 +145,6 @@ function EditSessionBody() {
                 alt=""
                 data-tip="Select date"
               />
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
               className="create-input"
@@ -172,7 +169,6 @@ function EditSessionBody() {
                 alt=""
                 data-tip="Select start time"
               />
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
               className="create-input"
@@ -198,7 +194,6 @@ function EditSessionBody() {
                 alt=""
                 data-tip="Select end time"
               />
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <DatePicker
               className="create-input"
@@ -222,9 +217,8 @@ function EditSessionBody() {
                 className="input-icon"
                 src={participant}
                 alt=""
-                data-tip="Select number of participants"
+                data-tip="Number of participants cannot be lower than current number of participants"
               />
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <input
               className="create-input"
@@ -247,7 +241,6 @@ function EditSessionBody() {
                 alt=""
                 data-tip="Select minimum number of stars out of 5"
               />
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
             </label>
             <input
               className="create-input"
