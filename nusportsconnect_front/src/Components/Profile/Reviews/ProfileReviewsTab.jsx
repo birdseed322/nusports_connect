@@ -11,13 +11,12 @@ function ProfileReviewTab(props) {
     const apiCall = async () => {
       const reviews = await getReviews(user.username);
       setUserReviews(reviews.data.data.userReviews);
-      if (userReviews.length === 0) {
+      if (reviews.data.data.userReviews.length === 0) {
         setNoReviews(true);
       }
     };
     apiCall();
   }, []);
-  console.log(userReviews[0]);
   return (
     <div className="profile-tab-info">
       {userReviews.reverse().map((review) => {

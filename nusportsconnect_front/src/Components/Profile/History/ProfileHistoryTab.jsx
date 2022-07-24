@@ -10,23 +10,23 @@ function ProfileHistoryTab(props) {
 
   React.useEffect(() => {
     const apiCall = async () => {
-      const sessions = await getUserCurrentSessions(id);
-      setData(sessions.data.data.getUserCurrentSessions);
-      if (data.length === 0) {
+      let sessions = await getUserCurrentSessions(id);
+      sessions = sessions.data.data.getUserCurrentSessions;
+      const pastSessions = sessions.filter((session) => {
+        return new Date() > new Date(parseInt(session.fullEndTime));
+      });
+      if (pastSessions.length === 0) {
         setNoSessions(true);
+      } else {
+        setNoSessions(false);
+        setData(pastSessions);
       }
     };
-
     apiCall();
   }, [id]);
 
-  const pastSessions = data.filter((session) => {
-    return new Date() > new Date(parseInt(session.fullEndTime));
-  });
-
   let uniqDatesSet = new Set();
-
-  pastSessions.forEach((session) => {
+  data.forEach((session) => {
     uniqDatesSet.add(session.date);
   });
   let uniqDates = Array.from(uniqDatesSet);
@@ -44,10 +44,11 @@ function ProfileHistoryTab(props) {
           if (now > endTime && session.date === date) {
             toRender.push(session);
           }
-
-          return(
-            <div className="profile-date-grp"><h1>{date}</h1>
-            {toRender.map(session => {
+        }
+        return (
+          <div className="profile-date-grp">
+            <h1>{date}</h1>
+            {toRender.map((session) => {
               const host = id === session.host.username;
               return (
                 <EventPillHost
@@ -61,9 +62,7 @@ function ProfileHistoryTab(props) {
           </div>
         );
       })}
-      {noSessions === 0 ? (
-        <h1 className="not-found">No Past Sessions!</h1>
-      ) : null}
+      {noSessions ? <h1 className="not-found">No Past Sessions!</h1> : null}
     </div>
   );
 }

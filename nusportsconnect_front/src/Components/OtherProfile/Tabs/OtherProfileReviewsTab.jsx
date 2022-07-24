@@ -11,7 +11,7 @@ function OtherProfileReviewsTab(props) {
     const apiCall = async () => {
       const reviews = await getReviews(otherUser.username);
       setOtherUserReviews(reviews.data.data.userReviews);
-      if (otherUserReviews.length === 0) {
+      if (reviews.data.data.userReviews.length === 0) {
         setNoReviews(true);
       }
     };

@@ -10,23 +10,23 @@ function OtherProfileHistoryTab(props) {
 
   React.useEffect(() => {
     const apiCall = async () => {
-      const sessions = await getUserCurrentSessions(id);
-      setData(sessions.data.data.getUserCurrentSessions);
-      if (data.length === 0) {
+      let sessions = await getUserCurrentSessions(id);
+      sessions = sessions.data.data.getUserCurrentSessions;
+      const pastSessions = sessions.filter((session) => {
+        return new Date() > new Date(parseInt(session.fullEndTime));
+      });
+      if (pastSessions.length === 0) {
         setNoSessions(true);
+      } else {
+        setNoSessions(false);
+        setData(pastSessions);
       }
     };
-
     apiCall();
   }, [id]);
-
-  const pastSessions = data.filter((session) => {
-    return new Date() > new Date(parseInt(session.fullEndTime));
-  });
-
   let uniqDatesSet = new Set();
 
-  pastSessions.forEach((session) => {
+  data.forEach((session) => {
     if (session.currentParticipants !== 0) {
       uniqDatesSet.add(session.date);
     }
@@ -63,9 +63,7 @@ function OtherProfileHistoryTab(props) {
           </div>
         );
       })}
-      {noSessions === 0 ? (
-        <h1 className="not-found">No Past Sessions!</h1>
-      ) : null}
+      {noSessions ? <h1 className="not-found">No Past Sessions!</h1> : null}
     </div>
   );
 }

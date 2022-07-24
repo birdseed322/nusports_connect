@@ -10,21 +10,24 @@ function ProfileSessionsTab(props) {
   const socket = props.socket;
   React.useEffect(() => {
     const apiCall = async () => {
-      const sessions = await getUserCurrentSessions(id);
-      setData(sessions.data.data.getUserCurrentSessions);
-      if (data.length === 0) {
+      let sessions = await getUserCurrentSessions(id);
+      sessions = sessions.data.data.getUserCurrentSessions;
+      const upcomingSessions = sessions.filter((session) => {
+        return new Date() < new Date(parseInt(session.fullEndTime));
+      });
+      if (upcomingSessions.length === 0) {
         setNoSessions(true);
+      } else {
+        setNoSessions(false);
+        setData(upcomingSessions);
       }
     };
 
     apiCall();
   }, [id]);
-  const upcomingSessions = data.filter((session) => {
-    return new Date() < new Date(parseInt(session.fullEndTime));
-  });
 
   let uniqDatesSet = new Set();
-  upcomingSessions.forEach((session) => {
+  data.forEach((session) => {
     uniqDatesSet.add(session.date);
   });
   let uniqDates = Array.from(uniqDatesSet);
@@ -62,9 +65,7 @@ function ProfileSessionsTab(props) {
           </div>
         );
       })}
-      {noSessions === 0 ? (
-        <h1 className="not-found">No Upcoming Sessions!</h1>
-      ) : null}
+      {noSessions ? <h1 className="not-found">No Upcoming Sessions!</h1> : null}
     </div>
   );
 }
