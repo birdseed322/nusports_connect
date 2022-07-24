@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "env TZ='Asia/Singapore' node server.js",
     "server": "nodemon server.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix nusportsconnect_front && npm run build --prefix nusportsconnect_front"
@@ -29,5 +29,8 @@
     "socket.io": "^4.5.1"
   },
   "keywords": [],
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^28.1.3"
+  }
 }

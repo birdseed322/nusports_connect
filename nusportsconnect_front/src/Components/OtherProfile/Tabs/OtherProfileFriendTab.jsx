@@ -10,6 +10,7 @@ function OtherProfileFriendsTab(props) {
   const user = props.user;
   const [friends, setFriends] = useState([]);
   const [friendsLength, setFriendsLengths] = useState(0);
+  const [noFriends, setNoFriends] = useState(false);
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -18,6 +19,9 @@ function OtherProfileFriendsTab(props) {
       friends.sort((a, b) => a.fName.localeCompare(b.fName));
       setFriends(friends);
       setFriendsLengths(friends.length);
+      if (friends.length === 0) {
+        setNoFriends(true);
+      }
     };
     apiCall();
   }, []);
@@ -33,9 +37,13 @@ function OtherProfileFriendsTab(props) {
         </h2>
       </div>
       <div className="friends-tab">
-        {friends.map((friend) => (
-          <FriendBubble friend={friend} user={user} pending={false} />
-        ))}
+        {noFriends === 0 ? (
+          <h1 className="not-found">No friends 😔 </h1>
+        ) : (
+          friends.map((friend) => (
+            <FriendBubble friend={friend} user={user} pending={false} />
+          ))
+        )}
       </div>
     </div>
   );

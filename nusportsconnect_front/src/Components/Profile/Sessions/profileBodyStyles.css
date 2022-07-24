@@ -52,6 +52,11 @@
     flex-wrap: wrap;
 }
 
+.not-found {
+    margin-left: 2vw;
+}
+
+
 
 /* Animation for underlining tab */
 

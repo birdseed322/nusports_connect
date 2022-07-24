@@ -30,8 +30,8 @@
 }
 
 .review-input.comment {
-  height: 50%;
-  width: 90%;
+  height: 40%;
+  width: 80%;
   border-radius: 20px;
   font-family: arial;
   font-size: 18px;
@@ -69,6 +69,7 @@
       transition: 5ms ease-in;
       cursor: pointer;
       float: right;
+      transform: translate(0, -50px);
 }
 
 .review-button:hover {

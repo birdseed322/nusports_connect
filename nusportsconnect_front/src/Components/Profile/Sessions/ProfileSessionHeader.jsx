@@ -138,7 +138,6 @@ function ProfileSessionHeader(props) {
               }
               data-tip="Edit profile"
             />
-            <ReactTooltip place="bottom" type="dark" effect="solid" />
           </div>
         ) : null}
       </span>

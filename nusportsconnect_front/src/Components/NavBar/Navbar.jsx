@@ -174,7 +174,6 @@ function Navbar(props) {
     <div>
       <nav className="navbar">
         <a href="/sessions" data-tip="View all sessions">
-          <ReactTooltip place="bottom" type="dark" effect="solid" />
           <img className="logo" src={Logo} alt="" />
         </a>
         <ul>
@@ -248,7 +247,6 @@ function Navbar(props) {
             ) : (
               <img className="nav-pic" src={userImage} alt="profile-pic" />
             )}
-            <ReactTooltip place="bottom" type="dark" effect="solid" />
           </a>
         </ul>
       </nav>
