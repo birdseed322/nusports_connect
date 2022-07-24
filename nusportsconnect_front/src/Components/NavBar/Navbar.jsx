@@ -176,10 +176,8 @@ function Navbar(props) {
         <a href="/sessions" data-tip="View all sessions">
           <img className="logo" src={Logo} alt="" />
         </a>
-
         <ul>
-          <div></div>
-          <li>
+          <li className="nav-search-grp">
             <form className="nav-search-form" onSubmit={handleSubmit}>
               <input
                 className="nav-search-input"
@@ -229,49 +227,19 @@ function Navbar(props) {
                 >
                   clear all notifications
                 </p>
-                {notifications.length > 0 ? (
-                  notifications.map((notification) => {
-                    const notificationCreationTime = timeAgo(
-                      parseInt(notification.createdAt)
-                    );
-                    return (
-                      <div className="notification">
-                        <button
-                          className="notification-cancel"
-                          onClick={() =>
-                            handleClearNotification(
-                              notification.createdAt,
-                              notification.link
-                            )
-                          }
-                        >
-                          x
-                        </button>
-                        <p
-                          className="notification-message"
-                          onClick={() => {
-                            handleClearNotification(
-                              notification.createdAt
-                            ).then(
-                              () => (window.location.href = notification.link)
-                            );
-                          }}
-                        >
-                          {notification.message}
-                        </p>
-                        <p className="notification-time">
-                          {notificationCreationTime}
-                        </p>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <h2 className="notification-empty">
-                    You have no notifications!
-                  </h2>
-                )}
-              </div>
-            ) : null}
+                {notifications.length > 0 ? 
+                notifications.map(notification => {
+                  const notificationCreationTime = timeAgo(parseInt(notification.createdAt))
+                  return <div className="notification">
+                    <button className="notification-cancel" onClick={() => handleClearNotification(notification.createdAt, notification.link)}>x</button>
+                    <p className="notification-message" onClick={()=>{
+                      handleClearNotification(notification.createdAt, notification.link).then(() => window.location.href = notification.link)
+                    }}>{notification.message}</p>
+                    <p className="notification-time">{notificationCreationTime}</p>
+                  </div>
+                }) : <h2 className="notification-empty">You have no notifications!</h2>}
+                </div> ): null
+              }
           </li>
           <a href={"/profile/" + username} data-tip="View profile">
             {userImage === "" ? (
@@ -280,13 +248,6 @@ function Navbar(props) {
               <img className="nav-pic" src={userImage} alt="profile-pic" />
             )}
           </a>
-
-          <li>
-            <a href={"/profile/" + username} data-tip="View profile">
-              <div className="profile">My Profile</div>
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
-            </a>
-          </li>
         </ul>
       </nav>
 

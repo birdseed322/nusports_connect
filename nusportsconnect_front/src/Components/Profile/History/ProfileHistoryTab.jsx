@@ -44,11 +44,10 @@ function ProfileHistoryTab(props) {
           if (now > endTime && session.date === date) {
             toRender.push(session);
           }
-        }
-        return (
-          <div>
-            <h1>{date}</h1>
-            {toRender.map((session) => {
+
+          return(
+            <div className="profile-date-grp"><h1>{date}</h1>
+            {toRender.map(session => {
               const host = id === session.host.username;
               return (
                 <EventPillHost

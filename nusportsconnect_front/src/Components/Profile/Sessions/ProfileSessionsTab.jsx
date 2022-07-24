@@ -44,7 +44,7 @@ function ProfileSessionsTab(props) {
           }
         }
         return (
-          <div>
+          <div className="profile-date-grp">
             <h1 className="profile-date-header">{date}</h1>
             {toRender.map((session) => {
               const host = id === session.host.username;

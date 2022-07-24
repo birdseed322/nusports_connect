@@ -17,6 +17,7 @@ body {
   padding: 0 1rem;
   max-height: 10%;
   /* max-height: 5%; */
+  width: 100vw;
 }
 
 .navbar ul {
@@ -39,7 +40,7 @@ body {
   font-size: 30pt;
 }
 .nav-search-input {
-  width: 60%;
+  width: 70%;
   height: 50%;
   border-radius: 12px;
   font-size: 16px;
@@ -55,7 +56,6 @@ body {
   font-size: 14px;
   padding: .5em;
   border-radius: 16px;
-  margin-right: 20px;
   cursor: pointer;
 }
 
@@ -72,6 +72,7 @@ body {
   border-radius: 12px;
   transition: 5ms ease-in;
   cursor: pointer;
+  margin: 0 5px;
 }
 
 .create:hover {
@@ -81,7 +82,7 @@ body {
 
 .notif {
   width: 30px;
-  margin: 0 20px;
+  margin: 0 5px;
   transition: 5ms ease-in;
   cursor: pointer;
 }
@@ -94,6 +95,7 @@ body {
   width:50px;
   height: 50px;
   border-radius: 50%;
+  margin: 0 5px;
 }
 .profile {
   width: fit-content;
@@ -148,14 +150,14 @@ body {
   background-color: red;
   font-size: 10pt;
   color: white;
-  width: 20px;
-  height: 20px;
+  width: 50%;
+  height: 50%;
   text-align: center;
   display: flex;
   justify-content: center;
   position: absolute;
-  top: -10px;
-  right: 10px;
+  top: -30%;
+  right: 10%;
 }
 
 .notification-cancel {
