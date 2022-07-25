@@ -175,6 +175,7 @@ function Navbar(props) {
       <nav className="navbar">
         <a href="/sessions" data-tip="View all sessions">
           <img className="logo" src={Logo} alt="" />
+          <ReactTooltip place="bottom" type="dark" effect="solid" />
         </a>
         <ul>
           <li className="nav-search-grp">
@@ -227,19 +228,50 @@ function Navbar(props) {
                 >
                   clear all notifications
                 </p>
-                {notifications.length > 0 ? 
-                notifications.map(notification => {
-                  const notificationCreationTime = timeAgo(parseInt(notification.createdAt))
-                  return <div className="notification">
-                    <button className="notification-cancel" onClick={() => handleClearNotification(notification.createdAt, notification.link)}>x</button>
-                    <p className="notification-message" onClick={()=>{
-                      handleClearNotification(notification.createdAt, notification.link).then(() => window.location.href = notification.link)
-                    }}>{notification.message}</p>
-                    <p className="notification-time">{notificationCreationTime}</p>
-                  </div>
-                }) : <h2 className="notification-empty">You have no notifications!</h2>}
-                </div> ): null
-              }
+                {notifications.length > 0 ? (
+                  notifications.map((notification) => {
+                    const notificationCreationTime = timeAgo(
+                      parseInt(notification.createdAt)
+                    );
+                    return (
+                      <div className="notification">
+                        <button
+                          className="notification-cancel"
+                          onClick={() =>
+                            handleClearNotification(
+                              notification.createdAt,
+                              notification.link
+                            )
+                          }
+                        >
+                          x
+                        </button>
+                        <p
+                          className="notification-message"
+                          onClick={() => {
+                            handleClearNotification(
+                              notification.createdAt,
+                              notification.link
+                            ).then(
+                              () => (window.location.href = notification.link)
+                            );
+                          }}
+                        >
+                          {notification.message}
+                        </p>
+                        <p className="notification-time">
+                          {notificationCreationTime}
+                        </p>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <h2 className="notification-empty">
+                    You have no notifications!
+                  </h2>
+                )}
+              </div>
+            ) : null}
           </li>
           <a href={"/profile/" + username} data-tip="View profile">
             {userImage === "" ? (
@@ -247,6 +279,7 @@ function Navbar(props) {
             ) : (
               <img className="nav-pic" src={userImage} alt="profile-pic" />
             )}
+            <ReactTooltip place="bottom" type="dark" effect="solid" />
           </a>
         </ul>
       </nav>
