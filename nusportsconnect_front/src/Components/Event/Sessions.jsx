@@ -85,7 +85,6 @@ function Sessions(props) {
       </div>
     );
   }
-  let toRender = [];
 
   return (
     <div className="sessions-container">
@@ -93,6 +92,7 @@ function Sessions(props) {
       <FilterBar setFilterSessions={setFilterSessions} />
       <div className="session">
         {uniqDates.map((date) => {
+          let toRender = [];
           const now = new Date();
           for (const session of data) {
             const sessionStart = new Date(parseInt(session.fullStartTime));
@@ -125,10 +125,10 @@ function Sessions(props) {
                   />
                 );
               })}
+              {toRender.length === 0 ? <h1>No Sessions Available!</h1> : null}
             </div>
           );
         })}
-        {toRender.length === 0 ? <h1>No Sessions Available!</h1> : null}
       </div>
     </div>
   );

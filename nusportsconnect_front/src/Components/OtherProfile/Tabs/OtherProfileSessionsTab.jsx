@@ -49,11 +49,11 @@ function OtherProfileSessionsTab(props) {
   uniqDates = uniqDates.sort((a, b) => {
     return new Date(a) - new Date(b);
   });
-  let toRender = [];
 
   return (
     <div className="profile-tab-info">
       {uniqDates.map((date) => {
+        let toRender = [];
         const now = new Date();
         for (const session of data) {
           const endTime = new Date(parseInt(session.fullEndTime));

@@ -12,12 +12,15 @@ import { reqOriginRoute } from "../../Routes/routes";
 
 function EventPillHost(props) {
   const event = props.event;
-  const socket = props.socket
-  console.log(event)
+  const socket = props.socket;
 
   function handleLeave(e) {
     leaveSession(event.id);
-    socket.emit("leave session", {username:props.username, hostUsername:event.host.username, link: reqOriginRoute + "/sessions/" + event.id})
+    socket.emit("leave session", {
+      username: props.username,
+      hostUsername: event.host.username,
+      link: reqOriginRoute + "/sessions/" + event.id,
+    });
     window.location.reload();
   }
 
