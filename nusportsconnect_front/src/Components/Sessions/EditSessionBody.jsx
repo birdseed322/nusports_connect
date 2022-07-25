@@ -76,7 +76,7 @@ function EditSessionBody(props) {
         maxParticipant,
         minStar
       );
-      socket.emit("edit session", {sessionId : id, link: reqOriginRoute + "/sessions/" + id});
+      socket.emit("edit session", {sessionId : id, link: reqOriginRoute + "sessions/" + id});
       window.location.href = "/sessions/" + id;
     } catch (err) {
       console.log(err);
