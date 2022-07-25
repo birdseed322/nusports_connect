@@ -77,7 +77,7 @@ function ProfileSessionHeader(props) {
     socket.emit("send friend request", {
       senderUsername: ownUsername,
       receiverUsername: user.username,
-      link: reqOriginRoute + "/profile/" + ownUsername,
+      link: reqOriginRoute + "profile/" + ownUsername,
     });
     setPending(true);
   }

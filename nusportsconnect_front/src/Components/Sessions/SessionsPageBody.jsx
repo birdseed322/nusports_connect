@@ -213,7 +213,7 @@ function SessionsPageBody(props) {
               alt="event host star icon"
               src={star}
             />
-            {host ? (
+            {host && (currentDate < sessionInfo.fullEndTime) ? (
               <div className="session-action-btns">
                 <button
                   className="session-btn edit"
@@ -227,7 +227,7 @@ function SessionsPageBody(props) {
                   Leave
                 </button>
               </div>
-            ) : participant ? (
+            ) : participant && (currentDate < sessionInfo.fullEndTime) ? (
               <div className="session-action-btns">
                 <button className="session-btn leave" onClick={handleLeave}>
                   Leave
@@ -334,13 +334,14 @@ function SessionsPageBody(props) {
                 <Announcement
                   message={x.message}
                   time={x.time}
+                  ended = {currentDate > sessionInfo.fullEndTime}
                   handleDeleteAnnouncement={handleDeleteAnnouncement}
                   host={host}
                 />
               ))}
             </ul>
           </div>
-          {host ? (
+          {host && (currentDate < sessionInfo.fullEndTime) ? (
             <AnnouncementInput
               handleSendAnnouncement={handleSendAnnouncement}
               setAnnouncement={setAnnouncement}

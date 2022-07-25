@@ -16,7 +16,7 @@ function SignInForm(props) {
 
   React.useEffect(() => {
     if (getAccessToken() !== "") {
-      window.location.href = reqOriginRoute + "/sessions"
+      window.location.href = reqOriginRoute + "sessions"
     }
   }, [])
 

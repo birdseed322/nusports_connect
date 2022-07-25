@@ -25,6 +25,7 @@ function AccountCreationForm(props) {
     event.preventDefault();
     if (password === confirmPassword) {
       const status = await addUser(username, password, email, fName, lName);
+      console.log(status)
       if (status.status === 200) {
           let response = await loginUser(username, password);
           console.log(response);
@@ -33,7 +34,7 @@ function AccountCreationForm(props) {
             setAccessToken(jwt);
             const username = jwt_decode(jwt).username;
             socket.emit("login", username);
-            window.location.href = reqOriginRoute + "/sessions"; 
+            window.location.href = reqOriginRoute + "sessions"; 
           }
       } else {
         window.location.reload();
