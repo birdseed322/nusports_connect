@@ -264,13 +264,8 @@ function SessionsPageBody(props) {
             </div>
           </div>
         </div>
-        <Review
-          socket={socket}
-          participants={sessionInfo.participants}
-          reviewer={props.user}
-          sessionId={id}
-        />
-        {/* {host || participant ? (
+
+        {host || participant ? (
           currentDate > sessionInfo.fullEndTime ? (
             <Review
               socket={socket}
@@ -296,7 +291,7 @@ function SessionsPageBody(props) {
           </button>
         ) : (
           <h1>This session is full!</h1>
-        )} */}
+        )}
       </div>
       <div className="session-right">
         <div className="who-going-box" onClick={() => setFriendOverlay(true)}>
@@ -314,11 +309,7 @@ function SessionsPageBody(props) {
               alt="profile-pic"
             />
           )}
-          <p
-            className="expand-who-going"
-          >
-            ...
-          </p>
+          <p className="expand-who-going">...</p>
 
           <div className="participant-pax-grp">
             <p className="participant-pax">{participantsPax}</p>
