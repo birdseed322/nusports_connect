@@ -24,18 +24,17 @@ function AccountCreationForm(props) {
   async function handleSubmit(event) {
     event.preventDefault();
     if (password === confirmPassword) {
-      addUser(username, password, email, fName, lName).then(async (res) => {
-        if (res.status === 200){
-          let response = await loginUser(username, password);
-          if (response.status === 200 && response.data.data.login.accessToken) {
-            const jwt = response.data.data.login.accessToken;
-            setAccessToken(jwt);
-            const username = jwt_decode(jwt).username;
-            socket.emit("login", username);
-            window.location.href = reqOriginRoute + "sessions"; 
-          }
+      const create = await addUser(username, password, email, fName, lName);
+      setTimeout(async () => {
+        let response = await loginUser(username, password);
+        if (response.status === 200 && response.data.data.login.accessToken) {
+          const jwt = response.data.data.login.accessToken;
+          setAccessToken(jwt);
+          const username = jwt_decode(jwt).username;
+          socket.emit("login", username);
+          window.location.href = reqOriginRoute + "sessions"; 
         }
-      });
+      }, 1000)
     } else {
       setAlert(true);
     }
