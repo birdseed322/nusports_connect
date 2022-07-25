@@ -371,7 +371,10 @@ const RootQueryType = new GraphQLObjectType({
         users: {
             type: GraphQLList(UserType),
             description: "Retrieve all users",
-            resolve: async() => {
+            resolve: async(parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 let users = await User.find().exec()
                 users.map((user) => {
                     const cDate = getCreationDate(user.createdAt)
@@ -383,7 +386,10 @@ const RootQueryType = new GraphQLObjectType({
         sessions: {
             type: GraphQLList(SessionType),
             description: "Retrieve all Session",
-            resolve: async() => {
+            resolve: async(parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 let sessions = await Session.find().exec()
                 sessions = sessions.map(async(sesh) => {
                     const host = await User.findById(sesh.host).exec()
@@ -410,7 +416,10 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLString }
             },
-            resolve: async(parent, args) => {
+            resolve: async(parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 let session = await Session.findById(args.id).exec().then(async(sesh) => {
                     let host = await User.findById(sesh.host).exec();
                     let users = await User.find({ _id: { $in: sesh.participants } }).exec();
@@ -492,7 +501,6 @@ const RootQueryType = new GraphQLObjectType({
             description: "Get the username of a user",
             resolve: (_, args, { req, res, user }) => {
                 if (!user) {
-                    console.log("Not Logged in");
                     return "Not authenticated";
                 } else {
                     return user.username;
@@ -505,7 +513,10 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 username: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 let reviewee = await User.findOne({ username: args.username }).exec()
                 let revieweeReviews = await Review.find({ _id: { $in: reviewee.reviews } }).exec()
                 revieweeReviews = revieweeReviews.map(async(review) => {
@@ -527,9 +538,12 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 username: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
-                let user = await User.findOne({ username: args.username }).exec()
-                let allFriends = await User.find({_id: {$in: user.friends}}).exec()
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
+                let aUser = await User.findOne({ username: args.username }).exec()
+                let allFriends = await User.find({_id: {$in: aUser.friends}}).exec()
                 return allFriends;
             }
         },        
@@ -539,9 +553,12 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 username: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
-                let user = await User.findOne({ username: args.username }).exec()
-                let allFriendRequests = await User.find({_id: {$in: user.friendRequests}}).exec()
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
+                let aUser = await User.findOne({ username: args.username }).exec()
+                let allFriendRequests = await User.find({_id: {$in: aUser.friendRequests}}).exec()
 
                 return allFriendRequests;
             }
@@ -566,6 +583,9 @@ const RootQueryType = new GraphQLObjectType({
                 username: { type: GraphQLString }
             },
             resolve: (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 return (user.username === args.username);
             }
         },
@@ -576,6 +596,9 @@ const RootQueryType = new GraphQLObjectType({
                 sessions: { type: GraphQLList(GraphQLString) }
             },
             resolve: (_, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
 
                 let sessions = async() => {
                     let res = await Session.find({ _id: { $in: args.sessions } }).exec()
@@ -602,7 +625,10 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 roomId : {type: GraphQLString}
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 let messages = await Chat.find({room : args.roomId}).exec()
                 messages = messages.map(message => ({
                     author : message.author,
@@ -619,7 +645,10 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 roomId : {type: GraphQLString}
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 let messages = await Announcement.find({room : args.roomId}).exec()
                 messages = messages.map(message => ({
                     message : message.message,
@@ -635,9 +664,12 @@ const RootQueryType = new GraphQLObjectType({
             args:  {
                 username : {type: GraphQLString}
             },
-            resolve: async (_, args) => {
-                let user = await User.findOne({username : args.username}).exec()
-                return user.notifications
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
+                let aUser = await User.findOne({username : args.username}).exec()
+                return aUser.notifications
             }
 
         },
@@ -647,9 +679,12 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 username: { type: GraphQLString }
             },
-            resolve: async(_, args) => {
-                let res = await User.findOne({ username: args.username }).exec()
-                let userSessions = await Session.find({ _id: { $in: res.currentSessions } }).exec()
+            resolve: async(parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
+                let result = await User.findOne({ username: args.username }).exec()
+                let userSessions = await Session.find({ _id: { $in: result.currentSessions } }).exec()
                 userSessions = userSessions.map(async(sesh) => {
                     const host = await User.findById(sesh.host).exec()
                     return {
@@ -726,7 +761,7 @@ const RootMutationType = new GraphQLObjectType({
                 fName: { type: GraphQLNonNull(GraphQLString) },
                 lName: { type: GraphQLNonNull(GraphQLString) },
             },
-            resolve: (_, args) => {
+            resolve: (parent, args) => {
                 try {
                     const hashedPasswordWord = hash(args.password, 12).then((pw) => {
                         const newUser = new User({
@@ -756,7 +791,10 @@ const RootMutationType = new GraphQLObjectType({
                 interests: { type: GraphQLString },
                 image: {type: GraphQLString}
             },
-            resolve: (_, args) => {
+            resolve: (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     User.updateOne(
                         {username: args.username},
@@ -784,7 +822,10 @@ const RootMutationType = new GraphQLObjectType({
                 createdAt: {type : GraphQLString},
                 link: {type : GraphQLString}
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     const user = await User.findOne({ username: args.username }).exec()
                     const creationDate = new Date(parseInt(args.createdAt))
@@ -803,7 +844,10 @@ const RootMutationType = new GraphQLObjectType({
             args : {
                 username: {type : GraphQLString}
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     const user = await User.findOne({ username: args.username }).exec()
                     user.notifications = []
@@ -825,7 +869,10 @@ const RootMutationType = new GraphQLObjectType({
                 comment: { type: GraphQLString },
                 sessionId: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                         const reviewer = await User.findOne({ username: args.reviewerUsername }).exec()
                         const reviewee = await User.findOne({ username: args.revieweeUsername }).exec()
@@ -856,7 +903,10 @@ const RootMutationType = new GraphQLObjectType({
                 frienderId: { type: GraphQLString },
                 friendeeUsername: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     const friender = await User.findById(args.frienderId).exec();
                     const friendee = await User.findOne({ username: args.friendeeUsername }).exec()
@@ -876,7 +926,10 @@ const RootMutationType = new GraphQLObjectType({
                 frienderUsername: { type: GraphQLString },
                 friendeeUsername: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     const friender = await User.findOne({ username: args.frienderUsername }).exec();
                     const friendee = await User.findOne({ username: args.friendeeUsername }).exec();
@@ -901,7 +954,10 @@ const RootMutationType = new GraphQLObjectType({
                 frienderUsername: { type: GraphQLString },
                 friendeeUsername: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     const friender = await User.findOne({ username: args.frienderUsername }).exec();
                     const friendee = await User.findOne({ username: args.friendeeUsername }).exec();
@@ -923,7 +979,10 @@ const RootMutationType = new GraphQLObjectType({
                 friendOne: { type: GraphQLString },
                 friendTwo: { type: GraphQLString }
             },
-            resolve: async (_, args) => {
+            resolve: async (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     const friendOne = await User.findOne({ username: args.friendOne }).exec();
                     const friendTwo = await User.findOne({ username: args.friendTwo }).exec();
@@ -956,7 +1015,10 @@ const RootMutationType = new GraphQLObjectType({
                 host: { type: GraphQLNonNull(GraphQLString) },
                 participants: { type: GraphQLList(GraphQLString) }
             },
-            resolve: (_, args) => {
+            resolve: (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 const newSession = new Session({
                     sport: args.sport,
                     location: args.location,
@@ -985,7 +1047,10 @@ const RootMutationType = new GraphQLObjectType({
                 userId: { type: GraphQLNonNull(GraphQLString) },
                 sessionId: { type: GraphQLNonNull(GraphQLString) }
             },
-            resolve: (_, args) => {
+            resolve: (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     const session = Session.findById(args.sessionId).exec().then(sess => {
                         const user = User.findById(args.userId).exec().then(currentUser => {
@@ -1013,6 +1078,9 @@ const RootMutationType = new GraphQLObjectType({
                 sessionId: {type : GraphQLNonNull(GraphQLString)}
             },
             resolve: async (_,args,{req, res, user}) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 try {
                     const session = await Session.findById(args.sessionId).exec()
                     session.participants = session.participants.filter((participant) => participant.toString() !== user.userId)
@@ -1084,7 +1152,10 @@ const RootMutationType = new GraphQLObjectType({
             type: GraphQLBoolean,
             description: "Invalidate user's refresh token",
             args: { userId: { type: GraphQLString } },
-            resolve: (_, args) => {
+            resolve: (parent, args, { req, res, user }) => {
+                if (!user) {
+                    throw new Error("Not authenticated");
+                }
                 User.findById(args.userId, (err, user) => {
                     user.tokenVersion = user.tokenVersion + 1;
                     user.save();
@@ -1096,7 +1167,7 @@ const RootMutationType = new GraphQLObjectType({
             type: GraphQLBoolean,
             description: "Create notification to review users",
             args: { username : {type : GraphQLString} },
-            resolve: async(_, args) => {
+            resolve: async(parent, args) => {
                 const now = new Date()
                 const user = await User.findOne({username : args.username}).exec()
                 const sessions = await Session.find({_id : {$in : user.currentSessions}}).exec()
@@ -1117,7 +1188,7 @@ const RootMutationType = new GraphQLObjectType({
             type: GraphQLBoolean,
             description:"Checks upcoming games and informs user",
             args: {username : {type : GraphQLString}},
-            resolve: async (_, args) => {
+            resolve: async (parent, args) => {
                 const now = new Date()
                 const user = await User.findOne({username : args.username}).exec()
                 const sessions = await Session.find({_id : {$in : user.currentSessions}}).exec()

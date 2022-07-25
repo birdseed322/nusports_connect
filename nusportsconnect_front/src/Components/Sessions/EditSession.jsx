@@ -23,9 +23,7 @@ function EditSession(props) {
     };
     apiCall();
   }, []);
-  if (data === "Not authenticated" || data === null || ownUser !== sessionOwner) {
-    return <NotAuthenticated />;
-  } else if (data === "") {
+  if (data === "Not authenticated" || data === null || ownUser !== sessionOwner || data === "") {
     return <Loading />;
   }
 
