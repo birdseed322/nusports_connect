@@ -24,8 +24,8 @@ function AccountCreationForm(props) {
   async function handleSubmit(event) {
     event.preventDefault();
     if (password === confirmPassword) {
-      const status = await addUser(username, password, email, fName, lName);
-      if (status.status === 200) {
+      addUser(username, password, email, fName, lName).then(async (res) => {
+        if (res.status === 200){
           let response = await loginUser(username, password);
           if (response.status === 200 && response.data.data.login) {
             const jwt = response.data.data.login.accessToken;
@@ -34,7 +34,8 @@ function AccountCreationForm(props) {
             socket.emit("login", username);
             window.location.href = reqOriginRoute + "sessions"; 
           }
-      }
+        }
+      });
     } else {
       setAlert(true);
     }
