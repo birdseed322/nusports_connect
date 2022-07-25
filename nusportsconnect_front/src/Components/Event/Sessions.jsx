@@ -114,7 +114,8 @@ function Sessions(props) {
                 user.userSessions.forEach((x) =>
                   x.id === session.id ? (participant = true) : null
                 );
-
+                console.log(user)
+                console.log(session)
                 return (
                   <EventPillHost
                     socket={socket}
