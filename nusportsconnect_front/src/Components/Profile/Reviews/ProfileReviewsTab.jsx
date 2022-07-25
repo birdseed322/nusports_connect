@@ -17,6 +17,7 @@ function ProfileReviewTab(props) {
     };
     apiCall();
   }, []);
+
   return (
     <div className="profile-tab-info">
       {userReviews.reverse().map((review) => {

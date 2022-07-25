@@ -15,9 +15,12 @@ function Review(props) {
   let reviewerUsername = props.reviewer;
   let sessionId = props.sessionId;
 
+  console.log(allParticipants);
   function isUserReviewed(reviewArray) {
     const filterReviewArray = reviewArray.filter(
-      (review) => review.sessionId === sessionId && review.reviewer === id
+      (review) =>
+        review.sessionId === sessionId &&
+        review.reviewer.username === reviewerUsername
     );
     return filterReviewArray.length === 0 ? true : false;
   }

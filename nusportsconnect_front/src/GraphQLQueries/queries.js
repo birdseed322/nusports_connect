@@ -379,6 +379,9 @@ export function getSessionInfo(sessionId) {
             image
             reviews {
               sessionId
+              reviewer {
+                username
+              }
             }
           }
           currentParticipants

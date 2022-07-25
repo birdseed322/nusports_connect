@@ -213,7 +213,7 @@ function SessionsPageBody(props) {
               alt="event host star icon"
               src={star}
             />
-            {host && (currentDate < sessionInfo.fullEndTime) ? (
+            {host && currentDate < sessionInfo.fullEndTime ? (
               <div className="session-action-btns">
                 <button
                   className="session-btn edit"
@@ -227,7 +227,7 @@ function SessionsPageBody(props) {
                   Leave
                 </button>
               </div>
-            ) : participant && (currentDate < sessionInfo.fullEndTime) ? (
+            ) : participant && currentDate < sessionInfo.fullEndTime ? (
               <div className="session-action-btns">
                 <button className="session-btn leave" onClick={handleLeave}>
                   Leave
@@ -264,13 +264,13 @@ function SessionsPageBody(props) {
             </div>
           </div>
         </div>
-        {/* <Review
+        <Review
           socket={socket}
           participants={sessionInfo.participants}
           reviewer={props.user}
           sessionId={id}
-        /> */}
-        {host || participant ? (
+        />
+        {/* {host || participant ? (
           currentDate > sessionInfo.fullEndTime ? (
             <Review
               socket={socket}
@@ -296,7 +296,7 @@ function SessionsPageBody(props) {
           </button>
         ) : (
           <h1>This session is full!</h1>
-        )}
+        )} */}
       </div>
       <div className="session-right">
         <div className="who-going-box">
@@ -334,14 +334,14 @@ function SessionsPageBody(props) {
                 <Announcement
                   message={x.message}
                   time={x.time}
-                  ended = {currentDate > sessionInfo.fullEndTime}
+                  ended={currentDate > sessionInfo.fullEndTime}
                   handleDeleteAnnouncement={handleDeleteAnnouncement}
                   host={host}
                 />
               ))}
             </ul>
           </div>
-          {host && (currentDate < sessionInfo.fullEndTime) ? (
+          {host && currentDate < sessionInfo.fullEndTime ? (
             <AnnouncementInput
               handleSendAnnouncement={handleSendAnnouncement}
               setAnnouncement={setAnnouncement}
