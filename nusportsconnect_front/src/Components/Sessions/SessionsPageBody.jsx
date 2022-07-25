@@ -264,7 +264,12 @@ function SessionsPageBody(props) {
             </div>
           </div>
         </div>
-
+        {/* <Review
+          socket={socket}
+          participants={sessionInfo.participants}
+          reviewer={props.user}
+          sessionId={id}
+        /> */}
         {host || participant ? (
           currentDate > sessionInfo.fullEndTime ? (
             <Review
