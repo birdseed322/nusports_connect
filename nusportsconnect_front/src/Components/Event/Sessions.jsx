@@ -29,9 +29,9 @@ function Sessions(props) {
       );
 
       console.log(userRes)
+      console.log(userSessions)
       if (
-        userRes.data.data.userUsername !== null &&
-        userSessions.data.data.userProfileInfo !== null
+        userRes.data.data.userUsername !== null
       ) {
         setUser({
           username: userRes.data.data.userUsername,
