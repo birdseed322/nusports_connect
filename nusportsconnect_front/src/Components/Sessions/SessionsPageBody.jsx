@@ -299,7 +299,7 @@ function SessionsPageBody(props) {
         )} */}
       </div>
       <div className="session-right">
-        <div className="who-going-box">
+        <div className="who-going-box" onClick={() => setFriendOverlay(true)}>
           <p className="who-going-box-title">Who's going?</p>
           {sessionInfo.host.image === "" ? (
             <img
@@ -316,7 +316,6 @@ function SessionsPageBody(props) {
           )}
           <p
             className="expand-who-going"
-            onClick={() => setFriendOverlay(true)}
           >
             ...
           </p>

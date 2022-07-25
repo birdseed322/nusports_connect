@@ -20,12 +20,14 @@
   margin: 0 auto;
 }
 
+
 .filter-input {
   height: 2em;
   width: 200px;
   cursor: pointer;
   border-radius: 12px;
   border: 1px solid black;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .filter-button {
   background-color: #0C4050;
