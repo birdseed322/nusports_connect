@@ -73,14 +73,26 @@
     cursor: pointer;
 }
 
+.view-event-btn:hover {
+    background-color: #63477a;
+}
+
 .edit-event-btn {
     background-color: #48B9DC;
     cursor: pointer;
 }
 
+.edit-event-btn:hover {
+    background-color: #2d96b6;
+}
+
 .leave-event-btn {
     background-color: #DC4848;
     cursor: pointer;
+}
+
+.leave-event-btn:hover {
+    background-color: #973131;
 }
 
 .pax-icon {

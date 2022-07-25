@@ -50,6 +50,7 @@
 .chat-message {
     padding: 3px 3px 0 3px;
     margin: 3px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .chat-time {
@@ -64,4 +65,5 @@
     background-color: whitesmoke;
     color: black;
     cursor: pointer;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

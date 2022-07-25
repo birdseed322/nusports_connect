@@ -106,7 +106,7 @@ function Sessions(props) {
           }
           return (
             <div className="profile-date-grp">
-              <h1>{date}</h1>
+              <h1 className="event-date">{date}</h1>
               {toRender.map((session) => {
                 let participant = false;
 

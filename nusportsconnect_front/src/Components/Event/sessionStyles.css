@@ -18,6 +18,10 @@
     align-items: center;
   }
 
+  .event-date {
+    font-family: 'Montserrat', sans-serif;
+  }
+
   .event-title {
     display: flex;
     flex-direction: column;
