@@ -1,21 +1,23 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { reqOriginRoute } from "../../Routes/routes";
 import { addReview } from "../../GraphQLQueries/queries";
 import "./reviewStyles.css";
 
 function Review(props) {
+  const { id } = useParams();
   const [revieweeUsername, setRevieweeUsername] = useState("");
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [hover, setHover] = useState(0);
-  const socket = props.socket
+  const socket = props.socket;
   let allParticipants = props.participants;
   let reviewerUsername = props.reviewer;
   let sessionId = props.sessionId;
 
-  function isUserRevieweed(reviewArray) {
+  function isUserReviewed(reviewArray) {
     const filterReviewArray = reviewArray.filter(
-      (review) => review.sessionId === sessionId
+      (review) => review.sessionId === sessionId && review.reviewer === id
     );
     return filterReviewArray.length === 0 ? true : false;
   }
@@ -30,7 +32,11 @@ function Review(props) {
         comment,
         sessionId
       );
-      socket.emit("send review", {reviewerUsername, revieweeUsername, link: reqOriginRoute + "profile/" + revieweeUsername})
+      socket.emit("send review", {
+        reviewerUsername,
+        revieweeUsername,
+        link: reqOriginRoute + "profile/" + revieweeUsername,
+      });
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -53,7 +59,7 @@ function Review(props) {
             .filter(
               (participant) =>
                 participant.username !== reviewerUsername &&
-                isUserRevieweed(participant.reviews)
+                isUserReviewed(participant.reviews)
             )
             .map((participant) => {
               return (
