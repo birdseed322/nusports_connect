@@ -149,7 +149,7 @@ io.on("connection", client => {
             users = users.filter(x => x.username !== hostUsername)
             const newNotif = {
                 message : "A new announcement has been posted!",
-                link : reqOriginRoute + "/sessions/" + currentRoomId
+                link : reqOriginRoute + "sessions/" + currentRoomId
             }
             users.map(user => {
                 user.notifications.push(newNotif)
@@ -1113,7 +1113,7 @@ const RootMutationType = new GraphQLObjectType({
                         session.host = session.participants[0];
                         let newNotif = {
                             message: "You have became the new host of a session!",
-                            link: reqOriginRoute + "/sessions/" + args.sessionId
+                            link: reqOriginRoute + "sessions/" + args.sessionId
                         }
                         await User.findById(session.host).exec().then(host => {
                             host.notifications.push(newNotif)
@@ -1200,7 +1200,7 @@ const RootMutationType = new GraphQLObjectType({
                     if (user.lastLoggedIn.getTime() < session.endTime.getTime() && now.getTime() > session.endTime.getTime()) {
                         let newNotif = {
                             message : "Hope you enjoyed your session! Click here to start reviewing other participants!",
-                            link : reqOriginRoute + "/sessions/" + session.id 
+                            link : reqOriginRoute + "sessions/" + session.id 
                         }
                         user.notifications.push(newNotif)
                     }
@@ -1222,13 +1222,13 @@ const RootMutationType = new GraphQLObjectType({
                     if (diff <= 30 && diff > 0) {
                         let newNotif = {
                             message : "You have a session starting soon! (" + diff + " mins)",
-                            link : reqOriginRoute + "/sessions/" + session.id 
+                            link : reqOriginRoute + "sessions/" + session.id 
                         }
                         user.notifications.push(newNotif)
                     } else if (diff > 30 && diff <= 60) {
                         let newNotif = {
                             message : "You have a session starting in " + diff + " mins!",
-                            link : reqOriginRoute + "/sessions/" + session.id 
+                            link : reqOriginRoute + "sessions/" + session.id 
                         }
                         user.notifications.push(newNotif)
                     }
