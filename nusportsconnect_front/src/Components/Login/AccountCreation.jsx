@@ -22,7 +22,7 @@ function AccountCreationForm(props) {
     event.preventDefault();
     if (password === confirmPassword) {
       addUser(username, password, email, fName, lName);
-      window.location.href = reqOriginRoute + "/"; 
+      window.location.href = reqOriginRoute; 
     } else {
       setAlert(true);
     }

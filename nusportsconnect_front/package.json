@@ -25,7 +25,7 @@
     "web-vitals": "^2.1.4"
   },
 
-  "proxy": "https://nusportsconnect.herokuapp.com",
+  "proxy": "https://nusportsconnect.herokuapp.com/",
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts --openssl-legacy-provider build",

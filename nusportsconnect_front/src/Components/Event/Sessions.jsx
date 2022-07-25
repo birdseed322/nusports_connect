@@ -28,6 +28,7 @@ function Sessions(props) {
         userRes.data.data.userUsername
       );
 
+      console.log(userRes)
       if (
         userRes.data.data.userUsername !== null &&
         userSessions.data.data.userProfileInfo !== null
