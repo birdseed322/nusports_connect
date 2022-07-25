@@ -1,5 +1,5 @@
 import "./accountCreationStyles.css";
-import { addUser, checkUpcomingSessions, loginUser } from "../../GraphQLQueries/queries";
+import { addUser, loginUser } from "../../GraphQLQueries/queries";
 import { reqOriginRoute } from "../../Routes/routes";
 import React from "react";
 import Alert from "../Alert/Alert";
@@ -25,10 +25,8 @@ function AccountCreationForm(props) {
     event.preventDefault();
     if (password === confirmPassword) {
       const status = await addUser(username, password, email, fName, lName);
-      console.log(status)
       if (status.status === 200) {
           let response = await loginUser(username, password);
-          console.log(response);
           if (response.status === 200 && response.data.data.login) {
             const jwt = response.data.data.login.accessToken;
             setAccessToken(jwt);
@@ -36,8 +34,6 @@ function AccountCreationForm(props) {
             socket.emit("login", username);
             window.location.href = reqOriginRoute + "sessions"; 
           }
-      } else {
-        window.location.reload();
       }
     } else {
       setAlert(true);
