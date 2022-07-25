@@ -22,7 +22,7 @@ function Review(props) {
         review.sessionId === sessionId &&
         review.reviewer.username === reviewerUsername
     );
-    return filterReviewArray.length === 0 ? true : false;
+    return filterReviewArray.length !== 0 ? false : true;
   }
 
   async function handleSubmit(e) {

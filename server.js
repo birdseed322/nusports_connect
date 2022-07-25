@@ -39,8 +39,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //Add dependencies for app to be functional
-app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
-// app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000/" }));
+// app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "https://nusportsconnect.herokuapp.com/" }));
+app.use(cors({ credentials: true, exposedHeaders: ['Authorization'], origin: "http://localhost:3000/" }));
 app.use(cookieParser());
 app.use(isAuth);
 app.use(express.json({limit: '50mb'}));
@@ -449,7 +449,17 @@ const RootQueryType = new GraphQLObjectType({
                     let host = await User.findById(sesh.host).exec();
                     let users = await User.find({ _id: { $in: sesh.participants } }).exec();
                     users = users.map(async (user) => { 
-                        let reviews = await Review.find( {_id: {$in: user.reviews}}).exec()
+
+                        let reviews = await Review.find( {_id: {$in: user.reviews}}).exec();
+
+                        reviews = reviews.map(async (review) => {
+                            let reviewer = await User.findOne( {_id: {$in: review.reviewer}}).exec();
+                            return {
+                                sessionId: review.sessionId,
+                                reviewer
+                            };   
+
+                        });
                         return {
                             fName: user.fName,
                             lName: user.lName,
