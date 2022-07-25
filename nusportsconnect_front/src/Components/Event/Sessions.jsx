@@ -28,9 +28,10 @@ function Sessions(props) {
         userRes.data.data.userUsername
       );
 
+      console.log(userRes)
+      console.log(userSessions)
       if (
-        userRes.data.data.userUsername !== null &&
-        userSessions.data.data.userProfileInfo !== null
+        userRes.data.data.userUsername !== null
       ) {
         setUser({
           username: userRes.data.data.userUsername,
@@ -113,7 +114,6 @@ function Sessions(props) {
                 user.userSessions.forEach((x) =>
                   x.id === session.id ? (participant = true) : null
                 );
-
                 return (
                   <EventPillHost
                     socket={socket}
