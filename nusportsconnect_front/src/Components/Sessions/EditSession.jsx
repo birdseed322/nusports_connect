@@ -30,7 +30,7 @@ function EditSession(props) {
   return (
     <div>
       <Navbar socket={socket}/>
-      <EditSessionBody />
+      <EditSessionBody socket={socket}/>
     </div>
   );
 }

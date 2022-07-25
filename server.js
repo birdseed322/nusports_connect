@@ -203,6 +203,31 @@ io.on("connection", client => {
         }
     })
 
+    client.on("edit session", async ({sessionId, link}) => {
+        Session.findById(sessionId).exec().then(async (room) => {
+            let hostUsername = await User.findById(room.host).exec()
+            hostUsername = hostUsername.username
+            let users = await User.find({_id : {$in : room.participants}}).exec()
+            users = users.filter(x => x.username !== hostUsername)
+            let newNotif = {
+                message:  "The host has edited their session!",
+                link
+            }
+            users.map(user => {
+                user.notifications.push(newNotif)
+                user.save()
+                if (activeUsers.find(x => x.username === user.username)) {
+                    const activeUser = activeUsers.find(x => x.username === user.username)
+                    io.to(activeUser.socketId).emit("new notification", newNotif)
+                } else {
+                    console.log(user.username + " not online")
+                }
+            })
+            
+        })
+
+    })
+
     client.on("delete announcement", message => {
 
         Announcement.find({message}).deleteMany({}).then(() => {

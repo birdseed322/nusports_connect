@@ -13,8 +13,9 @@ import end from "../../pics/end.png";
 import { editSession, getSessionInfo } from "../../GraphQLQueries/queries";
 import { setPageTitle } from "../../generalFunctions";
 import { sports } from "../SportsList/SportsList";
+import { reqOriginRoute } from "../../Routes/routes";
 
-function EditSessionBody() {
+function EditSessionBody(props) {
   const { id } = useParams();
   const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
@@ -24,6 +25,7 @@ function EditSessionBody() {
   const [maxParticipant, setMaxParticipant] = useState(2);
   const [minStar, setMinStar] = useState(0);
   const [currentParticipants, setCurrentParticipants] = useState(0);
+  const socket = props.socket;
 
   React.useEffect(() => {
     const apiCall = async () => {
@@ -74,6 +76,7 @@ function EditSessionBody() {
         maxParticipant,
         minStar
       );
+      socket.emit("edit session", {sessionId : id, link: reqOriginRoute + "/sessions/" + id});
       window.location.href = "/sessions/" + id;
     } catch (err) {
       console.log(err);
