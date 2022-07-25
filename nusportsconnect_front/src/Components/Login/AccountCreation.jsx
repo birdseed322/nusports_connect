@@ -1,11 +1,9 @@
 import "./accountCreationStyles.css";
-import { addUser, loginUser } from "../../GraphQLQueries/queries";
+import { addUser } from "../../GraphQLQueries/queries";
 import { reqOriginRoute } from "../../Routes/routes";
 import React from "react";
 import Alert from "../Alert/Alert";
 import ReactTooltip from "react-tooltip";
-import { setAccessToken } from "../../accessToken";
-import jwt_decode from "jwt-decode";
 
 function AccountCreationForm(props) {
   const [email, setEmail] = React.useState("");
@@ -15,26 +13,16 @@ function AccountCreationForm(props) {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [alert, setAlert] = React.useState(false);
-  const socket = props.socket
 
   function handleCloseAlert() {
     setAlert(false);
   }
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
     if (password === confirmPassword) {
-      const create = await addUser(username, password, email, fName, lName);
-      setTimeout(async () => {
-        let response = await loginUser(username, password);
-        if (response.status === 200 && response.data.data.login.accessToken) {
-          const jwt = response.data.data.login.accessToken;
-          setAccessToken(jwt);
-          const username = jwt_decode(jwt).username;
-          socket.emit("login", username);
-          window.location.href = reqOriginRoute + "sessions"; 
-        }
-      }, 1000)
+      addUser(username, password, email, fName, lName);
+      window.location.href = reqOriginRoute + "/"; 
     } else {
       setAlert(true);
     }
