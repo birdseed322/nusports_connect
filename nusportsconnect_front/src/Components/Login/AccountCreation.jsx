@@ -25,12 +25,16 @@ function AccountCreationForm(props) {
     event.preventDefault();
     if (password === confirmPassword) {
       addUser(username, password, email, fName, lName).then(async (res) => {
+        if (res.status === 200){
           let response = await loginUser(username, password);
-          const jwt = response.data.data.login.accessToken;
-          setAccessToken(jwt);
-          const aUsername = jwt_decode(jwt).username;
-          socket.emit("login", aUsername);
-          window.location.href = reqOriginRoute + "sessions"; 
+          if (response.status === 200 && response.data.data.login.accessToken) {
+            const jwt = response.data.data.login.accessToken;
+            setAccessToken(jwt);
+            const username = jwt_decode(jwt).username;
+            socket.emit("login", username);
+            window.location.href = reqOriginRoute + "sessions"; 
+          }
+        }
       });
     } else {
       setAlert(true);
