@@ -5,16 +5,18 @@ import ReviewsPill from "./ReviewsPill";
 function ProfileReviewTab(props) {
   const user = props.user;
   const [userReviews, setUserReviews] = useState([]);
+  const [noReviews, setNoReviews] = useState(false);
 
   React.useEffect(() => {
     const apiCall = async () => {
       const reviews = await getReviews(user.username);
       setUserReviews(reviews.data.data.userReviews);
+      if (reviews.data.data.userReviews.length === 0) {
+        setNoReviews(true);
+      }
     };
     apiCall();
   }, []);
-  console.log(userReviews);
-
   return (
     <div className="profile-tab-info">
       {userReviews.reverse().map((review) => {
@@ -29,6 +31,7 @@ function ProfileReviewTab(props) {
           />
         );
       })}
+      {noReviews ? <h1 className="not-found">No reviews 😔 </h1> : null}
     </div>
   );
 }

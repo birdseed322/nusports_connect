@@ -1,47 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUserCurrentSessions, getUserIdentity, getUserUsername } from "../../../GraphQLQueries/queries";
+import {
+  getUserCurrentSessions,
+  getUserIdentity,
+  getUserUsername,
+} from "../../../GraphQLQueries/queries";
 import EventPillHost from "../../EventPill/EventPillHost";
 
 function OtherProfileSessionsTab(props) {
-    const { id } = useParams();
-    const [data, setData] = React.useState([]);
-    const [personalInfo, setPersonalInfo] = React.useState({
-        id:"",
-        username : ""
-    })
-    const socket = props.socket
-    React.useEffect(() => {
-      const apiCall = async () => {
-        const sessions = await getUserCurrentSessions(id);
-        const pId = await getUserIdentity();
-        const pUsername = await getUserUsername();
-        setData(sessions.data.data.getUserCurrentSessions);
-        setPersonalInfo({
-            id : pId.data.data.userIdentity,
-            username: pUsername.data.data.userUsername
-        });
-      };
-  
-      apiCall();
-    }, [id]);
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+  const [personalInfo, setPersonalInfo] = useState({
+    id: "",
+    username: "",
+  });
+  const [noSessions, setNoSessions] = useState(false);
 
-    const upcomingSessions = data.filter((session) => {
+  const socket = props.socket;
+  React.useEffect(() => {
+    const apiCall = async () => {
+      let sessions = await getUserCurrentSessions(id);
+      const pId = await getUserIdentity();
+      const pUsername = await getUserUsername();
+      sessions = sessions.data.data.getUserCurrentSessions;
+      const upcomingSessions = sessions.filter((session) => {
         return new Date() < new Date(parseInt(session.fullEndTime));
       });
-    
-      let uniqDatesSet = new Set();
-      upcomingSessions.forEach((session) => {
-        uniqDatesSet.add(session.date);
+      if (upcomingSessions.length === 0) {
+        setNoSessions(true);
+      } else {
+        setNoSessions(false);
+        setData(upcomingSessions);
+      }
+      setPersonalInfo({
+        id: pId.data.data.userIdentity,
+        username: pUsername.data.data.userUsername,
       });
-      let uniqDates = Array.from(uniqDatesSet);
-      uniqDates = uniqDates.sort((a, b) => {
-        return new Date(a) - new Date(b);
-      });
+    };
 
+    apiCall();
+  }, [id]);
+  console.log(data);
+  let uniqDatesSet = new Set();
+  data.forEach((session) => {
+    uniqDatesSet.add(session.date);
+  });
+  let uniqDates = Array.from(uniqDatesSet);
+  uniqDates = uniqDates.sort((a, b) => {
+    return new Date(a) - new Date(b);
+  });
 
-    return (
-        <div className="profile-tab-info">
+  return (
+    <div className="profile-tab-info">
       {uniqDates.map((date) => {
         let toRender = [];
         const now = new Date();
@@ -56,7 +66,9 @@ function OtherProfileSessionsTab(props) {
             <h1 className="profile-date-header">{date}</h1>
             {toRender.map((session) => {
               const host = personalInfo.username === session.host.username;
-              const participant = session.participantsId.includes(personalInfo.id)
+              const participant = session.participantsId.includes(
+                personalInfo.id
+              );
               return (
                 <EventPillHost
                   history={false}
@@ -71,8 +83,9 @@ function OtherProfileSessionsTab(props) {
           </div>
         );
       })}
-        </div>
-    );
+      {noSessions ? <h1 className="not-found">No Upcoming Sessions!</h1> : null}
+    </div>
+  );
 }
 
 export default OtherProfileSessionsTab;

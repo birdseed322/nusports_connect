@@ -74,7 +74,11 @@ function ProfileSessionHeader(props) {
     let ownId = await getUserIdentity();
     ownId = ownId.data.data.userIdentity;
     await addFriend(ownId, user.username);
-    socket.emit("send friend request", {senderUsername: ownUsername, receiverUsername:user.username, link: reqOriginRoute + "/profile/" + ownUsername})
+    socket.emit("send friend request", {
+      senderUsername: ownUsername,
+      receiverUsername: user.username,
+      link: reqOriginRoute + "/profile/" + ownUsername,
+    });
     setPending(true);
   }
 
@@ -122,7 +126,8 @@ function ProfileSessionHeader(props) {
         <h1 className="profile-name">{user.fName + " " + user.lName}</h1>
         <p>
           Playing since: {user.accountCreationDate} <br /> <br />
-          Interested in: {user.interests}
+          <b>Interested in:</b> <br />
+          {user.interests}
         </p>
 
         {/* Checks if owner of profile to render edit profile button. */}
@@ -138,7 +143,6 @@ function ProfileSessionHeader(props) {
               }
               data-tip="Edit profile"
             />
-            <ReactTooltip place="bottom" type="dark" effect="solid" />
           </div>
         ) : null}
       </span>

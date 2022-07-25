@@ -20,7 +20,6 @@ import UsersOnlineOverlay from "./UsersOnlineOverlay";
 import Announcement from "./Announcement";
 import { getRating, setPageTitle } from "../../generalFunctions";
 import Review from "./Review";
-
 // import DatePicker from "react-datepicker";
 
 function SessionsPageBody(props) {

@@ -1,40 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { getUserCurrentSessions } from "../../../GraphQLQueries/queries";
 import EventPillHost from "../../EventPill/EventPillHost";
 
 function OtherProfileHistoryTab(props) {
-  const {id} = useParams()
-  const [data, setData] = React.useState([])
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+  const [noSessions, setNoSessions] = useState(false);
+
   React.useEffect(() => {
     const apiCall = async () => {
-      const sessions = await getUserCurrentSessions(id);
-      setData(sessions.data.data.getUserCurrentSessions);
+      let sessions = await getUserCurrentSessions(id);
+      sessions = sessions.data.data.getUserCurrentSessions;
+      const pastSessions = sessions.filter((session) => {
+        return new Date() > new Date(parseInt(session.fullEndTime));
+      });
+      if (pastSessions.length === 0) {
+        setNoSessions(true);
+      } else {
+        setNoSessions(false);
+        setData(pastSessions);
+      }
     };
-  
     apiCall();
-  }, [id])
-
-  const pastSessions = data.filter((session) =>{
-    return new Date() > new Date(parseInt(session.fullEndTime))
-  })
-
+  }, [id]);
   let uniqDatesSet = new Set();
 
-  pastSessions.forEach((session) => {
-    if (session.currentParticipants !== 0){
+  data.forEach((session) => {
+    if (session.currentParticipants !== 0) {
       uniqDatesSet.add(session.date);
     }
-  })
+  });
   let uniqDates = Array.from(uniqDatesSet);
   uniqDates = uniqDates.sort((a, b) => {
     return new Date(a) - new Date(b);
   });
+  let toRender = [];
 
   return (
     <div className="profile-tab-info">
       {uniqDates.map((date) => {
-        let toRender = [];
         const now = new Date();
         for (const session of data) {
           const endTime = new Date(parseInt(session.fullEndTime));
@@ -58,6 +63,7 @@ function OtherProfileHistoryTab(props) {
           </div>
         );
       })}
+      {noSessions ? <h1 className="not-found">No Past Sessions!</h1> : null}
     </div>
   );
 }

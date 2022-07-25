@@ -1,33 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { getUserCurrentSessions } from "../../../GraphQLQueries/queries";
 import EventPillHost from "../../EventPill/EventPillHost";
 
 function ProfileSessionsTab(props) {
   const { id } = useParams();
-  const [data, setData] = React.useState([]);
-  const socket = props.socket
+  const [data, setData] = useState([]);
+  const [noSessions, setNoSessions] = useState(false);
+  const socket = props.socket;
   React.useEffect(() => {
     const apiCall = async () => {
-      const sessions = await getUserCurrentSessions(id);
-      setData(sessions.data.data.getUserCurrentSessions);
+      let sessions = await getUserCurrentSessions(id);
+      sessions = sessions.data.data.getUserCurrentSessions;
+      const upcomingSessions = sessions.filter((session) => {
+        return new Date() < new Date(parseInt(session.fullEndTime));
+      });
+      if (upcomingSessions.length === 0) {
+        setNoSessions(true);
+      } else {
+        setNoSessions(false);
+        setData(upcomingSessions);
+      }
     };
 
     apiCall();
   }, [id]);
-  const upcomingSessions = data.filter((session) => {
-    return new Date() < new Date(parseInt(session.fullEndTime));
-  });
 
   let uniqDatesSet = new Set();
-  upcomingSessions.forEach((session) => {
+  data.forEach((session) => {
     uniqDatesSet.add(session.date);
   });
   let uniqDates = Array.from(uniqDatesSet);
   uniqDates = uniqDates.sort((a, b) => {
     return new Date(a) - new Date(b);
   });
-
   return (
     <div className="profile-tab-info">
       {uniqDates.map((date) => {
@@ -58,6 +64,7 @@ function ProfileSessionsTab(props) {
           </div>
         );
       })}
+      {noSessions ? <h1 className="not-found">No Upcoming Sessions!</h1> : null}
     </div>
   );
 }
