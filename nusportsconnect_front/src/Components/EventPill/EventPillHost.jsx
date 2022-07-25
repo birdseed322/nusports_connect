@@ -19,7 +19,7 @@ function EventPillHost(props) {
     socket.emit("leave session", {
       username: props.username,
       hostUsername: event.host.username,
-      link: reqOriginRoute + "/sessions/" + event.id,
+      link: reqOriginRoute + "sessions/" + event.id,
     });
     window.location.reload();
   }

@@ -34,7 +34,7 @@ function AccountCreationForm(props) {
             setAccessToken(jwt);
             const username = jwt_decode(jwt).username;
             socket.emit("login", username);
-            window.location.href = reqOriginRoute + "/sessions"; 
+            window.location.href = reqOriginRoute + "sessions"; 
           }
       } else {
         window.location.reload();
