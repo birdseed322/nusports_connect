@@ -22,14 +22,13 @@ function Sessions(props) {
   const [filterSessions, setFilterSessions] = React.useState(["placeholder"]);
 
   React.useEffect(() => {
+    //Post to backend to retrieve user info to establish relatinoship between user and displayed sessions (eg non-participant, participant or host)
     const fetchUser = async () => {
       const userRes = await getUserUsername();
       const userSessions = await getUserCurrentSessionsId(
         userRes.data.data.userUsername
       );
 
-      console.log(userRes)
-      console.log(userSessions)
       if (
         userRes.data.data.userUsername !== null
       ) {
@@ -62,8 +61,10 @@ function Sessions(props) {
     return <NotAuthenticated />;
   }
 
+  //Create set of dates
   let uniqDatesSet = new Set();
 
+  //Display sessions that have not passed
   data.forEach((session) => {
     const now = new Date();
     const sessionStart = new Date(parseInt(session.fullStartTime));
@@ -72,6 +73,7 @@ function Sessions(props) {
     }
   });
 
+  //Sort dates
   let uniqDates = Array.from(uniqDatesSet);
   uniqDates = uniqDates.sort((a, b) => {
     return new Date(a) - new Date(b);

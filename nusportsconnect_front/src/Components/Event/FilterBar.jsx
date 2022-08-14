@@ -4,6 +4,7 @@ import { getAllSessions } from "../../GraphQLQueries/queries";
 import "./filterStyles.css";
 import { sports } from "../SportsList/SportsList";
 
+//Filter bar component found in events home page
 function FilterBar({ setFilterSessions }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -12,13 +13,13 @@ function FilterBar({ setFilterSessions }) {
   const [avail, setAvail] = useState(true);
   let filterSessions = [];
 
+  //Function called when search button is pressed. Changes sessions to be displayed based on preferences.
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       const sessions = await getAllSessions();
       filterSessions = sessions.data.data.sessions;
 
-      console.log(sport);
       if (sport !== "") {
         filterSessions = filterSessions.filter(
           (session) => session.sport === sport
@@ -42,7 +43,6 @@ function FilterBar({ setFilterSessions }) {
         }
       }
 
-      console.log(avail);
       if (avail === true) {
         filterSessions = filterSessions.filter(
           (session) =>
@@ -51,7 +51,6 @@ function FilterBar({ setFilterSessions }) {
         );
       }
 
-      console.log(filterSessions);
       setFilterSessions(filterSessions);
     } catch (err) {
       console.log(err);

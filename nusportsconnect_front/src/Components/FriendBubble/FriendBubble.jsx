@@ -12,7 +12,6 @@ function FriendBubble({ friend, pending, user }) {
     rejectFriend(friend.username, user.username);
     window.location.reload();
   }
-  //   console.log(friend);
   return (
     <div className="friend-bubble">
       <a className="profile-link" href={"/profile/" + friend.username}>

@@ -21,6 +21,7 @@ function OtherPersonalProfileSession(props) {
   };
 
   React.useEffect(() => {
+    //Post query to backend to retrieve list of friends of user and retrieve user username.
     const apiCall = async () => {
       let friends = await getAllFriends(user.username);
       let ownUsername = await getUserUsername();
