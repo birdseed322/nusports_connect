@@ -28,6 +28,7 @@ function Navbar(props) {
   const [allSearches, setAllSearches] = useState([]);
 
   React.useEffect(() => {
+    //Retrieve user info and notifications before mounting component
     const apiCall = async () => {
       const userUsername = await getUserUsername();
       setUsername(userUsername.data.data.userUsername);
@@ -101,6 +102,7 @@ function Navbar(props) {
     return `${day} ${month} ${year}. at ${hours}:${minutes}`;
   }
 
+  //Handle notification timing
   function timeAgo(dateParam) {
     if (!dateParam) {
       return null;

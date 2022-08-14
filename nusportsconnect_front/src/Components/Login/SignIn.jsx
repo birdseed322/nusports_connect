@@ -24,7 +24,6 @@ function SignInForm(props) {
     e.preventDefault();
     try {
       let response = await loginUser(username, password);
-      console.log(response);
       if (response.status === 200 && response.data.data.login) {
         const jwt = response.data.data.login.accessToken;
         setAccessToken(jwt);

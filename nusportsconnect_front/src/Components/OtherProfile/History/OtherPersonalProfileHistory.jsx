@@ -5,7 +5,6 @@ import ProfileSessionHeader from "../../Profile/Sessions/ProfileSessionHeader";
 import OtherProfileHistoryBody from "./OtherProfileHistoryBody";
 
 function OtherPersonalProfileHistory(props) {
-  //Dummy code to simulate drawing information of user from database. Should ideally be done in useEffect statement, so info loaded before rendering.
   const user = props.user;
 
   //Based on user info and the API call to backend retrieving this profile's info

@@ -44,7 +44,7 @@ function EditSessionBody(props) {
     apiCall();
     setPageTitle("NUSportsConnect - Session Edit");
   }, [id]);
-
+  
   const filterPassedTime = (time) => {
     let currentDate = new Date();
     currentDate = currentDate.setHours(currentDate.getHours() + 2);

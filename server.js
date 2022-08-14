@@ -54,6 +54,7 @@ mongoose.connect(dbURI, { useNewURLParser: true });
 
 const connection = mongoose.connection;
 
+//Initialise socket server
 const io = require("socket.io")(server, {
     transports : ["websocket", "polling"],
     reconnection: false
@@ -69,12 +70,17 @@ server.listen(port, () => {
 
 //Websocket Responses
 
+//Keep track and map event's id to room's socket id
 let rooms = {}
+
+//Keep track of users that are connected to websocket server, to allow notification to be pushed in realtime
 let activeUsers = []
 
 io.on("connection", client => {
     var currentRoomId;
     var currentUser;
+
+    //When client logs in, his username is captured in activeUsers
     client.on("login", (username) => {
         currentUser = username
         activeUsers.push({
@@ -83,8 +89,8 @@ io.on("connection", client => {
         })
     })
 
+    //Adds user to socket room, so that the chat messages are exclusive to the rooms
     client.on("username", ({username, room}) => {
-        console.log(username + " connected to room " + room)
         const user = {
             name : username,
             id : client.id 
@@ -102,6 +108,7 @@ io.on("connection", client => {
         io.to(room).emit("connected", Array.from(rooms[room]))
     })
 
+    //When clients send a message, message is saved on DB so that it can be retrieved later on
     client.on("send", ({message, room}) => {
         const newChat = new Chat({
             room,
@@ -118,6 +125,7 @@ io.on("connection", client => {
         }).catch(err => console.log(err))
     })
 
+    //Removes client from chat room when they leave the web page
     client.on("disconnect", () => {
         try {
             rooms[currentRoomId].delete(currentUser)
@@ -129,6 +137,7 @@ io.on("connection", client => {
         io.emit("disconnected", client.id)
     })
 
+    //When hosts send an announcement, the announcement is saved on DB and notification is created for participants
     client.on("send announcement", message => {
         const newAnnouncement = new Announcement({
             room: currentRoomId,
@@ -165,6 +174,7 @@ io.on("connection", client => {
         })
     })
 
+    //When a user joins a session, a notification is created for the host
     client.on("join session", async ({username, hostUsername, link}) => {
         let newNotif = {
             message: username + " has joined your session!",
@@ -184,6 +194,7 @@ io.on("connection", client => {
         }
     })
 
+    //When a user leaves the session, a notification is created for the host
     client.on("leave session", async ({username, hostUsername, link}) => {
         let newNotif = {
             message: username + " has left your session!",
@@ -203,6 +214,7 @@ io.on("connection", client => {
         }
     })
 
+    //When session edited by the host, a notification is created for the participants
     client.on("edit session", async ({sessionId, link}) => {
         Session.findById(sessionId).exec().then(async (room) => {
             let hostUsername = await User.findById(room.host).exec()
@@ -228,6 +240,7 @@ io.on("connection", client => {
 
     })
 
+    //When host deletes an announcement, an event is created so that users who are in the session will see the change updated in realtime
     client.on("delete announcement", message => {
 
         Announcement.find({message}).deleteMany({}).then(() => {
@@ -237,6 +250,7 @@ io.on("connection", client => {
         }).catch(err => console.log(err))
     })
 
+    //When user leaves a review, this event will create a notification for the reviewee
     client.on("send review", ({reviewerUsername, revieweeUsername, link}) => {
         let newNotif = {
             message: reviewerUsername + " has left you a review!",
@@ -253,7 +267,8 @@ io.on("connection", client => {
             console.log(revieweeUsername + " not online")
         }
     })
-
+    
+    //When user sends a friend request, this event will create a notification for the user receiving the request
     client.on("send friend request", ({senderUsername, receiverUsername, link}) => {
         let newNotif = {
             message: senderUsername + " wants to be your friend!",
@@ -380,7 +395,7 @@ const dateTime = new GraphQLScalarType({
 })
 
 
-//Root query and Root mutation
+//Root query and Root mutation. Uses of query and mutations are explained in the descriptions.
 const RootQueryType = new GraphQLObjectType({
     name: "query",
     description: "Root query",
@@ -1087,6 +1102,7 @@ const RootMutationType = new GraphQLObjectType({
                     throw new Error("Not authenticated");
                 }
                 try {
+                    //In the event where a user joins an empty session, they are immediately made host
                     const session = Session.findById(args.sessionId).exec().then(sess => {
                         const user = User.findById(args.userId).exec().then(currentUser => {
                             currentUser.currentSessions.push(sess._id);

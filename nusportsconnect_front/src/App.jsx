@@ -6,6 +6,7 @@ import { refreshTokenRoute } from "./Routes/routes";
 import io from "socket.io-client";
 import jwt_decode from "jwt-decode";
 
+//Initialise connection with websocket server
 const socket = io("/", {
   transports: ["websocket", "polling"],
   reconnection: false,
@@ -14,6 +15,7 @@ const socket = io("/", {
 function App() {
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
+    //Retrieve accessToken to see if user is authenticated
     fetch(refreshTokenRoute, {
       credentials: "include",
       method: "post",

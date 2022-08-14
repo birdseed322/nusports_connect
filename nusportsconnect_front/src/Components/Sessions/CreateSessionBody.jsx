@@ -48,7 +48,7 @@ function CreateSessionBody() {
       console.log(err);
     }
   }
-
+  //Ensure events created has 2 hour buffer
   const filterPassedTime = (time) => {
     let currentDate = new Date();
     currentDate = currentDate.setHours(currentDate.getHours() + 2);
@@ -56,7 +56,7 @@ function CreateSessionBody() {
     const selectedDate = new Date(time);
     return currentDate.getTime() < selectedDate.getTime();
   };
-
+  //Ensure that start time is not before present moment
   if (startDate < new Date()) {
     let currentDate = new Date();
     currentDate.setMinutes(Math.ceil(currentDate.getMinutes() / 15) * 15);
@@ -64,7 +64,7 @@ function CreateSessionBody() {
     currentDate = new Date(currentDate);
     setStartDate(currentDate);
   }
-
+  //Ensure end time is passed start time
   if (endDate <= startDate) {
     let updatedEndTime = new Date(startDate);
     updatedEndTime = updatedEndTime.setMinutes(

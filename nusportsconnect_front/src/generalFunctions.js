@@ -1,8 +1,9 @@
+//Function to set page title
 export function setPageTitle(title) {
     return document.title = title;
 }
 
-
+//Function to convert date into AM/PM
 export function formatAMPM(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -14,9 +15,10 @@ export function formatAMPM(date) {
     return strTime;
   };
 
+  //function to retreive average rating of reviews from a list of reviews
 export function getRating(array) {
     let sum = 0;
-    for (let i =0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         sum = sum + array[i];
     }
     const average = sum/array.length;

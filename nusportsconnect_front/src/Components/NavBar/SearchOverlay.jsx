@@ -3,6 +3,7 @@ import SearchOverlayUsernames from "./SearchOverlayUsernames";
 import SearchOverlayFLNames from "./SearchOverlayFLNames";
 import "./searchOverlayStyles.css";
 
+//Overlays displayed when search user/username button pressed.
 function SearchResult({ open, closeOverlay, searchInput, allSearches }) {
   const [view, setView] = useState("Usernames");
 

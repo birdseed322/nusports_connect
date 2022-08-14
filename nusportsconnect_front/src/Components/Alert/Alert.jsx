@@ -1,6 +1,7 @@
 import React from "react";
 import "./alertStyles.css";
 
+//Alert component that displays when error occurs
 export default function Alert(props) {
   return (
     <div className="alert">

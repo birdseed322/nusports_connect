@@ -19,6 +19,7 @@ function ProfileFriendsTab(props) {
     const apiCall = async () => {
       let friends = await getAllFriends(user.username);
       let allFriends = friends.data.data.userFriends;
+      //Sort alphabetically
       allFriends.sort((a, b) => a.fName.localeCompare(b.fName));
       setFriends(allFriends);
       setFriendsLengths(allFriends.length);
